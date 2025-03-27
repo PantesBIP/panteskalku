@@ -522,24 +522,14 @@
                     potonganAwal = 15000 * berat;
                 }
 
-                // Pembulatan ongkos 15k
-                    let remainderpotonganAwal = potonganAwal % 1000;
-                    if (remainderpotonganAwal >= 1 && remainderpotonganAwal <= 499) {
-                        potonganAwal = potonganAwal - remainderpotonganAwal + 500;
-                    } else if (remainderpotonganAwal >= 501 && remainderpotonganAwal <= 999) {
-                        potonganAwal = potonganAwal - remainderpotonganAwal + 1000;
-                    }
-                
-                    hargaFix = hasilBulat + tambahan5Persen;
-                }
 
                 hargaFix = hasilBulat + potonganAwal;
 
-                let remainderPotongan = hargaFix % 1000;
+                let remainderPotongan = potonganAwal % 1000;
                 if (remainderPotongan >= 1 && remainderPotongan <= 499) {
-                    hargaFix = hargaFix - remainderPotongan + 500;
+                    potonganAwal = potonganAwal - remainderPotongan + 500;
                 } else if (remainderPotongan >= 501 && remainderPotongan <= 999) {
-                    hargaFix = hargaFix - remainderPotongan + 1000;
+                    potonganAwal = potonganAwal - remainderPotongan + 1000;
                 }
             }
 
