@@ -546,10 +546,12 @@
             let hargaFix = hasilBulat;
 
             // Hitung ongkos berdasarkan pilihan
-            if { (ongkosType === "15000") {
-            (berat < 1) {
-                    potonganAwal = 15000 * 1;
-            }  ongkos = 15000 * berat;
+            if (ongkosType === "15000") {
+                if (berat < 1) {
+                    ongkos = 15000;
+                } else {
+                    ongkos = 15000 * berat;
+                }
             } else if (ongkosType === "5") {
                 ongkos = hasilBulat * 0.05;
             } else if (ongkosType === "10") {
