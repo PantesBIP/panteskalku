@@ -1,1 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Powered By - Toko Mas Pantes BIP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #d4af37;
+            --secondary-color: #343a40;
+            --accent-color: #f8f9fa;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .navbar {
+            background-color: var(--secondary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            color: white !important;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
+        
+        .container {
+            max-width: 1200px;
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0 !important;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .btn-primary:hover {
+            background-color: #c9a227;
+            border-color: #c9a227;
+        }
+        
+        .btn-success {
+            background-color: #28a745;
+        }
+        
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        }
+        
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .delete-btn-container {
+            display: none;
+        }
+        
+        .select2-container--bootstrap-5 .select2-selection {
+            height: 45px;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
+        
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+            padding-left: 0;
+            line-height: 28px;
+        }
+        
+        .select2-container--bootstrap-5 .select2-dropdown {
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .detailPenjualan {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .detailPenjualan.show {
+            display: block;
+        }
+        
+        .detailPenjualan h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .detailPenjualan ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .detailPenjualan li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .detailPenjualan li:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        #totalPenjualan h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+        
+        .tambahBarangBtn {
+            width: 100%;
+            padding: 10px;
+            font-weight: 600;
+        }
+        
+        .toggle-detail-btn {
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .col-form-label {
+                text-align: left !important;
+                padding-bottom: 0;
+            }
+            
+            .form-buttons {
+                justify-content: center;
+            }
+            
+            .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .penjualan-form {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .spinner {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-gem me-2"></i>Toko Mas Pantes BIP
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://www.instagram.com/tokomaspantes_bandung/">
+                            <i class="fas fa-globe me-1"></i> Website
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pntsbip.netlify.app/bipbiasa">
+                            <i class="fas fa-calculator me-1"></i> Kalkulator Event
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h3><i class="fas fa-calculator me-2"></i> Kerja Kerja Kerja</h3>
+                        <h3>No Rek</h3>
+                        <label>|| BCA: 3747-7721-11</label> <label> || Mandiri : 1340-5000-8111-1 ||</label>
+                        <p>A/n Markus W</p>
+                    </div>
+                    <div class="card-body">
+                        <div id="formContainer">
+                            <form id="formEmas" class="penjualan-form">
+                                <div class="row mb-3">
+                                    <label for="kategoriEmas" class="col-sm-3 col-form-label">Kategori Emas</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select kategoriEmas" required>
+                                            <option value="" selected disabled>Pilih Kategori</option>
+                                             <option value="event">EVENT ITALY</option>
+                                            <option value="muda">Muda (38-54)</option>
+                                            <option value="tua">Tua (75-92)</option>
+                                            <option value="semua">Semua Kategori</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select kodeEmas select2" required>
+                                            <option value="" selected disabled>Pilih Kode Emas</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="hargaEmas" class="col-sm-3 col-form-label">Harga per gram</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rp</span>
+                                            <input type="text" class="form-control hargaEmas" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="ongkos" class="col-sm-3 col-form-label">Ongkos</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select ongkos" required>
+                                            <option value="0">Tidak ada ongkos</option>
+                                            <option value="15000">15 ribu x graman</option>
+                                            <option value="5">5% x harga bulat</option>
+                                            <option value="10">10% x harga bulat</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <label for="beratEmas" class="col-sm-3 col-form-label">Berat Emas</label>
+                                    <div class="col-sm-9">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control beratEmas" required step="0.01" min="0.01">
+                                            <span class="input-group-text">gram</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-buttons">
+                                    <button type="button" class="btn btn-primary hitungBtn">
+                                        <i class="fas fa-calculator me-1"></i> Hitung
+                                    </button>
+                                    <button type="reset" class="btn btn-danger clearBtn">
+                                        <i class="fas fa-eraser me-1"></i> Reset
+                                    </button>
+                                    <div class="delete-btn-container">
+                                        <button type="button" class="btn btn-warning deleteBtn">
+                                            <i class="fas fa-trash me-1"></i> Hapus
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-info toggle-detail-btn">
+                                    <i class="fas fa-eye me-1"></i> Tampilkan Detail
+                                </button>
+                            </form>
+                        </div>
+
+                        <button type="button" class="btn btn-success mt-3 tambahBarangBtn">
+                            <i class="fas fa-plus-circle me-1"></i> Tambah Barang
+                        </button>
+
+                        <div id="detailPenjualan" class="mt-4"></div>
+                        <div id="totalPenjualan" class="mt-4"></div>
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center">
+        <div class="container">
+            <div class="mb-3">
+                <a href="https://www.instagram.com/tokomaspantes_bandung/" class="text-white me-3"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="https://api.whatsapp.com/send/?phone=%2B6289656737562&text&type=phone_number&app_absent=0" class="text-white"><i class="fab fa-whatsapp fa-lg"></i></a>
+            </div>
+            <p>&copy; 2024 Toko Mas. All rights reserved.</p>
+            <p class="text-muted">Created with <i class="fas fa-heart text-danger"></i> by kc</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        // Variabel global
+        let hargaEmas = {};
+        let totalPenjualan = 0;
+        const cokim = 18500; // Nilai COKIM yang digunakan untuk perhitungan khusus
+        
+        // Data kode emas berdasarkan kategori
+        const kodeEmasOptions = {
+            muda: [
+                {value: "38 Juene", text: "7K Juene (38)"},
+                {value: "44 Kuning", text: "8K Kuning (44)"},
+                {value: "44 Kuningcoll", text: "8K Kuning Collection (44)"},
+                {value: "46 Putih", text: "8K Putih (46)"},
+                {value: "48 Kuning", text: "9K Kuning (48)"},
+                {value: "48 Kuningcoll", text: "9K Kuning Collection (44)"},
+                {value: "49 Putih", text: "9K Putih (49)"},
+                {value: "46.5 8K", text: "8K BG (46.5)"},
+                {value: "54 VC ILY", text: "54 Voila & ILY 9K"}
+            ],
+            tua: [
+                {value: "75 16K", text: "16K Kuning (75)"},
+                {value: "75 16Kwg", text: "16K BG & HALA (75)"},
+                {value: "81-89 17K", text: "17K Putih / Amero (81-89)"},
+                {value: "81-89 17Kyg", text: "17K Kuning (81-89)"},
+                {value: "16K coll", text: "16K LPM"},
+                {value: "17K coll", text: "18K LPM, Hala"},
+                {value: "Italy", text: "Italy"},
+                {value: "SDW", text: "SDW / LPM (92)"}
+            ],
+            event: [
+                {value: "84.5", text: "84.5 Italy"},
+                {value: "85.5", text: "85.5 Italy"},
+                {value: "86.5", text: "86.5 Italy"},
+                {value: "87.5", text: "87.5 Italy"},
+                {value: "88.5", text: "88.5 Italy"},
+                {value: "89.5", text: "89.5 Italy"},
+                {value: "90.5", text: "90.5 Italy"}
+            ],
+            semua: [
+                {value: "38 Juene", text: "7K Juene (38)"},
+                {value: "44 Kuning", text: "8K Kuning (44)"},
+                {value: "44 Kuningcoll", text: "8K Kuning Collection (44)"},
+                {value: "46 Putih", text: "8K Putih (46)"},
+                {value: "48 Kuning", text: "9K Kuning (48)"},
+                {value: "48 Kuningcoll", text: "9K Kuning Collection (44)"},
+                {value: "49 Putih", text: "9K Putih (49)"},
+                {value: "46.5 8K", text: "8K BG (46.5)"},
+                {value: "54 VC ILY", text: "54 Voila & ILY 9K"},
+                {value: "75 16K", text: "16K Kuning (75)"},
+                {value: "75 16Kwg", text: "16K BG & HALA (75)"},
+                {value: "81-89 17K", text: "17K Putih / Amero (81-89)"},
+                {value: "81-89 17Kyg", text: "17K Kuning (81-89)"},
+                {value: "16K coll", text: "16K LPM"},
+                {value: "17K coll", text: "18K LPM, Hala"},
+                {value: "Italy", text: "Italy"},
+                {value: "SDW", text: "SDW / LPM (92)"},
+                {value: "84.5", text: "84.5 Italy"},
+                {value: "85.5", text: "85.5 Italy"},
+                {value: "86.5", text: "86.5 Italy"},
+                {value: "87.5", text: "87.5 Italy"},
+                {value: "88.5", text: "88.5 Italy"},
+                {value: "89.5", text: "89.5 Italy"},
+                {value: "90.5", text: "90.5 Italy"}
+            ]
+        };
+
+        // Fungsi untuk menghitung harga khusus (84.5 - 90.5)
+        function hitungHargaKhusus(kode) {
+            const nilaiKode = parseFloat(kode);
+            let harga = cokim * nilaiKode;
+            harga = harga * 1.05; // Tambah 5%
+            
+            // Bulatkan sesuai aturan
+            let remainder = harga % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                harga = harga - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                harga = harga - remainder + 1000;
+            }
+            
+            return Math.round(harga);
+        }
+
+        // Fungsi untuk memuat harga dari JSON
+        async function loadHargaEmas() {
+            try {
+                const response = await fetch('harga_harian.json');
+                if (!response.ok) throw new Error('Gagal memuat data harga');
+                const data = await response.json();
+                hargaEmas = data.hargaEmas;
+                console.log('Data harga berhasil dimuat');
+                
+                // Hitung harga untuk kode 84.5 hingga 90.5
+                const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
+                kodeKhusus.forEach(kode => {
+                    hargaEmas[kode] = hitungHargaKhusus(kode);
+                });
+                
+                // Inisialisasi form pertama
+                if ($('#formEmas').length) {
+                    initializeFormElements($('#formEmas'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback data jika file JSON tidak ada
+                hargaEmas = {
+                    "38 Juene": 875500,
+                    "44 Kuning": 715000,
+                    "44 Kuningcoll": 715000,
+                    "46 Putih": 750000,
+                    "48 Kuning": 780000,
+                    "48 Kuningcoll": 780000,
+                    "49 Putih": 795000,
+                    "75 16K": 1225500,
+                    "75 16Kwg": 1225500,
+                    "81-89 17K": 1352500,
+                    "81-89 17Kyg": 1352500,
+                    "46.5 8K": 720000,
+                    "54 VC ILY": 875500,
+                    "16K coll": 1257000,
+                    "17K coll": 1384500,
+                    "Italy": 1575500,
+                    "SDW": 1464000,
+                    "84.5": 0,
+                    "85.5": 0,
+                    "86.5": 0,
+                    "87.5": 0,
+                    "88.5": 0,
+                    "89.5": 0,
+                    "90.5": 0
+                };
+                
+                // Hitung harga untuk kode 84.5 hingga 90.5 (fallback)
+                const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
+                kodeKhusus.forEach(kode => {
+                    hargaEmas[kode] = hitungHargaKhusus(kode);
+                });
+                
+                alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
+            }
+        }
+
+        // Initialize Select2 and other elements
+        function initializeFormElements(form) {
+            form.find('.select2').select2({
+                placeholder: "Pilih Kode Emas",
+                allowClear: true,
+                width: '100%',
+                dropdownParent: form.closest('#formContainer')
+            });
+            
+            // Auto-fill harga when kode is selected
+            form.find('.kodeEmas').on('change', function() {
+                const kode = $(this).val();
+                form.find('.hargaEmas').val(hargaEmas[kode] ? hargaEmas[kode].toLocaleString('id-ID') : '');
+            });
+            
+            // Update kode emas options when kategori changes
+            form.find('.kategoriEmas').on('change', function() {
+                const kategori = $(this).val();
+                updateKodeEmasOptions(form, kategori);
+            });
+            
+            // Toggle detail button
+            form.find('.toggle-detail-btn').off('click').on('click', function() {
+                const detailContainer = form.next('.detailPenjualan');
+                const isVisible = detailContainer.hasClass('show');
+                
+                if (isVisible) {
+                    detailContainer.removeClass('show');
+                    $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+                } else {
+                    detailContainer.addClass('show');
+                    $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+                }
+            });
+        }
+
+        // Fungsi untuk mengupdate pilihan kode emas berdasarkan kategori
+        function updateKodeEmasOptions(form, kategori) {
+            const kodeEmasSelect = form.find('.kodeEmas');
+            const selectedValue = kodeEmasSelect.val();
+            
+            kodeEmasSelect.empty().append('<option value="" selected disabled>Pilih Kode Emas</option>');
+            
+            kodeEmasOptions[kategori].forEach(option => {
+                kodeEmasSelect.append(`<option value="${option.value}">${option.text}</option>`);
+            });
+            
+            // Reinitialize Select2
+            kodeEmasSelect.select2('destroy');
+            initializeFormElements(form);
+            
+            // Reset harga
+            form.find('.hargaEmas').val('');
+        }
+
+        function calculatePrice(kode, berat, ongkosType) {
+            let harga = hargaEmas[kode];
+            let hasilAwal = harga * berat;
+
+            let remainder = hasilAwal % 1000;
+            let hasilBulat;
+            if (remainder >= 1 && remainder <= 499) {
+                hasilBulat = hasilAwal - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                hasilBulat = hasilAwal - remainder + 1000;
+            } else {
+                hasilBulat = hasilAwal;
+            }
+
+            let tambahan5Persen = 0;
+            let tambahan10Persen = 0;
+            let potonganAwal = 0;
+            let ongkos = 0;
+            let hargaFix = hasilBulat;
+
+            // Hitung ongkos berdasarkan pilihan
+            if (ongkosType === "15000") {
+                if (berat < 1) {
+                    ongkos = 15000;
+                } else {
+                    ongkos = 15000 * berat;
+                }
+            } else if (ongkosType === "5") {
+                ongkos = hasilBulat * 0.05;
+            } else if (ongkosType === "10") {
+                ongkos = hasilBulat * 0.10;
+            }
+
+            // Bulatkan ongkos ke kelipatan 500 terdekat
+            if (ongkos > 0) {
+                let remainderOngkos = ongkos % 1000;
+                if (remainderOngkos >= 1 && remainderOngkos <= 499) {
+                    ongkos = ongkos - remainderOngkos + 500;
+                } else if (remainderOngkos >= 501 && remainderOngkos <= 999) {
+                    ongkos = ongkos - remainderOngkos + 1000;
+                }
+            }
+
+            // Hitung harga final
+            hargaFix = hasilBulat + potonganAwal + ongkos;
+
+            // Bulatkan harga final ke kelipatan 500 terdekat
+            let remainderFinal = hargaFix % 1000;
+            if (remainderFinal >= 1 && remainderFinal <= 499) {
+                hargaFix = hargaFix - remainderFinal + 500;
+            } else if (remainderFinal >= 501 && remainderFinal <= 999) {
+                hargaFix = hargaFix - remainderFinal + 1000;
+            }
+
+            return {
+                harga,
+                hasilAwal,
+                hasilBulat,
+                tambahan5Persen,
+                tambahan10Persen,
+                potonganAwal,
+                ongkos,
+                hargaFix
+            };
+        }
+
+        function updateTotalPenjualan(newTotal) {
+            totalPenjualan = newTotal;
+            $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
+        }
+
+        function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaFix) {
+            const isKodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode);
+            
+            const detailHtml = `
+                <div class="detailPenjualan show">
+                    <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Kode:</strong> ${kode}</p>
+                            <p><strong>Berat:</strong> ${berat} gram</p>
+                            ${isKodeKhusus 
+                                ? `<p><strong>Harga dasar (cokim x kode):</strong> Rp. ${(cokim * parseFloat(kode)).toLocaleString('id-ID')}</p>
+                                   <p><strong>+5%:</strong> Rp. ${(cokim * parseFloat(kode) * 0.05).toLocaleString('id-ID')}</p>`
+                                : ''}
+                            <p><strong>Harga per gram:</strong> Rp. ${harga.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Harga Awal: Rp. ${hasilAwal.toLocaleString('id-ID')}</li>
+                                <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                                ${tambahan5Persen > 0 ? `<li>Tambahan 5%: Rp. ${tambahan5Persen.toLocaleString('id-ID')}</li>` : ''}
+                                ${tambahan10Persen > 0 ? `<li>Tambahan 10%: Rp. ${tambahan10Persen.toLocaleString('id-ID')}</li>` : ''}
+                                ${potonganAwal > 0 ? `<li>Potongan Awal: Rp. ${potonganAwal.toLocaleString('id-ID')}</li>` : ''}
+                                ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                                <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            form.next('.detailPenjualan').remove();
+            form.after(detailHtml);
+            
+            form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+        }
+
+        function clearTotalPenjualan() {
+            totalPenjualan = 0;
+            $('#totalPenjualan').html('');
+            $('.detailPenjualan').remove();
+        }
+
+        $(document).on('click', '.hitungBtn', function () {
+            const form = $(this).closest('.penjualan-form');
+            const kode = form.find('.kodeEmas').val();
+            const berat = parseFloat(form.find('.beratEmas').val());
+            const ongkosType = form.find('.ongkos').val();
+
+            if (!kode || isNaN(berat) || berat <= 0) {
+                alert("Harap pilih kode emas dan isi berat dengan benar.");
+                return;
+            }
+
+            const { harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaFix } = calculatePrice(kode, berat, ongkosType);
+
+            const previousHargaFix = form.data('hargaFix');
+            if (previousHargaFix) {
+                totalPenjualan -= previousHargaFix;
+            }
+
+            totalPenjualan += hargaFix;
+
+            updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaFix);
+            updateTotalPenjualan(totalPenjualan);
+
+            form.data('hargaFix', hargaFix);
+        });
+
+        $(document).on('click', '.clearBtn', function () {
+            const form = $(this).closest('.penjualan-form');
+            const previousHargaFix = form.data('hargaFix');
+            
+            if (previousHargaFix) {
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+            }
+            
+            form.removeData('hargaFix');
+            form.next('.detailPenjualan').remove();
+            
+            // Reinitialize Select2 after clear
+            form.find('.select2').select2('destroy');
+            initializeFormElements(form);
+            
+            // Reset toggle button
+            form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+        });
+
+        $(document).on('click', '.deleteBtn', function() {
+            const form = $(this).closest('.penjualan-form');
+            const previousHargaFix = form.data('hargaFix');
+            
+            if (previousHargaFix) {
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+            }
+            
+            form.next('.detailPenjualan').remove();
+            form.remove();
+        });
+
+        $('.tambahBarangBtn').on('click', function () {
+            const formClone = $('#formEmas').clone();
+            formClone.find('input, select').val('');
+            formClone.removeAttr('id');
+            formClone.find('.select2').removeClass('select2-hidden-accessible');
+            formClone.find('.select2-container').remove();
+            formClone.find('.delete-btn-container').css('display', 'block');
+            formClone.find('.detailPenjualan').remove();
+            $('#formContainer').append(formClone);
+            
+            // Initialize Select2 for the new form
+            initializeFormElements(formClone);
+            
+            // Scroll to the new form
+            $('html, body').animate({
+                scrollTop: formClone.offset().top - 100
+            }, 500);
+        });
+
+        // Panggil fungsi loadHargaEmas saat dokumen siap
+        $(document).ready(function() {
+            loadHargaEmas();
+            
+            // Show loading spinner temporarily (demo purposes)
+            $('.spinner').show();
+            setTimeout(function() {
+                $('.spinner').hide();
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
