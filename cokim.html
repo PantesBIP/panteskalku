@@ -227,6 +227,69 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+
+        /* Modal Price Table Styles */
+        .modal-harga {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content-harga {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+        
+        .close-harga {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        .close-harga:hover {
+            color: black;
+        }
+        
+        .table-harga {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .table-harga th, .table-harga td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .table-harga th {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .table-harga tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        
+        .btn-view-harga {
+            margin: 10px 0;
+            background-color: #17a2b8;
+            color: white;
+        }
     </style>
 </head>
 
@@ -265,6 +328,9 @@
                         <h3>No Rek</h3>
                         <label>|| BCA: 3747-7721-11</label> <label> || Mandiri : 1340-5000-8111-1 ||</label>
                         <p>A/n Markus W</p>
+                        <button class="btn btn-view-harga" id="viewHargaBtn">
+                            <i class="fas fa-table me-1"></i> View Harga
+                        </button>
                     </div>
                     <div class="card-body">
                         <div id="formContainer">
@@ -350,6 +416,16 @@
         </div>
     </div>
 
+    <!-- Modal untuk menampilkan tabel harga -->
+    <div id="hargaModal" class="modal-harga">
+        <div class="modal-content-harga">
+            <span class="close-harga">&times;</span>
+            <h3><i class="fas fa-table me-2"></i> Daftar Harga Emas</h3>
+            <div id="loadingHarga" class="spinner"></div>
+            <div id="hargaTableContainer"></div>
+        </div>
+    </div>
+
     <footer class="text-center">
         <div class="container">
             <div class="mb-3">
@@ -369,7 +445,7 @@
         // Variabel global
         let hargaEmas = {};
         let totalPenjualan = 0;
-        const cokim = 1000000; // Nilai COKIM yang digunakan untuk perhitungan khusus
+        let cokim = 1000000; // Default value, akan diupdate dari JSON
         
         // Data kode emas berdasarkan kategori
         const kodeEmasOptions = {
@@ -395,13 +471,13 @@
                 {value: "SDW", text: "SDW / LPM (92)"}
             ],
             event: [
-                {value: "84.5", text: "84.5 Italy"},
-                {value: "85.5", text: "85.5 Italy"},
-                {value: "86.5", text: "86.5 Italy"},
-                {value: "87.5", text: "87.5 Italy"},
-                {value: "88.5", text: "88.5 Italy"},
-                {value: "89.5", text: "89.5 Italy"},
-                {value: "90.5", text: "90.5 Italy"}
+                {value: "84.5", text: "84.5% Italy"},
+                {value: "85.5", text: "85.5% Italy"},
+                {value: "86.5", text: "86.5% Italy"},
+                {value: "87.5", text: "87.5% Italy"},
+                {value: "88.5", text: "88.5% Italy"},
+                {value: "89.5", text: "89.5% Italy"},
+                {value: "90.5", text: "90.5% Italy"}
             ],
             semua: [
                 {value: "38 Juene", text: "7K Juene (38)"},
@@ -421,20 +497,20 @@
                 {value: "17K coll", text: "18K LPM, Hala"},
                 {value: "Italy", text: "Italy"},
                 {value: "SDW", text: "SDW / LPM (92)"},
-                {value: "84.5", text: "84.5 Italy"},
-                {value: "85.5", text: "85.5 Italy"},
-                {value: "86.5", text: "86.5 Italy"},
-                {value: "87.5", text: "87.5 Italy"},
-                {value: "88.5", text: "88.5 Italy"},
-                {value: "89.5", text: "89.5 Italy"},
-                {value: "90.5", text: "90.5 Italy"}
+                {value: "84.5", text: "84.5% Italy"},
+                {value: "85.5", text: "85.5% Italy"},
+                {value: "86.5", text: "86.5% Italy"},
+                {value: "87.5", text: "87.5% Italy"},
+                {value: "88.5", text: "88.5% Italy"},
+                {value: "89.5", text: "89.5% Italy"},
+                {value: "90.5", text: "90.5% Italy"}
             ]
         };
 
-        // Fungsi untuk menghitung harga khusus (84.5 - 90.5)
+        // Fungsi untuk menghitung harga khusus (84.5% - 90.5%)
         function hitungHargaKhusus(kode) {
-            const nilaiKode = parseFloat(kode);
-            let harga = cokim * nilaiKode;
+            const persentase = parseFloat(kode) / 100; // Konversi 88.5 menjadi 0.885
+            let harga = cokim * persentase; // Harga Cokim × Persentase
             harga = harga * 1.05; // Tambah 5%
             
             // Bulatkan sesuai aturan
@@ -455,6 +531,8 @@
                 if (!response.ok) throw new Error('Gagal memuat data harga');
                 const data = await response.json();
                 hargaEmas = data.hargaEmas;
+                cokim = hargaEmas.cokim || 1000000; // Ambil nilai cokim dari JSON atau gunakan default
+                
                 console.log('Data harga berhasil dimuat');
                 
                 // Hitung harga untuk kode 84.5 hingga 90.5
@@ -494,7 +572,8 @@
                     "87.5": 0,
                     "88.5": 0,
                     "89.5": 0,
-                    "90.5": 0
+                    "90.5": 0,
+                    "cokim": 1000000
                 };
                 
                 // Hitung harga untuk kode 84.5 hingga 90.5 (fallback)
@@ -641,17 +720,20 @@
                     <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
                     <div class="row">
                         <div class="col-md-6">
-                            <p><strong>Kode:</strong> ${kode}</p>
+                            <p><strong>Kode:</strong> ${kode}${isKodeKhusus ? '%' : ''}</p>
                             <p><strong>Berat:</strong> ${berat} gram</p>
                             ${isKodeKhusus 
-                                ? `<p><strong>Harga dasar (cokim x kode):</strong> Rp. ${(cokim * parseFloat(kode)).toLocaleString('id-ID')}</p>
-                                   <p><strong>+5%:</strong> Rp. ${(cokim * parseFloat(kode) * 0.05).toLocaleString('id-ID')}</p>`
+                                ? `<p><strong>Rumus:</strong> (COKIM × ${kode}%) +5%</p>
+                                   <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                                   <p><strong>Harga Dasar:</strong> Rp. ${(cokim * parseFloat(kode)/100).toLocaleString('id-ID')}</p>
+                                   <p><strong>+5%:</strong> Rp. ${(cokim * parseFloat(kode)/100 * 0.05).toLocaleString('id-ID')}</p>`
                                 : ''}
                             <p><strong>Harga per gram:</strong> Rp. ${harga.toLocaleString('id-ID')}</p>
                         </div>
                         <div class="col-md-6">
                             <ul>
                                 <li>Harga Awal: Rp. ${hasilAwal.toLocaleString('id-ID')}</li>
+                                ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${(cokim * parseFloat(kode)/100 * 1.05).toLocaleString('id-ID')}</li>` : ''}
                                 <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
                                 ${tambahan5Persen > 0 ? `<li>Tambahan 5%: Rp. ${tambahan5Persen.toLocaleString('id-ID')}</li>` : ''}
                                 ${tambahan10Persen > 0 ? `<li>Tambahan 10%: Rp. ${tambahan10Persen.toLocaleString('id-ID')}</li>` : ''}
@@ -673,6 +755,78 @@
             totalPenjualan = 0;
             $('#totalPenjualan').html('');
             $('.detailPenjualan').remove();
+        }
+
+        // Fungsi untuk memuat dan menampilkan tabel harga
+        function loadHargaTable() {
+            const container = $('#hargaTableContainer');
+            const loading = $('#loadingHarga');
+            
+            container.empty();
+            loading.show();
+            
+            // Buat tabel harga
+            let tableHtml = `
+                <table class="table-harga">
+                    <thead>
+                        <tr>
+                            <th>Kode Emas</th>
+                            <th>Keterangan</th>
+                            <th>Harga per gram</th>
+                            ${cokim ? '<th>Detail Perhitungan</th>' : ''}
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+            
+            // Tambahkan data harga ke tabel
+            Object.keys(hargaEmas).forEach(kode => {
+                if (kode === "cokim") return; // Skip cokim
+                
+                // Cari keterangan dari kodeEmasOptions
+                let keterangan = '';
+                Object.keys(kodeEmasOptions).forEach(kategori => {
+                    kodeEmasOptions[kategori].forEach(item => {
+                        if (item.value === kode) {
+                            keterangan = item.text;
+                        }
+                    });
+                });
+                
+                // Jika kode khusus (84.5-90.5), tambahkan detail perhitungan
+                const isKodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode);
+                let detailPerhitungan = '';
+                
+                if (isKodeKhusus && cokim) {
+                    const persentase = parseFloat(kode)/100;
+                    const hargaDasar = cokim * persentase;
+                    const hargaPlus5 = hargaDasar * 1.05;
+                    
+                    detailPerhitungan = `
+                        (${cokim.toLocaleString('id-ID')} × ${kode}%) +5%<br>
+                        = ${hargaDasar.toLocaleString('id-ID')} + ${(hargaDasar*0.05).toLocaleString('id-ID')}<br>
+                        = ${hargaPlus5.toLocaleString('id-ID')} → ${hargaEmas[kode].toLocaleString('id-ID')}
+                    `;
+                }
+                
+                tableHtml += `
+                    <tr>
+                        <td>${kode}${isKodeKhusus ? '%' : ''}</td>
+                        <td>${keterangan || '-'}</td>
+                        <td>Rp. ${hargaEmas[kode].toLocaleString('id-ID')}</td>
+                        ${cokim ? `<td>${detailPerhitungan || '-'}</td>` : ''}
+                    </tr>
+                `;
+            });
+            
+            tableHtml += `
+                    </tbody>
+                </table>
+                ${cokim ? `<p class="mt-3"><strong>Keterangan:</strong> Harga untuk kode 84.5%-90.5% dihitung dengan rumus (COKIM × persentase) +5%</p>` : ''}
+            `;
+            
+            container.html(tableHtml);
+            loading.hide();
         }
 
         $(document).on('click', '.hitungBtn', function () {
@@ -762,6 +916,26 @@
             setTimeout(function() {
                 $('.spinner').hide();
             }, 1000);
+            
+            // Modal harga
+            const modal = document.getElementById("hargaModal");
+            const btn = document.getElementById("viewHargaBtn");
+            const span = document.getElementsByClassName("close-harga")[0];
+            
+            btn.onclick = function() {
+                modal.style.display = "block";
+                loadHargaTable();
+            }
+            
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
         });
     </script>
 </body>
