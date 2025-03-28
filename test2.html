@@ -670,12 +670,10 @@ const kodeEmasOptions = {
 
 // Fungsi untuk menghitung harga khusus (84.5% - 90.5%) dengan pembulatan sesuai aturan
 function hitungHargaKhusus(kode) {
-    const persentase = parseFloat(kode) / 100; // Konversi 88.5 menjadi 0.885
-    
-    // Langkah 1: Hitung (COKIM × persentase)
+    const persentase = parseFloat(kode) / 100;
     let hargaDasar = cokim * persentase;
     
-    // Langkah 2: Bulatkan hasil perkalian sesuai aturan
+    // Bulatkan ke 500 atau 1000
     let remainder = hargaDasar % 1000;
     if (remainder >= 1 && remainder <= 499) {
         hargaDasar = hargaDasar - remainder + 500;
@@ -683,10 +681,10 @@ function hitungHargaKhusus(kode) {
         hargaDasar = hargaDasar - remainder + 1000;
     }
     
-    // Langkah 3: Tambahkan 5% ke hasil yang sudah dibulatkan
+    // Tambahkan 5%
     let hargaPlus5 = hargaDasar * 1.05;
     
-    // Langkah 4: Bulatkan lagi hasil akhir sesuai aturan
+    // Bulatkan lagi
     remainder = hargaPlus5 % 1000;
     if (remainder >= 1 && remainder <= 499) {
         hargaPlus5 = hargaPlus5 - remainder + 500;
@@ -912,18 +910,22 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
     
     // Hitung langkah-langkah khusus untuk ditampilkan
     let detailPerhitungan = '';
+    let hargaDasarBulat = 0;
+    let hargaPlus5 = 0;
+    let hargaFinalBulat = 0;
+    
     if (isKodeKhusus) {
         const persentase = parseFloat(kode) / 100;
         const hargaDasar = cokim * persentase;
         const remainder1 = hargaDasar % 1000;
-        const hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
+        hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
             hargaDasar - remainder1 + 500 : 
             remainder1 >= 501 && remainder1 <= 999 ? 
             hargaDasar - remainder1 + 1000 : 
             hargaDasar;
-        const hargaPlus5 = hargaDasarBulat * 1.05;
+        hargaPlus5 = hargaDasarBulat * 1.05;
         const remainder2 = hargaPlus5 % 1000;
-        const hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
+        hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
             hargaPlus5 - remainder2 + 500 : 
             remainder2 >= 501 && remainder2 <= 999 ? 
             hargaPlus5 - remainder2 + 1000 : 
@@ -935,7 +937,7 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
                 <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
                 <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
                 <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
-                <li>Pembulatan akhir: Rp. ${hargaFinalBulat.toLocaleString('id-ID')}</li>
+                <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
             </ol>
         `;
     }
@@ -952,12 +954,10 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
                 </div>
                 <div class="col-md-6">
                     <ul>
-                        <li>Harga Awal: Rp. ${hasilAwal.toLocaleString('id-ID')}</li>
-                        ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>` : ''}
+                        <li>Harga Awal: Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                        ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${(hargaDasarBulat * berat).toLocaleString('id-ID')}</li>` : ''}
+                        ${isKodeKhusus ? `<li>Harga Setelah +5%: Rp. ${(hargaPlus5 * berat).toLocaleString('id-ID')}</li>` : ''}
                         <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                        ${tambahan5Persen > 0 ? `<li>Tambahan 5%: Rp. ${tambahan5Persen.toLocaleString('id-ID')}</li>` : ''}
-                        ${tambahan10Persen > 0 ? `<li>Tambahan 10%: Rp. ${tambahan10Persen.toLocaleString('id-ID')}</li>` : ''}
-                        ${potonganAwal > 0 ? `<li>Potongan Awal: Rp. ${potonganAwal.toLocaleString('id-ID')}</li>` : ''}
                         ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
                         <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
                     </ul>
@@ -965,6 +965,7 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
             </div>
         </div>
     `;
+    
     form.next('.detailPenjualan').remove();
     form.after(detailHtml);
     
