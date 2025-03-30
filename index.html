@@ -974,9 +974,9 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
                 </div>
                 <div class="col-md-6">
                     <ul>
-                        <li>Harga Awal: Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                        <!--- ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${(hargaDasarBulat * berat).toLocaleString('id-ID')}</li>` : ''} -->
-                        ${isKodeKhusus ? `<li>Harga Setelah +5%: Rp. ${(hargaPlus5 * berat).toLocaleString('id-ID')}</li>` : ''}
+                        <li>Harga Awal (Harga x Berat) : Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                        <!--- ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${(hargaDasarBulat * berat).toLocaleString('id-ID')}</li>` : ''} --->
+                        <!--- ${isKodeKhusus ? `<li>Harga Setelah +5%: Rp. ${(hargaPlus5 * berat).toLocaleString('id-ID')}</li>` : ''} --->
                         <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
                         ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
                         <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
