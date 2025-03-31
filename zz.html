@@ -9,431 +9,442 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-    --primary-color: #d4af37;
-    --secondary-color: #343a40;
-    --accent-color: #f8f9fa;
-}
+            --primary-color: #d4af37;
+            --secondary-color: #343a40;
+            --accent-color: #f8f9fa;
+        }
 
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f5f5f5;
-    color: #333;
-}
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+        }
 
-.navbar {
-    background-color: var(--secondary-color) !important;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
+        .navbar {
+            background-color: var(--secondary-color) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
 
-.navbar-brand {
-    font-weight: 700;
-    color: var(--primary-color) !important;
-    font-size: 1.5rem;
-}
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color) !important;
+            font-size: 1.5rem;
+        }
 
-.nav-link {
-    color: white !important;
-    transition: all 0.3s;
-}
+        .nav-link {
+            color: white !important;
+            transition: all 0.3s;
+        }
 
-.nav-link:hover {
-    color: var(--primary-color) !important;
-    transform: translateY(-2px);
-}
+        .nav-link:hover {
+            color: var(--primary-color) !important;
+            transform: translateY(-2px);
+        }
 
-.container {
-    max-width: 1200px;
-}
+        .container {
+            max-width: 1200px;
+        }
 
-.card {
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    border: none;
-    margin-bottom: 2rem;
-    transition: transform 0.3s;
-}
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 2rem;
+            transition: transform 0.3s;
+        }
 
-.card:hover {
-    transform: translateY(-5px);
-}
+        .card:hover {
+            transform: translateY(-5px);
+        }
 
-.card-header {
-    background-color: var(--primary-color);
-    color: white;
-    font-weight: 600;
-    border-radius: 10px 10px 0 0 !important;
-}
+        .card-header {
+            background-color: var(--primary-color);
+            color: white;
+            font-weight: 600;
+            border-radius: 10px 10px 0 0 !important;
+        }
 
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
 
-.btn-primary:hover {
-    background-color: #c9a227;
-    border-color: #c9a227;
-}
+        .btn-primary:hover {
+            background-color: #c9a227;
+            border-color: #c9a227;
+        }
 
-.btn-success {
-    background-color: #28a745;
-}
+        .btn-success {
+            background-color: #28a745;
+        }
 
-.btn-danger {
-    background-color: #dc3545;
-}
+        .btn-danger {
+            background-color: #dc3545;
+        }
 
-.btn-warning {
-    background-color: #ffc107;
-    color: #212529;
-}
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
 
-.btn-info {
-    background-color: #17a2b8;
-    color: white;
-}
+        .btn-info {
+            background-color: #17a2b8;
+            color: white;
+        }
 
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
-}
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+        }
 
-footer {
-    background-color: var(--secondary-color);
-    color: white;
-    padding: 2rem 0;
-    margin-top: 3rem;
-}
+        footer {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
 
-.form-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 15px;
-    flex-wrap: wrap;
-}
+        .form-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
 
-.delete-btn-container {
-    display: none;
-}
+        .delete-btn-container {
+            display: none;
+        }
 
-.select2-container--bootstrap-5 .select2-selection {
-    height: 45px;
-    padding: 8px 12px;
-    border-radius: 5px;
-}
+        .select2-container--bootstrap-5 .select2-selection {
+            height: 45px;
+            padding: 8px 12px;
+            border-radius: 5px;
+        }
 
-.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
-    padding-left: 0;
-    line-height: 28px;
-}
+        .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+            padding-left: 0;
+            line-height: 28px;
+        }
 
-.select2-container--bootstrap-5 .select2-dropdown {
-    border-radius: 5px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-}
+        .select2-container--bootstrap-5 .select2-dropdown {
+            border-radius: 5px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
 
-.detailPenjualan {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-    margin-top: 1rem;
-    display: none;
-}
+        .detailPenjualan {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            margin-top: 1rem;
+            display: none;
+        }
 
-.detailPenjualan.show {
-    display: block;
-}
+        .detailPenjualan.show {
+            display: block;
+        }
 
-.detailPenjualan h5 {
-    color: var(--primary-color);
-    font-weight: 600;
-    margin-bottom: 1rem;
-}
+        .detailPenjualan h5 {
+            color: var(--primary-color);
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
 
-.detailPenjualan ul {
-    list-style-type: none;
-    padding-left: 0;
-}
+        .detailPenjualan ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
 
-.detailPenjualan li {
-    padding: 0.3rem 0;
-    border-bottom: 1px solid #eee;
-}
+        .detailPenjualan li {
+            padding: 0.3rem 0;
+            border-bottom: 1px solid #eee;
+        }
 
-.detailPenjualan li:last-child {
-    border-bottom: none;
-    font-weight: bold;
-    color: var(--primary-color);
-}
+        .detailPenjualan li:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
 
-#totalPenjualan h3 {
-    color: var(--primary-color);
-    font-weight: 700;
-    text-align: center;
-    padding: 1rem;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
-}
+        #totalPenjualan h3 {
+            color: var(--primary-color);
+            font-weight: 700;
+            text-align: center;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
 
-.tambahBarangBtn {
-    width: 100%;
-    padding: 10px;
-    font-weight: 600;
-}
+        .tambahBarangBtn {
+            width: 100%;
+            padding: 10px;
+            font-weight: 600;
+        }
 
-.toggle-detail-btn {
-    margin-top: 10px;
-}
+        .toggle-detail-btn {
+            margin-top: 10px;
+        }
 
-@media (max-width: 768px) {
-    .col-form-label {
-        text-align: left !important;
-        padding-bottom: 0;
-    }
-    
-    .form-buttons {
-        justify-content: center;
-    }
-    
-    .btn {
-        flex: 1;
-        min-width: 120px;
-    }
-}
+        @media (max-width: 768px) {
+            .col-form-label {
+                text-align: left !important;
+                padding-bottom: 0;
+            }
+            
+            .form-buttons {
+                justify-content: center;
+            }
+            
+            .btn {
+                flex: 1;
+                min-width: 120px;
+            }
+        }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.penjualan-form {
-    animation: fadeIn 0.5s ease-out;
-}
+        .penjualan-form {
+            animation: fadeIn 0.5s ease-out;
+        }
 
-.spinner {
-    display: none;
-    margin: 20px auto;
-    border: 4px solid rgba(0, 0, 0, 0.1);
-    border-radius: 50%;
-    border-top: 4px solid var(--primary-color);
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
+        .spinner {
+            display: none;
+            margin: 20px auto;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-color);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
 
-/* Modal Price Table Styles */
-.modal-harga {
-    display: none;
-    position: fixed;
-    z-index: 1050;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.5);
-}
+        /* Modal Price Table Styles */
+        .modal-harga {
+            display: none;
+            position: fixed;
+            z-index: 1050;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
 
-.modal-content-harga {
-    background-color: #fefefe;
-    margin: 2% auto;
-    padding: 25px;
-    border: 1px solid #888;
-    width: 90%;
-    max-width: 1000px;
-    border-radius: 10px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    animation: modalFadeIn 0.3s;
-}
+        .modal-content-harga {
+            background-color: #fefefe;
+            margin: 2% auto;
+            padding: 25px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 1000px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s;
+        }
 
-@keyframes modalFadeIn {
-    from { opacity: 0; transform: translateY(-50px); }
-    to { opacity: 1; transform: translateY(0); }
-}
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-.close-harga {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: color 0.3s;
-}
+        .close-harga {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-.close-harga:hover {
-    color: var(--primary-color);
-}
+        .close-harga:hover {
+            color: var(--primary-color);
+        }
 
-.table-harga {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    font-size: 0.9rem;
-}
+        .table-harga {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
 
-.table-harga th, .table-harga td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-}
+        .table-harga th, .table-harga td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
 
-.table-harga th {
-    background-color: var(--primary-color);
-    color: white;
-    position: sticky;
-    top: 0;
-}
+        .table-harga th {
+            background-color: var(--primary-color);
+            color: white;
+            position: sticky;
+            top: 0;
+        }
 
-.table-harga tr:nth-child(even) {
-    background-color: #f9f9f9;
-}
+        .table-harga tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
 
-.table-harga tr:hover {
-    background-color: #f1f1f1;
-}
+        .table-harga tr:hover {
+            background-color: #f1f1f1;
+        }
 
-.harga-highlight {
-    font-weight: bold;
-    color: var(--primary-color);
-}
+        .harga-highlight {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
 
-.search-container {
-    margin-bottom: 20px;
-}
+        .search-container {
+            margin-bottom: 20px;
+        }
 
-#hargaSearch {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    font-size: 16px;
-}
+        #hargaSearch {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 16px;
+        }
 
-.modal-footer-harga {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #eee;
-}
+        .modal-footer-harga {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
 
-.modal-footer-harga .info-text {
-    font-size: 0.9rem;
-    color: #666;
-}
+        .modal-footer-harga .info-text {
+            font-size: 0.9rem;
+            color: #666;
+        }
 
-/* Tambahan style untuk responsif mobile */
-@media (max-width: 768px) {
-    .modal-content-harga {
-        width: 95%;
-        margin: 5% auto;
-        padding: 15px;
-    }
-    
-    .table-harga {
-        font-size: 0.8rem;
-    }
-    
-    .table-harga th, 
-    .table-harga td {
-        padding: 8px;
-    }
-    
-    .table-harga th:nth-child(4),
-    .table-harga td:nth-child(4) {
-        display: none;
-    }
-    
-    #hargaTableContainer {
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    .modal-footer-harga {
-        flex-direction: column;
-        gap: 10px;
-    }
-}
+        /* Tambahan style untuk responsif mobile */
+        @media (max-width: 768px) {
+            .modal-content-harga {
+                width: 95%;
+                margin: 5% auto;
+                padding: 15px;
+            }
+            
+            .table-harga {
+                font-size: 0.8rem;
+            }
+            
+            .table-harga th, 
+            .table-harga td {
+                padding: 8px;
+            }
+            
+            .table-harga th:nth-child(4),
+            .table-harga td:nth-child(4) {
+                display: none;
+            }
+            
+            #hargaTableContainer {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            .modal-footer-harga {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
 
-@media (max-width: 576px) {
-    .modal-content-harga {
-        width: 98%;
-        margin: 2% auto;
-        padding: 10px;
-    }
-    
-    .table-harga th, 
-    .table-harga td {
-        padding: 6px;
-        font-size: 0.7rem;
-    }
-    
-    .table-harga th:nth-child(3),
-    .table-harga td:nth-child(3) {
-        display: none;
-    }
-}
+        @media (max-width: 576px) {
+            .modal-content-harga {
+                width: 98%;
+                margin: 2% auto;
+                padding: 10px;
+            }
+            
+            .table-harga th, 
+            .table-harga td {
+                padding: 6px;
+                font-size: 0.7rem;
+            }
+            
+            .table-harga th:nth-child(3),
+            .table-harga td:nth-child(3) {
+                display: none;
+            }
+        }
 
-/* Style untuk floating button */
-.floating-view-harga {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 99;
-    transition: all 0.3s ease;
-}
+        /* Style untuk floating button */
+        .floating-view-harga {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            transition: all 0.3s ease;
+        }
 
-.btn-view-harga {
-    background-color: var(--primary-color);
-    color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    transition: all 0.3s ease;
-}
+        .btn-view-harga {
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            transition: all 0.3s ease;
+        }
 
-.btn-view-harga:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-}
+        .btn-view-harga:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+        }
 
-.btn-view-harga i {
-    font-size: 24px;
-}
+        .btn-view-harga i {
+            font-size: 24px;
+        }
 
-.btn-view-harga .text {
-    display: none;
-}
+        .btn-view-harga .text {
+            display: none;
+        }
 
-@media (min-width: 768px) {
-    .btn-view-harga {
-        width: auto;
-        height: auto;
-        padding: 12px 20px;
-        border-radius: 30px;
-    }
-    
-    .btn-view-harga i {
-        margin-right: 8px;
-    }
-    
-    .btn-view-harga .text {
-        display: inline;
-    }
-}
+        @media (min-width: 768px) {
+            .btn-view-harga {
+                width: auto;
+                height: auto;
+                padding: 12px 20px;
+                border-radius: 30px;
+            }
+            
+            .btn-view-harga i {
+                margin-right: 8px;
+            }
+            
+            .btn-view-harga .text {
+                display: inline;
+            }
+        }
+
+        #buatInvoiceBtn {
+            background-color: #dc3545;
+            border-color: #dc3545;
+            width: 100%;
+        }
+        
+        #buatInvoiceBtn:hover {
+            background-color: #bb2d3b;
+            border-color: #bb2d3b;
+        }
     </style>
 </head>
 <body>
@@ -562,6 +573,9 @@ footer {
                         <div id="totalPenjualan" class="mt-4"></div>
                         <div class="spinner"></div>
                     </div>
+                    <button type="button" class="btn btn-primary mt-3 mb-3" id="buatInvoiceBtn">
+                        <i class="fas fa-file-invoice me-1"></i> Buat Invoice
+                    </button>
                 </div>
             </div>
         </div>
@@ -609,619 +623,732 @@ footer {
         </div>
     </footer>
 
+    <!-- Script libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- Script utama -->
     <script>
         // Variabel global
-let hargaEmas = {};
-let totalPenjualan = 0;
-let cokim = 1000000; // Default value, akan diupdate dari JSON
+        let hargaEmas = {};
+        let totalPenjualan = 0;
+        let cokim = 1000000; // Default value, akan diupdate dari JSON
 
-// Data kode emas berdasarkan kategori
-const kodeEmasOptions = {
-    muda: [
-        {value: "38 Juene", text: "7K Juene"},
-        {value: "44 Kuning", text: "8K Kuning "},
-        {value: "44 Kuningcoll", text: "8K Kuning Collection"},
-        {value: "46 Putih", text: "8K Putih "},
-        {value: "48 Kuning", text: "9K Kuning "},
-        {value: "48 Kuningcoll", text: "9K Kuning Collection "},
-        {value: "49 Putih", text: "9K Putih "},
-        {value: "46.5 8K", text: "8K BG (46.5)"},
-        {value: "54 VC ILY", text: "Voila & ILY 9K"}
-    ],
-    tua: [
-        {value: "75 16K", text: "16K Kuning"},
-        {value: "75 16Kwg", text: "16K BG & HALA"},
-        {value: "81-89 17K", text: "17K Putih / Amero 85"},
-        {value: "81-89 17Kyg", text: "17K Kuning "},
-        {value: "16K coll", text: "16K LPM"},
-        {value: "17K coll", text: "18K LPM, Hala"},
-        {value: "Italy", text: "Italy"},
-        {value: "SDW", text: "SDW / LPM (92)"}
-    ],
-    event: [
-        {value: "84.5", text: "84.5% Italy"},
-        {value: "85.5", text: "85.5% Italy"},
-        {value: "86.5", text: "86.5% Italy"},
-        {value: "87.5", text: "87.5% Italy"},
-        {value: "88.5", text: "88.5% Italy"},
-        {value: "89.5", text: "89.5% Italy"},
-        {value: "90.5", text: "90.5% Italy"}
-    ],
-    italy_biasa: [
-        {value: "84.5", text: "84.5% Italy"},
-        {value: "85.5", text: "85.5% Italy"},
-        {value: "86.5", text: "86.5% Italy"},
-        {value: "87.5", text: "87.5% Italy"},
-        {value: "88.5", text: "88.5% Italy"},
-        {value: "89.5", text: "89.5% Italy"},
-        {value: "90.5", text: "90.5% Italy"}
-    ],
-    semua: [
-        {value: "38 Juene", text: "7K Juene "},
-        {value: "44 Kuning", text: "8K Kuning "},
-        {value: "44 Kuningcoll", text: "8K Kuning Collection"},
-        {value: "46 Putih", text: "8K Putih"},
-        {value: "48 Kuning", text: "9K Kuning "},
-        {value: "48 Kuningcoll", text: "9K Kuning Collection"},
-        {value: "49 Putih", text: "9K Putih "},
-        {value: "46.5 8K", text: "8K BG "},
-        {value: "54 VC ILY", text: " Voila & ILY 9K"},
-        {value: "75 16K", text: "16K Kuning"},
-        {value: "75 16Kwg", text: "16K BG & HALA"},
-        {value: "81-89 17K", text: "17K Putih / Amero "},
-        {value: "81-89 17Kyg", text: "17K Kuning "},
-        {value: "16K coll", text: "16K LPM"},
-        {value: "17K coll", text: "18K LPM, Hala"},
-        {value: "Italy", text: "Italy"},
-        {value: "SDW", text: "SDW / LPM (92)"},
-        {value: "84.5", text: "84.5% Italy"},
-        {value: "85.5", text: "85.5% Italy"},
-        {value: "86.5", text: "86.5% Italy"},
-        {value: "87.5", text: "87.5% Italy"},
-        {value: "88.5", text: "88.5% Italy"},
-        {value: "89.5", text: "89.5% Italy"},
-        {value: "90.5", text: "90.5% Italy"}
-    ]
-};
-
-// Fungsi untuk menghitung harga khusus (84.5% - 90.5%) dengan pembulatan sesuai aturan
-function hitungHargaKhusus(kode, tambah5Persen = true) {
-    const persentase = parseFloat(kode) / 100;
-    let hargaDasar = cokim * persentase;
-    
-    // Bulatkan ke 500 atau 1000
-    let remainder = hargaDasar % 1000;
-    if (remainder >= 1 && remainder <= 499) {
-        hargaDasar = hargaDasar - remainder + 500;
-    } else if (remainder >= 501 && remainder <= 999) {
-        hargaDasar = hargaDasar - remainder + 1000;
-    }
-    
-    // Tambahkan 5% jika parameter tambah5Persen true
-    let hargaFinal = tambah5Persen ? hargaDasar * 1.05 : hargaDasar;
-    
-    // Bulatkan lagi
-    remainder = hargaFinal % 1000;
-    if (remainder >= 1 && remainder <= 499) {
-        hargaFinal = hargaFinal - remainder + 500;
-    } else if (remainder >= 501 && remainder <= 999) {
-        hargaFinal = hargaFinal - remainder + 1000;
-    }
-    
-    return Math.round(hargaFinal);
-}
-
-// Fungsi untuk memuat harga dari JSON
-async function loadHargaEmas() {
-    try {
-        const response = await fetch('harga_harian.json');
-        if (!response.ok) throw new Error('Gagal memuat data harga');
-        const data = await response.json();
-        hargaEmas = data.hargaEmas;
-        cokim = hargaEmas.cokim || 1000000; // Ambil nilai cokim dari JSON atau gunakan default
-        
-        console.log('Data harga berhasil dimuat');
-        
-        // Update last updated time
-        const now = new Date();
-        $('#lastUpdated').text(now.toLocaleString('id-ID'));
-        
-        // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru
-        const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
-        kodeKhusus.forEach(kode => {
-            // Harga untuk kategori event (dengan tambahan 5%)
-            hargaEmas[kode] = hitungHargaKhusus(kode, true);
-            
-            // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
-            hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
-        });
-        
-        // Inisialisasi form pertama
-        if ($('#formEmas').length) {
-            initializeFormElements($('#formEmas'));
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        // Fallback data jika file JSON tidak ada
-        hargaEmas = {
-            "38 Juene": 0,
-            "44 Kuning": 0,
-            "44 Kuningcoll": 0,
-            "46 Putih": 0,
-            "48 Kuning": 0,
-            "48 Kuningcoll": 0,
-            "49 Putih": 0,
-            "75 16K": 0,
-            "75 16Kwg": 0,
-            "81-89 17K": 0,
-            "81-89 17Kyg": 0,
-            "46.5 8K": 0,
-            "54 VC ILY": 0,
-            "16K coll": 0,
-            "17K coll": 0,
-            "Italy": 0,
-            "SDW": 0,
-            "84.5": 0,
-            "85.5": 0,
-            "86.5": 0,
-            "87.5": 0,
-            "88.5": 0,
-            "89.5": 0,
-            "90.5": 0,
-            "84.5_biasa": 0,
-            "85.5_biasa": 0,
-            "86.5_biasa": 0,
-            "87.5_biasa": 0,
-            "88.5_biasa": 0,
-            "89.5_biasa": 0,
-            "90.5_biasa": 0,
-            "cokim": 0
+        // Data kode emas berdasarkan kategori
+        const kodeEmasOptions = {
+            muda: [
+                {value: "38 Juene", text: "7K Juene"},
+                {value: "44 Kuning", text: "8K Kuning "},
+                {value: "44 Kuningcoll", text: "8K Kuning Collection"},
+                {value: "46 Putih", text: "8K Putih "},
+                {value: "48 Kuning", text: "9K Kuning "},
+                {value: "48 Kuningcoll", text: "9K Kuning Collection "},
+                {value: "49 Putih", text: "9K Putih "},
+                {value: "46.5 8K", text: "8K BG (46.5)"},
+                {value: "54 VC ILY", text: "Voila & ILY 9K"}
+            ],
+            tua: [
+                {value: "75 16K", text: "16K Kuning"},
+                {value: "75 16Kwg", text: "16K BG & HALA"},
+                {value: "81-89 17K", text: "17K Putih / Amero 85"},
+                {value: "81-89 17Kyg", text: "17K Kuning "},
+                {value: "16K coll", text: "16K LPM"},
+                {value: "17K coll", text: "18K LPM, Hala"},
+                {value: "Italy", text: "Italy"},
+                {value: "SDW", text: "SDW / LPM (92)"}
+            ],
+            event: [
+                {value: "84.5", text: "84.5% Italy"},
+                {value: "85.5", text: "85.5% Italy"},
+                {value: "86.5", text: "86.5% Italy"},
+                {value: "87.5", text: "87.5% Italy"},
+                {value: "88.5", text: "88.5% Italy"},
+                {value: "89.5", text: "89.5% Italy"},
+                {value: "90.5", text: "90.5% Italy"}
+            ],
+            italy_biasa: [
+                {value: "84.5", text: "84.5% Italy"},
+                {value: "85.5", text: "85.5% Italy"},
+                {value: "86.5", text: "86.5% Italy"},
+                {value: "87.5", text: "87.5% Italy"},
+                {value: "88.5", text: "88.5% Italy"},
+                {value: "89.5", text: "89.5% Italy"},
+                {value: "90.5", text: "90.5% Italy"}
+            ],
+            semua: [
+                {value: "38 Juene", text: "7K Juene "},
+                {value: "44 Kuning", text: "8K Kuning "},
+                {value: "44 Kuningcoll", text: "8K Kuning Collection"},
+                {value: "46 Putih", text: "8K Putih"},
+                {value: "48 Kuning", text: "9K Kuning "},
+                {value: "48 Kuningcoll", text: "9K Kuning Collection"},
+                {value: "49 Putih", text: "9K Putih "},
+                {value: "46.5 8K", text: "8K BG "},
+                {value: "54 VC ILY", text: " Voila & ILY 9K"},
+                {value: "75 16K", text: "16K Kuning"},
+                {value: "75 16Kwg", text: "16K BG & HALA"},
+                {value: "81-89 17K", text: "17K Putih / Amero "},
+                {value: "81-89 17Kyg", text: "17K Kuning "},
+                {value: "16K coll", text: "16K LPM"},
+                {value: "17K coll", text: "18K LPM, Hala"},
+                {value: "Italy", text: "Italy"},
+                {value: "SDW", text: "SDW / LPM (92)"},
+                {value: "84.5", text: "84.5% Italy"},
+                {value: "85.5", text: "85.5% Italy"},
+                {value: "86.5", text: "86.5% Italy"},
+                {value: "87.5", text: "87.5% Italy"},
+                {value: "88.5", text: "88.5% Italy"},
+                {value: "89.5", text: "89.5% Italy"},
+                {value: "90.5", text: "90.5% Italy"}
+            ]
         };
-        
-        // Update last updated time with fallback
-        const now = new Date();
-        $('#lastUpdated').text(now.toLocaleString('id-ID') + ' (data offline)');
-        
-        // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru (fallback)
-        const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
-        kodeKhusus.forEach(kode => {
-            // Harga untuk kategori event (dengan tambahan 5%)
-            hargaEmas[kode] = hitungHargaKhusus(kode, true);
+
+        // Fungsi untuk menghitung harga khusus (84.5% - 90.5%) dengan pembulatan sesuai aturan
+        function hitungHargaKhusus(kode, tambah5Persen = true) {
+            const persentase = parseFloat(kode) / 100;
+            let hargaDasar = cokim * persentase;
             
-            // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
-            hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
-        });
-        
-        alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
-    }
-}
-
-// Initialize Select2 and other elements
-function initializeFormElements(form) {
-    form.find('.select2').select2({
-        placeholder: "Pilih Kode Emas",
-        allowClear: true,
-        width: '100%',
-        dropdownParent: form.closest('#formContainer')
-    });
-    
-    // Auto-fill harga when kode is selected
-    form.find('.kodeEmas').on('change', function() {
-        const kode = $(this).val();
-        form.find('.hargaEmas').val(hargaEmas[kode] ? hargaEmas[kode].toLocaleString('id-ID') : '');
-    });
-    
-    // Update kode emas options when kategori changes
-    form.find('.kategoriEmas').on('change', function() {
-        const kategori = $(this).val();
-        updateKodeEmasOptions(form, kategori);
-    });
-    
-    // Toggle detail button
-    form.find('.toggle-detail-btn').off('click').on('click', function() {
-        const detailContainer = form.next('.detailPenjualan');
-        const isVisible = detailContainer.hasClass('show');
-        
-        if (isVisible) {
-            detailContainer.removeClass('show');
-            $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
-        } else {
-            detailContainer.addClass('show');
-            $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-        }
-    });
-    
-    // Hitung button
-    form.find('.hitungBtn').off('click').on('click', function() {
-        hitungHarga(form);
-    });
-}
-
-// Fungsi untuk mengupdate pilihan kode emas berdasarkan kategori
-function updateKodeEmasOptions(form, kategori) {
-    const kodeEmasSelect = form.find('.kodeEmas');
-    const selectedValue = kodeEmasSelect.val();
-    
-    kodeEmasSelect.empty().append('<option value="" selected disabled>Pilih Kode Emas</option>');
-    
-    kodeEmasOptions[kategori].forEach(option => {
-        // Untuk kategori italy_biasa, gunakan kode dengan suffix _biasa
-        const kodeValue = (kategori === 'italy_biasa') ? `${option.value}_biasa` : option.value;
-        kodeEmasSelect.append(`<option value="${kodeValue}">${option.text}</option>`);
-    });
-    
-    // Reinitialize Select2
-    kodeEmasSelect.select2('destroy');
-    initializeFormElements(form);
-    
-    // Reset harga
-    form.find('.hargaEmas').val('');
-}
-
-// Fungsi untuk menghitung harga
-function hitungHarga(form) {
-    const kode = form.find('.kodeEmas').val();
-    const berat = parseFloat(form.find('.beratEmas').val());
-    const ongkosType = form.find('.ongkos').val();
-    const discount = parseFloat(form.find('.discount').val()) || 0;
-
-    if (!kode || isNaN(berat) || berat <= 0) {
-        alert("Harap pilih kode emas dan isi berat dengan benar.");
-        return;
-    }
-
-    const harga = hargaEmas[kode];
-    const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
-                         kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
-                         kode.includes("90.5");
-    
-    let hasilAwal, hasilBulat;
-    
-    if (isKodeKhusus) {
-        // Untuk kode khusus, harga sudah dibulatkan sesuai ketentuan (dengan atau tanpa 5%)
-        hasilAwal = harga * berat;
-        hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
-    } else {
-        // Untuk kode biasa
-        hasilAwal = harga * berat;
-        
-        // Bulatkan hasil awal
-        let remainder = hasilAwal % 1000;
-        if (remainder >= 1 && remainder <= 499) {
-            hasilBulat = hasilAwal - remainder + 500;
-        } else if (remainder >= 501 && remainder <= 999) {
-            hasilBulat = hasilAwal - remainder + 1000;
-        } else {
-            hasilBulat = hasilAwal;
-        }
-    }
-
-    // Hitung ongkos
-    let ongkos = 0;
-    if (ongkosType === "15000") {
-        ongkos = berat < 1 ? 15000 : 15000 * berat;
-    } else if (ongkosType === "5") {
-        ongkos = hasilBulat * 0.05;
-    } else if (ongkosType === "10") {
-        ongkos = hasilBulat * 0.10;
-    }
-
-    // Bulatkan ongkos
-    let remainder = ongkos % 1000;
-    if (remainder >= 1 && remainder <= 499) {
-        ongkos = ongkos - remainder + 500;
-    } else if (remainder >= 501 && remainder <= 999) {
-        ongkos = ongkos - remainder + 1000;
-    }
-
-    // Hitung harga sebelum discount
-    let hargaSebelumDiscount = hasilBulat + ongkos;
-
-    // Bulatkan harga sebelum discount
-    remainder = hargaSebelumDiscount % 1000;
-    if (remainder >= 1 && remainder <= 499) {
-        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 500;
-    } else if (remainder >= 501 && remainder <= 999) {
-        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 1000;
-    }
-
-    // Hitung harga setelah discount
-    let hargaFix = hargaSebelumDiscount - discount;
-    
-    // Pastikan harga tidak negatif
-    if (hargaFix < 0) {
-        hargaFix = 0;
-    }
-
-    // Update total penjualan
-    const previousHargaFix = form.data('hargaFix') || 0;
-    totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
-    updateTotalPenjualan(totalPenjualan);
-
-    // Simpan hargaFix ke form
-    form.data('hargaFix', hargaFix);
-
-    // Tampilkan detail
-    updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 0, 0, 0, ongkos, hargaSebelumDiscount, discount, hargaFix);
-}
-
-function updateTotalPenjualan(newTotal) {
-    totalPenjualan = newTotal;
-    $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
-}
-
-function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-    const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
-                         kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
-                         kode.includes("90.5");
-    const isItalyBiasa = kode.includes("_biasa");
-    const kodeAsli = isItalyBiasa ? kode.replace("_biasa", "") : kode;
-    
-    // Hitung langkah-langkah khusus untuk ditampilkan
-    let detailPerhitungan = '';
-    let hargaDasarBulat = 0;
-    let hargaFinalBulat = 0;
-    
-    if (isKodeKhusus) {
-        const persentase = parseFloat(kodeAsli) / 100;
-        const hargaDasar = cokim * persentase;
-        const remainder1 = hargaDasar % 1000;
-        hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
-            hargaDasar - remainder1 + 500 : 
-            remainder1 >= 501 && remainder1 <= 999 ? 
-            hargaDasar - remainder1 + 1000 : 
-            hargaDasar;
-        
-        if (!isItalyBiasa) {
-            // Untuk kategori event (dengan tambahan 5%)
-            const hargaPlus5 = hargaDasarBulat * 1.05;
-            const remainder2 = hargaPlus5 % 1000;
-            hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
-                hargaPlus5 - remainder2 + 500 : 
-                remainder2 >= 501 && remainder2 <= 999 ? 
-                hargaPlus5 - remainder2 + 1000 : 
-                hargaPlus5;
+            // Bulatkan ke 500 atau 1000
+            let remainder = hargaDasar % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                hargaDasar = hargaDasar - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                hargaDasar = hargaDasar - remainder + 1000;
+            }
             
-            detailPerhitungan = `
-                <p><strong>Detail Perhitungan Khusus (Event Italy):</strong></p>
-                <ol>
-                    <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                    <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                    <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
-                    <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
-                </ol>
-            `;
-        } else {
-            // Untuk kategori italy_biasa (tanpa tambahan 5%)
-            hargaFinalBulat = hargaDasarBulat;
+            // Tambahkan 5% jika parameter tambah5Persen true
+            let hargaFinal = tambah5Persen ? hargaDasar * 1.05 : hargaDasar;
             
-            detailPerhitungan = `
-                <p><strong>Detail Perhitungan Khusus (Italy Biasa):</strong></p>
-                <ol>
-                    <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                    <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                </ol>
-            `;
+            // Bulatkan lagi
+            remainder = hargaFinal % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                hargaFinal = hargaFinal - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                hargaFinal = hargaFinal - remainder + 1000;
+            }
+            
+            return Math.round(hargaFinal);
         }
-    }
-    
-    const detailHtml = `
-        <div class="detailPenjualan show">
-            <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Kode:</strong> ${kodeAsli}%</p>
-                    <p><strong>Berat:</strong> ${berat} gram</p>
-                    ${isKodeKhusus ? detailPerhitungan : ''}
-                    <p><strong>Harga per gram:</strong> Rp. ${harga.toLocaleString('id-ID')}</p>
-                </div>
-                <div class="col-md-6">
-                    <ul>
-                        <li>Harga Awal (Harga x Berat) : Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                        <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                        ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
-                        <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                        ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
-                        <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    form.next('.detailPenjualan').remove();
-    form.after(detailHtml);
-    
-    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-}
 
-function clearTotalPenjualan() {
-    totalPenjualan = 0;
-    $('#totalPenjualan').html('');
-    $('.detailPenjualan').remove();
-}
+        // Fungsi untuk memuat harga dari JSON
+        async function loadHargaEmas() {
+            try {
+                const response = await fetch('harga_harian.json');
+                if (!response.ok) throw new Error('Gagal memuat data harga');
+                const data = await response.json();
+                hargaEmas = data.hargaEmas;
+                cokim = hargaEmas.cokim || 1000000; // Ambil nilai cokim dari JSON atau gunakan default
+                
+                console.log('Data harga berhasil dimuat');
+                
+                // Update last updated time
+                const now = new Date();
+                $('#lastUpdated').text(now.toLocaleString('id-ID'));
+                
+                // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru
+                const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
+                kodeKhusus.forEach(kode => {
+                    // Harga untuk kategori event (dengan tambahan 5%)
+                    hargaEmas[kode] = hitungHargaKhusus(kode, true);
+                    
+                    // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
+                    hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
+                });
+                
+                // Inisialisasi form pertama
+                if ($('#formEmas').length) {
+                    initializeFormElements($('#formEmas'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback data jika file JSON tidak ada
+                hargaEmas = {
+                    "38 Juene": 0,
+                    "44 Kuning": 0,
+                    "44 Kuningcoll": 0,
+                    "46 Putih": 0,
+                    "48 Kuning": 0,
+                    "48 Kuningcoll": 0,
+                    "49 Putih": 0,
+                    "75 16K": 0,
+                    "75 16Kwg": 0,
+                    "81-89 17K": 0,
+                    "81-89 17Kyg": 0,
+                    "46.5 8K": 0,
+                    "54 VC ILY": 0,
+                    "16K coll": 0,
+                    "17K coll": 0,
+                    "Italy": 0,
+                    "SDW": 0,
+                    "84.5": 0,
+                    "85.5": 0,
+                    "86.5": 0,
+                    "87.5": 0,
+                    "88.5": 0,
+                    "89.5": 0,
+                    "90.5": 0,
+                    "84.5_biasa": 0,
+                    "85.5_biasa": 0,
+                    "86.5_biasa": 0,
+                    "87.5_biasa": 0,
+                    "88.5_biasa": 0,
+                    "89.5_biasa": 0,
+                    "90.5_biasa": 0,
+                    "cokim": 0
+                };
+                
+                // Update last updated time with fallback
+                const now = new Date();
+                $('#lastUpdated').text(now.toLocaleString('id-ID') + ' (data offline)');
+                
+                // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru (fallback)
+                const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
+                kodeKhusus.forEach(kode => {
+                    // Harga untuk kategori event (dengan tambahan 5%)
+                    hargaEmas[kode] = hitungHargaKhusus(kode, true);
+                    
+                    // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
+                    hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
+                });
+                
+                alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
+            }
+        }
 
-// Fungsi untuk memuat tabel harga dengan fitur pencarian
-function loadHargaTable() {
-    const container = $('#hargaTableContainer');
-    const loading = $('#loadingHarga');
-    
-    container.empty();
-    loading.show();
-    
-    let tableHtml = `
-        <div class="table-responsive">
-            <table class="table-harga" id="hargaTable">
-                <thead>
-                    <tr>
-                        <th>Keterangan</th>
-                        <th>Harga</th>
-                    </tr>
-                </thead>
-                <tbody>
-    `;
-    
-    // Tambahkan data harga ke tabel
-    Object.keys(hargaEmas).forEach(kode => {
-        if (kode === "cokim") return; // Skip cokim
-        
-        // Cari keterangan dari kodeEmasOptions
-        let keterangan = '';
-        Object.keys(kodeEmasOptions).forEach(kategori => {
-            kodeEmasOptions[kategori].forEach(item => {
-                if (item.value === kode || (kode.includes("_biasa") && item.value === kode.replace("_biasa", ""))) {
-                    keterangan = item.text;
-                    if (kode.includes("_biasa")) {
-                        keterangan += " (Italy Biasa)";
-                    } else if (["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode)) {
-                        keterangan += " (Event Italy)";
-                    }
+        // Initialize Select2 and other elements
+        function initializeFormElements(form) {
+            form.find('.select2').select2({
+                placeholder: "Pilih Kode Emas",
+                allowClear: true,
+                width: '100%',
+                dropdownParent: form.closest('#formContainer')
+            });
+            
+            // Auto-fill harga when kode is selected
+            form.find('.kodeEmas').on('change', function() {
+                const kode = $(this).val();
+                form.find('.hargaEmas').val(hargaEmas[kode] ? hargaEmas[kode].toLocaleString('id-ID') : '');
+            });
+            
+            // Update kode emas options when kategori changes
+            form.find('.kategoriEmas').on('change', function() {
+                const kategori = $(this).val();
+                updateKodeEmasOptions(form, kategori);
+            });
+            
+            // Toggle detail button
+            form.find('.toggle-detail-btn').off('click').on('click', function() {
+                const detailContainer = form.next('.detailPenjualan');
+                const isVisible = detailContainer.hasClass('show');
+                
+                if (isVisible) {
+                    detailContainer.removeClass('show');
+                    $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+                } else {
+                    detailContainer.addClass('show');
+                    $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
                 }
             });
-        });
-        
-        if (keterangan) {
-            tableHtml += `
-                <tr>
-                    <td>${keterangan}</td>
-                    <td class="harga-highlight">Rp. ${hargaEmas[kode].toLocaleString('id-ID')}</td>
-                </tr>
+            
+            // Hitung button
+            form.find('.hitungBtn').off('click').on('click', function() {
+                hitungHarga(form);
+            });
+        }
+
+        // Fungsi untuk mengupdate pilihan kode emas berdasarkan kategori
+        function updateKodeEmasOptions(form, kategori) {
+            const kodeEmasSelect = form.find('.kodeEmas');
+            const selectedValue = kodeEmasSelect.val();
+            
+            kodeEmasSelect.empty().append('<option value="" selected disabled>Pilih Kode Emas</option>');
+            
+            kodeEmasOptions[kategori].forEach(option => {
+                // Untuk kategori italy_biasa, gunakan kode dengan suffix _biasa
+                const kodeValue = (kategori === 'italy_biasa') ? `${option.value}_biasa` : option.value;
+                kodeEmasSelect.append(`<option value="${kodeValue}">${option.text}</option>`);
+            });
+            
+            // Reinitialize Select2
+            kodeEmasSelect.select2('destroy');
+            initializeFormElements(form);
+            
+            // Reset harga
+            form.find('.hargaEmas').val('');
+        }
+
+        // Fungsi untuk menghitung harga
+        function hitungHarga(form) {
+            const kode = form.find('.kodeEmas').val();
+            const berat = parseFloat(form.find('.beratEmas').val());
+            const ongkosType = form.find('.ongkos').val();
+            const discount = parseFloat(form.find('.discount').val()) || 0;
+
+            if (!kode || isNaN(berat) || berat <= 0) {
+                alert("Harap pilih kode emas dan isi berat dengan benar.");
+                return;
+            }
+
+            const harga = hargaEmas[kode];
+            const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
+                                kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
+                                kode.includes("90.5");
+            
+            let hasilAwal, hasilBulat;
+            
+            if (isKodeKhusus) {
+                // Untuk kode khusus, harga sudah dibulatkan sesuai ketentuan (dengan atau tanpa 5%)
+                hasilAwal = harga * berat;
+                hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
+            } else {
+                // Untuk kode biasa
+                hasilAwal = harga * berat;
+                
+                // Bulatkan hasil awal
+                let remainder = hasilAwal % 1000;
+                if (remainder >= 1 && remainder <= 499) {
+                    hasilBulat = hasilAwal - remainder + 500;
+                } else if (remainder >= 501 && remainder <= 999) {
+                    hasilBulat = hasilAwal - remainder + 1000;
+                } else {
+                    hasilBulat = hasilAwal;
+                }
+            }
+
+            // Hitung ongkos
+            let ongkos = 0;
+            if (ongkosType === "15000") {
+                ongkos = berat < 1 ? 15000 : 15000 * berat;
+            } else if (ongkosType === "5") {
+                ongkos = hasilBulat * 0.05;
+            } else if (ongkosType === "10") {
+                ongkos = hasilBulat * 0.10;
+            }
+
+            // Bulatkan ongkos
+            let remainder = ongkos % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                ongkos = ongkos - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                ongkos = ongkos - remainder + 1000;
+            }
+
+            // Hitung harga sebelum discount
+            let hargaSebelumDiscount = hasilBulat + ongkos;
+
+            // Bulatkan harga sebelum discount
+            remainder = hargaSebelumDiscount % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                hargaSebelumDiscount = hargaSebelumDiscount - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                hargaSebelumDiscount = hargaSebelumDiscount - remainder + 1000;
+            }
+
+            // Hitung harga setelah discount
+            let hargaFix = hargaSebelumDiscount - discount;
+            
+            // Pastikan harga tidak negatif
+            if (hargaFix < 0) {
+                hargaFix = 0;
+            }
+
+            // Update total penjualan
+            const previousHargaFix = form.data('hargaFix') || 0;
+            totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
+            updateTotalPenjualan(totalPenjualan);
+
+            // Simpan hargaFix ke form
+            form.data('hargaFix', hargaFix);
+
+            // Tampilkan detail
+            updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 0, 0, 0, ongkos, hargaSebelumDiscount, discount, hargaFix);
+        }
+
+        function updateTotalPenjualan(newTotal) {
+            totalPenjualan = newTotal;
+            $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
+        }
+
+        function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+            const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
+                                kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
+                                kode.includes("90.5");
+            const isItalyBiasa = kode.includes("_biasa");
+            const kodeAsli = isItalyBiasa ? kode.replace("_biasa", "") : kode;
+            
+            // Hitung langkah-langkah khusus untuk ditampilkan
+            let detailPerhitungan = '';
+            let hargaDasarBulat = 0;
+            let hargaFinalBulat = 0;
+            
+            if (isKodeKhusus) {
+                const persentase = parseFloat(kodeAsli) / 100;
+                const hargaDasar = cokim * persentase;
+                const remainder1 = hargaDasar % 1000;
+                hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
+                    hargaDasar - remainder1 + 500 : 
+                    remainder1 >= 501 && remainder1 <= 999 ? 
+                    hargaDasar - remainder1 + 1000 : 
+                    hargaDasar;
+                
+                if (!isItalyBiasa) {
+                    // Untuk kategori event (dengan tambahan 5%)
+                    const hargaPlus5 = hargaDasarBulat * 1.05;
+                    const remainder2 = hargaPlus5 % 1000;
+                    hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
+                        hargaPlus5 - remainder2 + 500 : 
+                        remainder2 >= 501 && remainder2 <= 999 ? 
+                        hargaPlus5 - remainder2 + 1000 : 
+                        hargaPlus5;
+                    
+                    detailPerhitungan = `
+                        <p><strong>Detail Perhitungan Khusus (Event Italy):</strong></p>
+                        <ol>
+                            <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                            <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                            <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
+                            <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
+                        </ol>
+                    `;
+                } else {
+                    // Untuk kategori italy_biasa (tanpa tambahan 5%)
+                    hargaFinalBulat = hargaDasarBulat;
+                    
+                    detailPerhitungan = `
+                        <p><strong>Detail Perhitungan Khusus (Italy Biasa):</strong></p>
+                        <ol>
+                            <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                            <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                        </ol>
+                    `;
+                }
+            }
+            
+            const detailHtml = `
+                <div class="detailPenjualan show">
+                    <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Kode:</strong> ${kodeAsli}%</p>
+                            <p><strong>Berat:</strong> ${berat} gram</p>
+                            ${isKodeKhusus ? detailPerhitungan : ''}
+                            <p><strong>Harga per gram:</strong> Rp. ${harga.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Harga Awal (Harga x Berat) : Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                                <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                                ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                                <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                                ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                                <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             `;
+            
+            form.next('.detailPenjualan').remove();
+            form.after(detailHtml);
+            
+            form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
         }
-    });
-    
-    tableHtml += `
-                </tbody>
-            </table>
-        </div>
-    `;
-    
-    container.html(tableHtml);
-    loading.hide();
-    
-    // Inisialisasi pencarian
-    $('#hargaSearch').on('keyup', function() {
-        const value = $(this).val().toLowerCase();
-        $("#hargaTable tbody tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-}
-        
-// Event listener untuk document ready
-$(document).ready(function() {
-    // Load harga emas saat pertama kali
-    loadHargaEmas();
-    
-    // Show loading spinner temporarily (demo purposes)
-    $('.spinner').show();
-    setTimeout(function() {
-        $('.spinner').hide();
-    }, 1000);
-    
-    // Modal harga
-    const modal = document.getElementById("hargaModal");
-    const btn = document.getElementById("viewHargaBtn");
-    const span = document.getElementsByClassName("close-harga")[0];
-    
-    btn.onclick = function() {
-        modal.style.display = "block";
-        loadHargaTable();
-        $('#hargaSearch').focus();
-    }
-    
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
+
+        function clearTotalPenjualan() {
+            totalPenjualan = 0;
+            $('#totalPenjualan').html('');
+            $('.detailPenjualan').remove();
         }
-    }
-    
-    // Refresh harga button
-    $('#refreshHargaBtn').on('click', function() {
-        loadHargaEmas().then(() => {
-            loadHargaTable();
-            alert('Data harga berhasil diperbarui!');
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('Gagal memuat data harga terbaru. Menggunakan data yang ada.');
-        });
-    });
-    
-    // Tambah barang button
-    $('.tambahBarangBtn').on('click', function() {
-        const formClone = $('#formEmas').clone();
-        formClone.find('input, select').val('');
-        formClone.find('.discount').val('0');
-        formClone.removeAttr('id');
-        formClone.find('.select2').removeClass('select2-hidden-accessible');
-        formClone.find('.select2-container').remove();
-        formClone.find('.delete-btn-container').css('display', 'block');
-        formClone.find('.detailPenjualan').remove();
-        $('#formContainer').append(formClone);
-        
-        // Initialize Select2 for the new form
-        initializeFormElements(formClone);
-        
-        // Scroll to the new form
-        $('html, body').animate({
-            scrollTop: formClone.offset().top - 100
-        }, 500);
-    });
-    
-    // Clear button
-    $(document).on('click', '.clearBtn', function() {
-        const form = $(this).closest('.penjualan-form');
-        const previousHargaFix = form.data('hargaFix') || 0;
-        totalPenjualan -= previousHargaFix;
-        updateTotalPenjualan(totalPenjualan);
-        
-        form.removeData('hargaFix');
-        form.next('.detailPenjualan').remove();
-        
-        // Reinitialize Select2 after clear
-        form.find('.select2').select2('destroy');
-        initializeFormElements(form);
-        
-        // Reset toggle button
-        form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
-    });
-    
-    // Delete button
-    $(document).on('click', '.deleteBtn', function() {
-        const form = $(this).closest('.penjualan-form');
-        const previousHargaFix = form.data('hargaFix') || 0;
-        totalPenjualan -= previousHargaFix;
-        updateTotalPenjualan(totalPenjualan);
-        
-        form.next('.detailPenjualan').remove();
-        form.remove();
-    });
-    
-    // Floating button scroll effect
-    $(window).scroll(function() {
-        if ($(window).scrollTop() > 100) {
-            $('.floating-view-harga').css({
-                'bottom': '20px',
-                'right': '20px',
-                'transition': 'all 0.3s ease'
+
+        // Fungsi untuk memuat tabel harga dengan fitur pencarian
+        function loadHargaTable() {
+            const container = $('#hargaTableContainer');
+            const loading = $('#loadingHarga');
+            
+            container.empty();
+            loading.show();
+            
+            let tableHtml = `
+                <div class="table-responsive">
+                    <table class="table-harga" id="hargaTable">
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            // Tambahkan data harga ke tabel
+            Object.keys(hargaEmas).forEach(kode => {
+                if (kode === "cokim") return; // Skip cokim
+                
+                // Cari keterangan dari kodeEmasOptions
+                let keterangan = '';
+                Object.keys(kodeEmasOptions).forEach(kategori => {
+                    kodeEmasOptions[kategori].forEach(item => {
+                        if (item.value === kode || (kode.includes("_biasa") && item.value === kode.replace("_biasa", ""))) {
+                            keterangan = item.text;
+                            if (kode.includes("_biasa")) {
+                                keterangan += " (Italy Biasa)";
+                            } else if (["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode)) {
+                                keterangan += " (Event Italy)";
+                            }
+                        }
+                    });
+                });
+                
+                if (keterangan) {
+                    tableHtml += `
+                        <tr>
+                            <td>${keterangan}</td>
+                            <td class="harga-highlight">Rp. ${hargaEmas[kode].toLocaleString('id-ID')}</td>
+                        </tr>
+                    `;
+                }
             });
-        } else {
-            $('.floating-view-harga').css({
-                'bottom': '20px',
-                'right': '20px',
-                'transition': 'all 0.3s ease'
+            
+            tableHtml += `
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.html(tableHtml);
+            loading.hide();
+            
+            // Inisialisasi pencarian
+            $('#hargaSearch').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $("#hargaTable tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
             });
         }
-    });
-});
+
+        // Fungsi untuk membuat invoice PDF
+        function generateInvoicePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Informasi toko
+            doc.setFontSize(18);
+            doc.setTextColor(40, 40, 40);
+            doc.text('TOKO MAS PANTES BIP', 105, 15, { align: 'center' });
+            
+            doc.setFontSize(12);
+            doc.text('Jl. Contoh No. 123, Bandung', 105, 22, { align: 'center' });
+            doc.text('Telp: 0812-3456-7890', 105, 28, { align: 'center' });
+            
+            // Garis pemisah
+            doc.setDrawColor(212, 175, 55);
+            doc.setLineWidth(0.5);
+            doc.line(20, 35, 190, 35);
+            
+            // Judul invoice
+            doc.setFontSize(16);
+            doc.setTextColor(212, 175, 55);
+            doc.text('INVOICE PENJUALAN', 105, 45, { align: 'center' });
+            
+            // Tanggal invoice
+            const now = new Date();
+            const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+            const formattedDate = now.toLocaleDateString('id-ID', options);
+            
+            doc.setFontSize(10);
+            doc.setTextColor(40, 40, 40);
+            doc.text(`Tanggal: ${formattedDate}`, 105, 52, { align: 'center' });
+            
+            // Data barang
+            const items = [];
+            
+            $('.penjualan-form').each(function(index) {
+                const form = $(this);
+                const kode = form.find('.kodeEmas').val() || '-';
+                const hargaPerGram = form.find('.hargaEmas').val() || '0';
+                const berat = form.find('.beratEmas').val() || '0';
+                const ongkos = form.find('.ongkos option:selected').text();
+                const hargaFinal = form.data('hargaFix') || '0';
+                
+                items.push({
+                    no: index + 1,
+                    kode: kode,
+                    hargaPerGram: 'Rp ' + parseInt(hargaPerGram.replace(/\D/g, '')).toLocaleString('id-ID'),
+                    berat: berat + ' gram',
+                    ongkos: ongkos,
+                    hargaFinal: 'Rp ' + parseInt(hargaFinal).toLocaleString('id-ID')
+                });
+            });
+            
+            // Buat tabel barang
+            doc.autoTable({
+                startY: 60,
+                head: [['No', 'Kode', 'Harga/Gram', 'Berat', 'Ongkos', 'Total']],
+                body: items.map(item => [item.no, item.kode, item.hargaPerGram, item.berat, item.ongkos, item.hargaFinal]),
+                headStyles: {
+                    fillColor: [212, 175, 55],
+                    textColor: [255, 255, 255]
+                },
+                alternateRowStyles: {
+                    fillColor: [248, 248, 248]
+                },
+                margin: { left: 20, right: 20 }
+            });
+            
+            // Total penjualan
+            const finalY = doc.lastAutoTable.finalY + 10;
+            doc.setFontSize(12);
+            doc.setTextColor(40, 40, 40);
+            doc.text('TOTAL PENJUALAN:', 140, finalY);
+            doc.setTextColor(212, 175, 55);
+            doc.text('Rp ' + totalPenjualan.toLocaleString('id-ID'), 170, finalY, { align: 'right' });
+            
+            // Informasi rekening
+            doc.setFontSize(10);
+            doc.setTextColor(40, 40, 40);
+            doc.text('Pembayaran dapat dilakukan melalui:', 20, finalY + 15);
+            doc.text('BCA: 3747-7721-11 a/n Markus W', 20, finalY + 22);
+            doc.text('Mandiri: 1340-5000-8111-1 a/n Markus W', 20, finalY + 29);
+            
+            // Catatan
+            doc.setFontSize(8);
+            doc.setTextColor(100, 100, 100);
+            doc.text('* Barang yang sudah dibeli tidak dapat dikembalikan', 20, finalY + 40);
+            doc.text('* Harga dapat berubah sewaktu-waktu', 20, finalY + 45);
+            
+            // Footer
+            doc.setFontSize(10);
+            doc.setTextColor(212, 175, 55);
+            doc.text('Terima kasih atas kepercayaan Anda', 105, 280, { align: 'center' });
+            
+            // Simpan PDF
+            doc.save(`Invoice_TokoMasPantes_${now.getTime()}.pdf`);
+        }
+
+        // Event listener untuk document ready
+        $(document).ready(function() {
+            // Load harga emas saat pertama kali
+            loadHargaEmas();
+            
+            // Show loading spinner temporarily (demo purposes)
+            $('.spinner').show();
+            setTimeout(function() {
+                $('.spinner').hide();
+            }, 1000);
+            
+            // Modal harga
+            const modal = document.getElementById("hargaModal");
+            const btn = document.getElementById("viewHargaBtn");
+            const span = document.getElementsByClassName("close-harga")[0];
+            
+            btn.onclick = function() {
+                modal.style.display = "block";
+                loadHargaTable();
+                $('#hargaSearch').focus();
+            }
+            
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            
+            // Refresh harga button
+            $('#refreshHargaBtn').on('click', function() {
+                loadHargaEmas().then(() => {
+                    loadHargaTable();
+                    alert('Data harga berhasil diperbarui!');
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal memuat data harga terbaru. Menggunakan data yang ada.');
+                });
+            });
+            
+            // Tambah barang button
+            $('.tambahBarangBtn').on('click', function() {
+                const formClone = $('#formEmas').clone();
+                formClone.find('input, select').val('');
+                formClone.find('.discount').val('0');
+                formClone.removeAttr('id');
+                formClone.find('.select2').removeClass('select2-hidden-accessible');
+                formClone.find('.select2-container').remove();
+                formClone.find('.delete-btn-container').css('display', 'block');
+                formClone.find('.detailPenjualan').remove();
+                $('#formContainer').append(formClone);
+                
+                // Initialize Select2 for the new form
+                initializeFormElements(formClone);
+                
+                // Scroll to the new form
+                $('html, body').animate({
+                    scrollTop: formClone.offset().top - 100
+                }, 500);
+            });
+            
+            // Clear button
+            $(document).on('click', '.clearBtn', function() {
+                const form = $(this).closest('.penjualan-form');
+                const previousHargaFix = form.data('hargaFix') || 0;
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+                
+                form.removeData('hargaFix');
+                form.next('.detailPenjualan').remove();
+                
+                // Reinitialize Select2 after clear
+                form.find('.select2').select2('destroy');
+                initializeFormElements(form);
+                
+                // Reset toggle button
+                form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+            });
+            
+            // Delete button
+            $(document).on('click', '.deleteBtn', function() {
+                const form = $(this).closest('.penjualan-form');
+                const previousHargaFix = form.data('hargaFix') || 0;
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+                
+                form.next('.detailPenjualan').remove();
+                form.remove();
+            });
+            
+            // Floating button scroll effect
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > 100) {
+                    $('.floating-view-harga').css({
+                        'bottom': '20px',
+                        'right': '20px',
+                        'transition': 'all 0.3s ease'
+                    });
+                } else {
+                    $('.floating-view-harga').css({
+                        'bottom': '20px',
+                        'right': '20px',
+                        'transition': 'all 0.3s ease'
+                    });
+                }
+            });
+
+            // Event listener untuk tombol buat invoice
+            $('#buatInvoiceBtn').on('click', function() {
+                if (totalPenjualan <= 0) {
+                    alert('Tidak ada data penjualan untuk dicetak');
+                    return;
+                }
+                
+                generateInvoicePDF();
+            });
+        });
     </script>
 </body>
 </html>
