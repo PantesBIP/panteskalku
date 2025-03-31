@@ -434,6 +434,16 @@ footer {
         display: inline;
     }
 }
+
+        #cetakInvoiceBtn {
+        background-color: #dc3545;
+        border-color: #dc3545;
+        }
+        
+        #cetakInvoiceBtn:hover {
+            background-color: #bb2d3b;
+            border-color: #bb2d3b;
+        }
     </style>
 </head>
 <body>
@@ -1226,6 +1236,123 @@ $(document).ready(function() {
             });
         }
     });
+});
+        // Fungsi untuk membuat invoice PDF
+function generateInvoicePDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    // Informasi toko
+    doc.setFontSize(18);
+    doc.setTextColor(40, 40, 40);
+    doc.text('TOKO MAS PANTES BIP', 105, 15, { align: 'center' });
+    
+    doc.setFontSize(12);
+    doc.text('Jl. Contoh No. 123, Bandung', 105, 22, { align: 'center' });
+    doc.text('Telp: 0812-3456-7890', 105, 28, { align: 'center' });
+    
+    // Garis pemisah
+    doc.setDrawColor(212, 175, 55); // Warna emas
+    doc.setLineWidth(0.5);
+    doc.line(20, 35, 190, 35);
+    
+    // Judul invoice
+    doc.setFontSize(16);
+    doc.setTextColor(212, 175, 55); // Warna emas
+    doc.text('INVOICE PENJUALAN', 105, 45, { align: 'center' });
+    
+    // Tanggal invoice
+    const now = new Date();
+    const options = { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+    const formattedDate = now.toLocaleDateString('id-ID', options);
+    
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+    doc.text(`Tanggal: ${formattedDate}`, 105, 52, { align: 'center' });
+    
+    // Data barang
+    const items = [];
+    let yPosition = 70;
+    
+    // Kumpulkan semua data dari form yang ada
+    $('.penjualan-form').each(function(index) {
+        const form = $(this);
+        const kode = form.find('.kodeEmas').val() || '-';
+        const hargaPerGram = form.find('.hargaEmas').val() || '0';
+        const berat = form.find('.beratEmas').val() || '0';
+        const ongkos = form.find('.ongkos option:selected').text();
+        const hargaFinal = form.data('hargaFix') || '0';
+        
+        items.push({
+            no: index + 1,
+            kode: kode,
+            hargaPerGram: 'Rp ' + parseInt(hargaPerGram.replace(/\D/g, '')).toLocaleString('id-ID'),
+            berat: berat + ' gram',
+            ongkos: ongkos,
+            hargaFinal: 'Rp ' + parseInt(hargaFinal).toLocaleString('id-ID')
+        });
+    });
+    
+    // Buat tabel barang
+    doc.autoTable({
+        startY: yPosition,
+        head: [['No', 'Kode', 'Harga/Gram', 'Berat', 'Ongkos', 'Total']],
+        body: items.map(item => [item.no, item.kode, item.hargaPerGram, item.berat, item.ongkos, item.hargaFinal]),
+        headStyles: {
+            fillColor: [212, 175, 55], // Warna emas
+            textColor: [255, 255, 255] // Warna putih
+        },
+        alternateRowStyles: {
+            fillColor: [248, 248, 248]
+        },
+        margin: { left: 20, right: 20 }
+    });
+    
+    // Total penjualan
+    yPosition = doc.lastAutoTable.finalY + 15;
+    doc.setFontSize(12);
+    doc.setTextColor(40, 40, 40);
+    doc.text('TOTAL PENJUALAN:', 140, yPosition);
+    doc.setTextColor(212, 175, 55);
+    doc.text('Rp ' + totalPenjualan.toLocaleString('id-ID'), 170, yPosition, { align: 'right' });
+    
+    // Informasi rekening
+    yPosition += 15;
+    doc.setFontSize(10);
+    doc.setTextColor(40, 40, 40);
+    doc.text('Pembayaran dapat dilakukan melalui:', 20, yPosition);
+    
+    yPosition += 7;
+    doc.text('BCA: 3747-7721-11 a/n Markus W', 20, yPosition);
+    
+    yPosition += 7;
+    doc.text('Mandiri: 1340-5000-8111-1 a/n Markus W', 20, yPosition);
+    
+    // Catatan
+    yPosition += 15;
+    doc.setFontSize(8);
+    doc.setTextColor(100, 100, 100);
+    doc.text('* Barang yang sudah dibeli tidak dapat dikembalikan', 20, yPosition);
+    yPosition += 5;
+    doc.text('* Harga dapat berubah sewaktu-waktu', 20, yPosition);
+    
+    // Footer
+    doc.setFontSize(10);
+    doc.setTextColor(212, 175, 55);
+    doc.text('Terima kasih atas kepercayaan Anda', 105, 280, { align: 'center' });
+    
+    // Simpan PDF
+    doc.save(`Invoice_TokoMasPantes_${now.getTime()}.pdf`);
+}
+
+// Event listener untuk tombol cetak invoice
+$(document).on('click', '#cetakInvoiceBtn', function() {
+    if (totalPenjualan <= 0) {
+        alert('Tidak ada data penjualan untuk dicetak');
+        return;
+    }
+    
+    generateInvoicePDF();
 });
     </script>
 </body>
