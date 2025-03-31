@@ -482,6 +482,7 @@ footer {
                                         <select class="form-select kategoriEmas" required>
                                             <option value="" selected disabled>Pilih Kategori</option>
                                             <option value="event">EVENT ITALY</option>
+                                            <option value="italy_biasa">ITALY BIASA</option>
                                             <option value="muda">Muda (38-54)</option>
                                             <option value="tua">Tua (75-92)</option>
                                             <option value="semua">Semua Kategori</option>
@@ -650,6 +651,15 @@ const kodeEmasOptions = {
         {value: "89.5", text: "89.5% Italy"},
         {value: "90.5", text: "90.5% Italy"}
     ],
+    italy_biasa: [
+        {value: "84.5", text: "84.5% Italy"},
+        {value: "85.5", text: "85.5% Italy"},
+        {value: "86.5", text: "86.5% Italy"},
+        {value: "87.5", text: "87.5% Italy"},
+        {value: "88.5", text: "88.5% Italy"},
+        {value: "89.5", text: "89.5% Italy"},
+        {value: "90.5", text: "90.5% Italy"}
+    ],
     semua: [
         {value: "38 Juene", text: "7K Juene "},
         {value: "44 Kuning", text: "8K Kuning "},
@@ -679,7 +689,7 @@ const kodeEmasOptions = {
 };
 
 // Fungsi untuk menghitung harga khusus (84.5% - 90.5%) dengan pembulatan sesuai aturan
-function hitungHargaKhusus(kode) {
+function hitungHargaKhusus(kode, tambah5Persen = true) {
     const persentase = parseFloat(kode) / 100;
     let hargaDasar = cokim * persentase;
     
@@ -691,18 +701,18 @@ function hitungHargaKhusus(kode) {
         hargaDasar = hargaDasar - remainder + 1000;
     }
     
-    // Tambahkan 5%
-    let hargaPlus5 = hargaDasar * 1.05;
+    // Tambahkan 5% jika parameter tambah5Persen true
+    let hargaFinal = tambah5Persen ? hargaDasar * 1.05 : hargaDasar;
     
     // Bulatkan lagi
-    remainder = hargaPlus5 % 1000;
+    remainder = hargaFinal % 1000;
     if (remainder >= 1 && remainder <= 499) {
-        hargaPlus5 = hargaPlus5 - remainder + 500;
+        hargaFinal = hargaFinal - remainder + 500;
     } else if (remainder >= 501 && remainder <= 999) {
-        hargaPlus5 = hargaPlus5 - remainder + 1000;
+        hargaFinal = hargaFinal - remainder + 1000;
     }
     
-    return Math.round(hargaPlus5);
+    return Math.round(hargaFinal);
 }
 
 // Fungsi untuk memuat harga dari JSON
@@ -723,7 +733,11 @@ async function loadHargaEmas() {
         // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru
         const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
         kodeKhusus.forEach(kode => {
-            hargaEmas[kode] = hitungHargaKhusus(kode);
+            // Harga untuk kategori event (dengan tambahan 5%)
+            hargaEmas[kode] = hitungHargaKhusus(kode, true);
+            
+            // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
+            hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
         });
         
         // Inisialisasi form pertama
@@ -758,6 +772,13 @@ async function loadHargaEmas() {
             "88.5": 0,
             "89.5": 0,
             "90.5": 0,
+            "84.5_biasa": 0,
+            "85.5_biasa": 0,
+            "86.5_biasa": 0,
+            "87.5_biasa": 0,
+            "88.5_biasa": 0,
+            "89.5_biasa": 0,
+            "90.5_biasa": 0,
             "cokim": 0
         };
         
@@ -768,7 +789,11 @@ async function loadHargaEmas() {
         // Hitung harga untuk kode 84.5 hingga 90.5 dengan logika baru (fallback)
         const kodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"];
         kodeKhusus.forEach(kode => {
-            hargaEmas[kode] = hitungHargaKhusus(kode);
+            // Harga untuk kategori event (dengan tambahan 5%)
+            hargaEmas[kode] = hitungHargaKhusus(kode, true);
+            
+            // Harga untuk kategori italy_biasa (tanpa tambahan 5%)
+            hargaEmas[`${kode}_biasa`] = hitungHargaKhusus(kode, false);
         });
         
         alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
@@ -824,7 +849,9 @@ function updateKodeEmasOptions(form, kategori) {
     kodeEmasSelect.empty().append('<option value="" selected disabled>Pilih Kode Emas</option>');
     
     kodeEmasOptions[kategori].forEach(option => {
-        kodeEmasSelect.append(`<option value="${option.value}">${option.text}</option>`);
+        // Untuk kategori italy_biasa, gunakan kode dengan suffix _biasa
+        const kodeValue = (kategori === 'italy_biasa') ? `${option.value}_biasa` : option.value;
+        kodeEmasSelect.append(`<option value="${kodeValue}">${option.text}</option>`);
     });
     
     // Reinitialize Select2
@@ -848,12 +875,14 @@ function hitungHarga(form) {
     }
 
     const harga = hargaEmas[kode];
-    const isKodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode);
+    const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
+                         kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
+                         kode.includes("90.5");
     
     let hasilAwal, hasilBulat;
     
     if (isKodeKhusus) {
-        // Untuk kode khusus, harga sudah termasuk 5% dan sudah dibulatkan
+        // Untuk kode khusus, harga sudah dibulatkan sesuai ketentuan (dengan atau tanpa 5%)
         hasilAwal = harga * berat;
         hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
     } else {
@@ -926,16 +955,19 @@ function updateTotalPenjualan(newTotal) {
 }
 
 function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, tambahan5Persen, tambahan10Persen, potonganAwal, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-    const isKodeKhusus = ["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode);
+    const isKodeKhusus = kode.includes("84.5") || kode.includes("85.5") || kode.includes("86.5") || 
+                         kode.includes("87.5") || kode.includes("88.5") || kode.includes("89.5") || 
+                         kode.includes("90.5");
+    const isItalyBiasa = kode.includes("_biasa");
+    const kodeAsli = isItalyBiasa ? kode.replace("_biasa", "") : kode;
     
     // Hitung langkah-langkah khusus untuk ditampilkan
     let detailPerhitungan = '';
     let hargaDasarBulat = 0;
-    let hargaPlus5 = 0;
     let hargaFinalBulat = 0;
     
     if (isKodeKhusus) {
-        const persentase = parseFloat(kode) / 100;
+        const persentase = parseFloat(kodeAsli) / 100;
         const hargaDasar = cokim * persentase;
         const remainder1 = hargaDasar % 1000;
         hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
@@ -943,23 +975,38 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
             remainder1 >= 501 && remainder1 <= 999 ? 
             hargaDasar - remainder1 + 1000 : 
             hargaDasar;
-        hargaPlus5 = hargaDasarBulat * 1.05;
-        const remainder2 = hargaPlus5 % 1000;
-        hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
-            hargaPlus5 - remainder2 + 500 : 
-            remainder2 >= 501 && remainder2 <= 999 ? 
-            hargaPlus5 - remainder2 + 1000 : 
-            hargaPlus5;
         
-        detailPerhitungan = `
-            <p><strong>Detail Perhitungan Khusus:</strong></p>
-            <ol>
-                <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
-                <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
-            </ol>
-        `;
+        if (!isItalyBiasa) {
+            // Untuk kategori event (dengan tambahan 5%)
+            const hargaPlus5 = hargaDasarBulat * 1.05;
+            const remainder2 = hargaPlus5 % 1000;
+            hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
+                hargaPlus5 - remainder2 + 500 : 
+                remainder2 >= 501 && remainder2 <= 999 ? 
+                hargaPlus5 - remainder2 + 1000 : 
+                hargaPlus5;
+            
+            detailPerhitungan = `
+                <p><strong>Detail Perhitungan Khusus (Event Italy):</strong></p>
+                <ol>
+                    <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                    <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                    <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
+                    <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
+                </ol>
+            `;
+        } else {
+            // Untuk kategori italy_biasa (tanpa tambahan 5%)
+            hargaFinalBulat = hargaDasarBulat;
+            
+            detailPerhitungan = `
+                <p><strong>Detail Perhitungan Khusus (Italy Biasa):</strong></p>
+                <ol>
+                    <li>COKIM × ${kodeAsli}% = ${cokim.toLocaleString('id-ID')} × ${kodeAsli}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                    <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                </ol>
+            `;
+        }
     }
     
     const detailHtml = `
@@ -967,7 +1014,7 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
             <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
             <div class="row">
                 <div class="col-md-6">
-                    <p><strong>Kode:</strong> ${kode}${isKodeKhusus ? '%' : ''}</p>
+                    <p><strong>Kode:</strong> ${kodeAsli}%</p>
                     <p><strong>Berat:</strong> ${berat} gram</p>
                     ${isKodeKhusus ? detailPerhitungan : ''}
                     <p><strong>Harga per gram:</strong> Rp. ${harga.toLocaleString('id-ID')}</p>
@@ -975,8 +1022,6 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
                 <div class="col-md-6">
                     <ul>
                         <li>Harga Awal (Harga x Berat) : Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                        <!--- ${isKodeKhusus ? `<li>Harga Sebelum Bulat: Rp. ${(hargaDasarBulat * berat).toLocaleString('id-ID')}</li>` : ''} --->
-                        <!--- ${isKodeKhusus ? `<li>Harga Setelah +5%: Rp. ${(hargaPlus5 * berat).toLocaleString('id-ID')}</li>` : ''} --->
                         <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
                         ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
                         <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
@@ -1028,18 +1073,25 @@ function loadHargaTable() {
         let keterangan = '';
         Object.keys(kodeEmasOptions).forEach(kategori => {
             kodeEmasOptions[kategori].forEach(item => {
-                if (item.value === kode) {
+                if (item.value === kode || (kode.includes("_biasa") && item.value === kode.replace("_biasa", ""))) {
                     keterangan = item.text;
+                    if (kode.includes("_biasa")) {
+                        keterangan += " (Italy Biasa)";
+                    } else if (["84.5", "85.5", "86.5", "87.5", "88.5", "89.5", "90.5"].includes(kode)) {
+                        keterangan += " (Event Italy)";
+                    }
                 }
             });
         });
         
-        tableHtml += `
-            <tr>
-                <td>${keterangan || '-'}</td>
-                <td class="harga-highlight">Rp. ${hargaEmas[kode].toLocaleString('id-ID')}</td>
-            </tr>
-        `;
+        if (keterangan) {
+            tableHtml += `
+                <tr>
+                    <td>${keterangan}</td>
+                    <td class="harga-highlight">Rp. ${hargaEmas[kode].toLocaleString('id-ID')}</td>
+                </tr>
+            `;
+        }
     });
     
     tableHtml += `
