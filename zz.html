@@ -1184,46 +1184,72 @@
                 });
             });
             
-            // Buat tabel barang
+            // Buat tabel barang dengan margin yang lebih longgar
             doc.autoTable({
                 startY: 60,
                 head: [['No', 'Kode', 'Harga/Gram', 'Berat', 'Ongkos', 'Total']],
                 body: items.map(item => [item.no, item.kode, item.hargaPerGram, item.berat, item.ongkos, item.hargaFinal]),
                 headStyles: {
                     fillColor: [212, 175, 55],
-                    textColor: [255, 255, 255]
+                    textColor: [255, 255, 255],
+                    fontSize: 10
+                },
+                bodyStyles: {
+                    fontSize: 9
                 },
                 alternateRowStyles: {
                     fillColor: [248, 248, 248]
                 },
-                margin: { left: 20, right: 20 }
+                margin: { left: 10, right: 10 },
+                styles: {
+                    cellPadding: 5,
+                    overflow: 'linebreak',
+                    valign: 'middle'
+                },
+                columnStyles: {
+                    0: { cellWidth: 10 },
+                    1: { cellWidth: 30 },
+                    2: { cellWidth: 30 },
+                    3: { cellWidth: 20 },
+                    4: { cellWidth: 25 },
+                    5: { cellWidth: 30 }
+                }
             });
             
-            // Total penjualan
-            const finalY = doc.lastAutoTable.finalY + 10;
+            // Hitung posisi y setelah tabel
+            let finalY = doc.lastAutoTable.finalY + 15;
+            
+            // Tambahkan jarak jika terlalu dekat dengan tepi bawah
+            if (finalY > 250) {
+                doc.addPage();
+                finalY = 20;
+            }
+            
+            // Total penjualan dengan layout yang lebih baik
             doc.setFontSize(12);
             doc.setTextColor(40, 40, 40);
             doc.text('TOTAL PENJUALAN:', 140, finalY);
+            doc.setFontSize(12);
             doc.setTextColor(212, 175, 55);
             doc.text('Rp ' + totalPenjualan.toLocaleString('id-ID'), 170, finalY, { align: 'right' });
             
-            // Informasi rekening
+            // Informasi rekening dengan jarak yang cukup
             doc.setFontSize(10);
             doc.setTextColor(40, 40, 40);
-            doc.text('Pembayaran dapat dilakukan melalui:', 20, finalY + 15);
-            doc.text('BCA: 3747-7721-11 a/n Markus W', 20, finalY + 22);
-            doc.text('Mandiri: 1340-5000-8111-1 a/n Markus W', 20, finalY + 29);
+            doc.text('Pembayaran dapat dilakukan melalui:', 20, finalY + 10);
+            doc.text('BCA: 3747-7721-11 a/n Markus W', 20, finalY + 16);
+            doc.text('Mandiri: 1340-5000-8111-1 a/n Markus W', 20, finalY + 22);
             
-            // Catatan
+            // Catatan footer
             doc.setFontSize(8);
             doc.setTextColor(100, 100, 100);
-            doc.text('* Barang yang sudah dibeli tidak dapat dikembalikan', 20, finalY + 40);
-            doc.text('* Harga dapat berubah sewaktu-waktu', 20, finalY + 45);
+            doc.text('* Barang yang sudah dibeli tidak dapat dikembalikan', 20, finalY + 32);
+            doc.text('* Harga dapat berubah sewaktu-waktu', 20, finalY + 38);
             
             // Footer
             doc.setFontSize(10);
             doc.setTextColor(212, 175, 55);
-            doc.text('Terima kasih atas kepercayaan Anda', 105, 280, { align: 'center' });
+            doc.text('Terima kasih atas kepercayaan Anda', 105, finalY + 48, { align: 'center' });
             
             // Simpan PDF
             doc.save(`Invoice_TokoMasPantes_${now.getTime()}.pdf`);
