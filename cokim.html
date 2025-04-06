@@ -591,329 +591,329 @@ footer {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="script.js"></script>
-    <script>
+<script>
         // Variabel global
-let totalPenjualan = 0;
-let cokim = 1000000; // Default value
+        let totalPenjualan = 0;
+        let cokim = 1000000; // Default value
 
-// Fungsi untuk memuat harga dari JSON
-async function loadHargaEmas() {
-    try {
-        const response = await fetch('harga_harian.json');
-        if (!response.ok) throw new Error('Gagal memuat data harga');
-        const data = await response.json();
-        cokim = data.hargaEmas.cokim || 1000000; // Ambil nilai cokim dari JSON atau gunakan default
-        
-        console.log('Data harga berhasil dimuat');
-        
-        // Update last updated time
-        const now = new Date();
-        $('#lastUpdated').text(now.toLocaleString('id-ID'));
-        
-        // Inisialisasi form pertama
-        if ($('#formEmas').length) {
-            initializeFormElements($('#formEmas'));
+        // Fungsi untuk memuat harga dari JSON
+        async function loadHargaEmas() {
+            try {
+                const response = await fetch('harga_harian.json');
+                if (!response.ok) throw new Error('Gagal memuat data harga');
+                const data = await response.json();
+                cokim = data.hargaEmas.cokim || 1000000; // Ambil nilai cokim dari JSON atau gunakan default
+                
+                console.log('Data harga berhasil dimuat');
+                
+                // Update last updated time
+                const now = new Date();
+                $('#lastUpdated').text(now.toLocaleString('id-ID'));
+                
+                // Inisialisasi form pertama
+                if ($('#formEmas').length) {
+                    initializeFormElements($('#formEmas'));
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Fallback data jika file JSON tidak ada
+                cokim = 1000000;
+                
+                // Update last updated time with fallback
+                const now = new Date();
+                $('#lastUpdated').text(now.toLocaleString('id-ID') + ' (data offline)');
+                
+                alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
+            }
         }
-    } catch (error) {
-        console.error('Error:', error);
-        // Fallback data jika file JSON tidak ada
-        cokim = 1000000;
-        
-        // Update last updated time with fallback
-        const now = new Date();
-        $('#lastUpdated').text(now.toLocaleString('id-ID') + ' (data offline)');
-        
-        alert('Gagal memuat data harga terbaru. Menggunakan harga default.');
-    }
-}
 
-// Initialize form elements
-function initializeFormElements(form) {
-    // Toggle detail button
-    form.find('.toggle-detail-btn').off('click').on('click', function() {
-        const detailContainer = form.next('.detailPenjualan');
-        const isVisible = detailContainer.hasClass('show');
-        
-        if (isVisible) {
-            detailContainer.removeClass('show');
-            $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
-        } else {
-            detailContainer.addClass('show');
-            $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-        }
-    });
-    
-    // Hitung button
-    form.find('.hitungBtn').off('click').on('click', function() {
-        hitungHarga(form);
-    });
-}
-
-// Fungsi untuk menghitung harga
-function hitungHarga(form) {
-    const kode = parseFloat(form.find('.kode').val());
-    const berat = parseFloat(form.find('.berat').val());
-    const ongkosType = form.find('.ongkos').val();
-    const discount = parseFloat(form.find('.discount').val()) || 0;
-
-    if (isNaN(kode) {
-        alert("Harap isi kode dengan angka yang valid.");
-        return;
-    }
-
-    if (isNaN(berat) {
-        alert("Harap isi berat dengan angka yang valid.");
-        return;
-    }
-
-    // Hitung harga dasar (cokim x kode)
-    const hargaDasar = cokim * (kode / 100);
-    
-    // Bulatkan harga dasar
-    let hasilBulat = Math.round(hargaDasar / 1000) * 1000;
-    if (hargaDasar % 1000 > 500) {
-        hasilBulat = Math.ceil(hargaDasar / 1000) * 1000;
-    } else if (hargaDasar % 1000 > 0) {
-        hasilBulat = Math.floor(hargaDasar / 1000) * 1000 + 500;
-    }
-
-    // Hitung total sebelum ongkos
-    const totalSebelumOngkos = hasilBulat * berat;
-
-    // Hitung ongkos
-    let ongkos = 0;
-    if (ongkosType === "15000") {
-        ongkos = berat < 1 ? 15000 : 15000 * berat;
-    } else if (ongkosType === "5") {
-        ongkos = totalSebelumOngkos * 0.05;
-    } else if (ongkosType === "10") {
-        ongkos = totalSebelumOngkos * 0.10;
-    }
-
-    // Bulatkan ongkos
-    ongkos = Math.round(ongkos / 1000) * 1000;
-    if (ongkos % 1000 > 500) {
-        ongkos = Math.ceil(ongkos / 1000) * 1000;
-    } else if (ongkos % 1000 > 0) {
-        ongkos = Math.floor(ongkos / 1000) * 1000 + 500;
-    }
-
-    // Hitung harga sebelum discount
-    let hargaSebelumDiscount = totalSebelumOngkos + ongkos;
-
-    // Bulatkan harga sebelum discount
-    hargaSebelumDiscount = Math.round(hargaSebelumDiscount / 1000) * 1000;
-    if (hargaSebelumDiscount % 1000 > 500) {
-        hargaSebelumDiscount = Math.ceil(hargaSebelumDiscount / 1000) * 1000;
-    } else if (hargaSebelumDiscount % 1000 > 0) {
-        hargaSebelumDiscount = Math.floor(hargaSebelumDiscount / 1000) * 1000 + 500;
-    }
-
-    // Hitung harga setelah discount
-    let hargaFix = hargaSebelumDiscount - discount;
-    
-    // Pastikan harga tidak negatif
-    if (hargaFix < 0) {
-        hargaFix = 0;
-    }
-
-    // Update total penjualan
-    const previousHargaFix = form.data('hargaFix') || 0;
-    totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
-    updateTotalPenjualan(totalPenjualan);
-
-    // Simpan hargaFix ke form
-    form.data('hargaFix', hargaFix);
-
-    // Tampilkan detail
-    updateDetailPenjualan(form, kode, berat, hasilBulat, totalSebelumOngkos, ongkos, hargaSebelumDiscount, discount, hargaFix);
-}
-
-function updateTotalPenjualan(newTotal) {
-    totalPenjualan = newTotal;
-    $('#totalPenjualan').html(<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>);
-}
-
-function updateDetailPenjualan(form, kode, berat, hargaPerGram, totalSebelumOngkos, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-    const detailHtml = `
-        <div class="detailPenjualan show">
-            <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Kode:</strong> ${kode}%</p>
-                    <p><strong>Berat:</strong> ${berat} gram</p>
-                    <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
-                </div>
-                <div class="col-md-6">
-                    <ul>
-                        <li>Harga per gram (COKIM × ${kode}%): Rp. ${hargaPerGram.toLocaleString('id-ID')}</li>
-                        <li>Total sebelum ongkos (Harga × Berat): Rp. ${totalSebelumOngkos.toLocaleString('id-ID')}</li>
-                        ${ongkos > 0 ? <li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li> : ''}
-                        <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                        ${discount > 0 ? <li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li> : ''}
-                        <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    form.next('.detailPenjualan').remove();
-    form.after(detailHtml);
-    
-    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-}
-
-function clearTotalPenjualan() {
-    totalPenjualan = 0;
-    $('#totalPenjualan').html('');
-    $('.detailPenjualan').remove();
-}
-
-// Fungsi untuk memuat tabel harga
-function loadHargaTable() {
-    const container = $('#hargaTableContainer');
-    const loading = $('#loadingHarga');
-    
-    container.empty();
-    loading.show();
-    
-    let tableHtml = `
-        <div class="table-responsive">
-            <table class="table-harga" id="hargaTable">
-                <thead>
-                    <tr>
-                        <th>Keterangan</th>
-                        <th>COKIM</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Harga COKIM</td>
-                        <td class="harga-highlight">Rp. ${cokim.toLocaleString('id-ID')}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    `;
-    
-    container.html(tableHtml);
-    loading.hide();
-    
-    // Inisialisasi pencarian
-    $('#hargaSearch').on('keyup', function() {
-        const value = $(this).val().toLowerCase();
-        $("#hargaTable tbody tr").filter(function() {
-            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-    });
-}
-        
-// Event listener untuk document ready
-$(document).ready(function() {
-    // Load harga emas saat pertama kali
-    loadHargaEmas();
-    
-    // Show loading spinner temporarily (demo purposes)
-    $('.spinner').show();
-    setTimeout(function() {
-        $('.spinner').hide();
-    }, 1000);
-    
-    // Modal harga
-    const modal = document.getElementById("hargaModal");
-    const btn = document.getElementById("viewHargaBtn");
-    const span = document.getElementsByClassName("close-harga")[0];
-    
-    btn.onclick = function() {
-        modal.style.display = "block";
-        loadHargaTable();
-        $('#hargaSearch').focus();
-    }
-    
-    span.onclick = function() {
-        modal.style.display = "none";
-    }
-    
-    window.onclick = function(event) {
-        if (event.target == modal) {
-            modal.style.display = "none";
-        }
-    }
-    
-    // Refresh harga button
-    $('#refreshHargaBtn').on('click', function() {
-        loadHargaEmas().then(() => {
-            loadHargaTable();
-            alert('Data harga berhasil diperbarui!');
-        }).catch(error => {
-            console.error('Error:', error);
-            alert('Gagal memuat data harga terbaru. Menggunakan data yang ada.');
-        });
-    });
-    
-    // Tambah barang button
-    $('.tambahBarangBtn').on('click', function() {
-        const formClone = $('#formEmas').clone();
-        formClone.find('input, select').val('');
-        formClone.find('.discount').val('0');
-        formClone.removeAttr('id');
-        formClone.find('.delete-btn-container').css('display', 'block');
-        formClone.find('.detailPenjualan').remove();
-        $('#formContainer').append(formClone);
-        
-        // Initialize the new form
-        initializeFormElements(formClone);
-        
-        // Scroll to the new form
-        $('html, body').animate({
-            scrollTop: formClone.offset().top - 100
-        }, 500);
-    });
-    
-    // Clear button
-    $(document).on('click', '.clearBtn', function() {
-        const form = $(this).closest('.penjualan-form');
-        const previousHargaFix = form.data('hargaFix') || 0;
-        totalPenjualan -= previousHargaFix;
-        updateTotalPenjualan(totalPenjualan);
-        
-        form.removeData('hargaFix');
-        form.next('.detailPenjualan').remove();
-        
-        // Reset toggle button
-        form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
-    });
-    
-    // Delete button
-    $(document).on('click', '.deleteBtn', function() {
-        const form = $(this).closest('.penjualan-form');
-        const previousHargaFix = form.data('hargaFix') || 0;
-        totalPenjualan -= previousHargaFix;
-        updateTotalPenjualan(totalPenjualan);
-        
-        form.next('.detailPenjualan').remove();
-        form.remove();
-    });
-    
-    // Floating button scroll effect
-    $(window).scroll(function() {
-        if ($(window).scrollTop() > 100) {
-            $('.floating-view-harga').css({
-                'bottom': '20px',
-                'right': '20px',
-                'transition': 'all 0.3s ease'
+        // Initialize form elements
+        function initializeFormElements(form) {
+            // Toggle detail button
+            form.find('.toggle-detail-btn').off('click').on('click', function() {
+                const detailContainer = form.next('.detailPenjualan');
+                const isVisible = detailContainer.hasClass('show');
+                
+                if (isVisible) {
+                    detailContainer.removeClass('show');
+                    $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+                } else {
+                    detailContainer.addClass('show');
+                    $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+                }
             });
-        } else {
-            $('.floating-view-harga').css({
-                'bottom': '20px',
-                'right': '20px',
-                'transition': 'all 0.3s ease'
+            
+            // Hitung button
+            form.find('.hitungBtn').off('click').on('click', function() {
+                hitungHarga(form);
             });
         }
-    });
-});
 
+        // Fungsi untuk menghitung harga
+        function hitungHarga(form) {
+            const kode = parseFloat(form.find('.kode').val());
+            const berat = parseFloat(form.find('.berat').val());
+            const ongkosType = form.find('.ongkos').val();
+            const discount = parseFloat(form.find('.discount').val()) || 0;
+
+            if (isNaN(kode)) {
+                alert("Harap isi kode dengan angka yang valid.");
+                return;
+            }
+
+            if (isNaN(berat)) {
+                alert("Harap isi berat dengan angka yang valid.");
+                return;
+            }
+
+            // Hitung harga dasar (cokim x kode)
+            const hargaDasar = cokim * (kode / 100);
+            
+            // Bulatkan harga dasar
+            let hasilBulat = Math.round(hargaDasar / 1000) * 1000;
+            if (hargaDasar % 1000 > 500) {
+                hasilBulat = Math.ceil(hargaDasar / 1000) * 1000;
+            } else if (hargaDasar % 1000 > 0) {
+                hasilBulat = Math.floor(hargaDasar / 1000) * 1000 + 500;
+            }
+
+            // Hitung total sebelum ongkos
+            const totalSebelumOngkos = hasilBulat * berat;
+
+            // Hitung ongkos
+            let ongkos = 0;
+            if (ongkosType === "15000") {
+                ongkos = berat < 1 ? 15000 : 15000 * berat;
+            } else if (ongkosType === "5") {
+                ongkos = totalSebelumOngkos * 0.05;
+            } else if (ongkosType === "10") {
+                ongkos = totalSebelumOngkos * 0.10;
+            }
+
+            // Bulatkan ongkos
+            ongkos = Math.round(ongkos / 1000) * 1000;
+            if (ongkos % 1000 > 500) {
+                ongkos = Math.ceil(ongkos / 1000) * 1000;
+            } else if (ongkos % 1000 > 0) {
+                ongkos = Math.floor(ongkos / 1000) * 1000 + 500;
+            }
+
+            // Hitung harga sebelum discount
+            let hargaSebelumDiscount = totalSebelumOngkos + ongkos;
+
+            // Bulatkan harga sebelum discount
+            hargaSebelumDiscount = Math.round(hargaSebelumDiscount / 1000) * 1000;
+            if (hargaSebelumDiscount % 1000 > 500) {
+                hargaSebelumDiscount = Math.ceil(hargaSebelumDiscount / 1000) * 1000;
+            } else if (hargaSebelumDiscount % 1000 > 0) {
+                hargaSebelumDiscount = Math.floor(hargaSebelumDiscount / 1000) * 1000 + 500;
+            }
+
+            // Hitung harga setelah discount
+            let hargaFix = hargaSebelumDiscount - discount;
+            
+            // Pastikan harga tidak negatif
+            if (hargaFix < 0) {
+                hargaFix = 0;
+            }
+
+            // Update total penjualan
+            const previousHargaFix = form.data('hargaFix') || 0;
+            totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
+            updateTotalPenjualan(totalPenjualan);
+
+            // Simpan hargaFix ke form
+            form.data('hargaFix', hargaFix);
+
+            // Tampilkan detail
+            updateDetailPenjualan(form, kode, berat, hasilBulat, totalSebelumOngkos, ongkos, hargaSebelumDiscount, discount, hargaFix);
+        }
+
+        function updateTotalPenjualan(newTotal) {
+            totalPenjualan = newTotal;
+            $('#totalPenjualan').html(<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>);
+        }
+
+        function updateDetailPenjualan(form, kode, berat, hargaPerGram, totalSebelumOngkos, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+            const detailHtml = `
+                <div class="detailPenjualan show">
+                    <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Kode:</strong> ${kode}%</p>
+                            <p><strong>Berat:</strong> ${berat} gram</p>
+                            <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <ul>
+                                <li>Harga per gram (COKIM × ${kode}%): Rp. ${hargaPerGram.toLocaleString('id-ID')}</li>
+                                <li>Total sebelum ongkos (Harga × Berat): Rp. ${totalSebelumOngkos.toLocaleString('id-ID')}</li>
+                                ${ongkos > 0 ? <li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li> : ''}
+                                <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                                ${discount > 0 ? <li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li> : ''}
+                                <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            form.next('.detailPenjualan').remove();
+            form.after(detailHtml);
+            
+            form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+        }
+
+        function clearTotalPenjualan() {
+            totalPenjualan = 0;
+            $('#totalPenjualan').html('');
+            $('.detailPenjualan').remove();
+        }
+
+        // Fungsi untuk memuat tabel harga
+        function loadHargaTable() {
+            const container = $('#hargaTableContainer');
+            const loading = $('#loadingHarga');
+            
+            container.empty();
+            loading.show();
+            
+            let tableHtml = `
+                <div class="table-responsive">
+                    <table class="table-harga" id="hargaTable">
+                        <thead>
+                            <tr>
+                                <th>Keterangan</th>
+                                <th>COKIM</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Harga COKIM</td>
+                                <td class="harga-highlight">Rp. ${cokim.toLocaleString('id-ID')}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+            
+            container.html(tableHtml);
+            loading.hide();
+            
+            // Inisialisasi pencarian
+            $('#hargaSearch').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $("#hargaTable tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+        }
+                
+        // Event listener untuk document ready
+        $(document).ready(function() {
+            // Load harga emas saat pertama kali
+            loadHargaEmas();
+            
+            // Show loading spinner temporarily (demo purposes)
+            $('.spinner').show();
+            setTimeout(function() {
+                $('.spinner').hide();
+            }, 1000);
+            
+            // Modal harga
+            const modal = document.getElementById("hargaModal");
+            const btn = document.getElementById("viewHargaBtn");
+            const span = document.getElementsByClassName("close-harga")[0];
+            
+            btn.onclick = function() {
+                modal.style.display = "block";
+                loadHargaTable();
+                $('#hargaSearch').focus();
+            }
+            
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+            
+            // Refresh harga button
+            $('#refreshHargaBtn').on('click', function() {
+                loadHargaEmas().then(() => {
+                    loadHargaTable();
+                    alert('Data harga berhasil diperbarui!');
+                }).catch(error => {
+                    console.error('Error:', error);
+                    alert('Gagal memuat data harga terbaru. Menggunakan data yang ada.');
+                });
+            });
+            
+            // Tambah barang button
+            $('.tambahBarangBtn').on('click', function() {
+                const formClone = $('#formEmas').clone();
+                formClone.find('input, select').val('');
+                formClone.find('.discount').val('0');
+                formClone.removeAttr('id');
+                formClone.find('.delete-btn-container').css('display', 'block');
+                formClone.find('.detailPenjualan').remove();
+                $('#formContainer').append(formClone);
+                
+                // Initialize the new form
+                initializeFormElements(formClone);
+                
+                // Scroll to the new form
+                $('html, body').animate({
+                    scrollTop: formClone.offset().top - 100
+                }, 500);
+            });
+            
+            // Clear button
+            $(document).on('click', '.clearBtn', function() {
+                const form = $(this).closest('.penjualan-form');
+                const previousHargaFix = form.data('hargaFix') || 0;
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+                
+                form.removeData('hargaFix');
+                form.next('.detailPenjualan').remove();
+                
+                // Reset toggle button
+                form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+            });
+            
+            // Delete button
+            $(document).on('click', '.deleteBtn', function() {
+                const form = $(this).closest('.penjualan-form');
+                const previousHargaFix = form.data('hargaFix') || 0;
+                totalPenjualan -= previousHargaFix;
+                updateTotalPenjualan(totalPenjualan);
+                
+                form.next('.detailPenjualan').remove();
+                form.remove();
+            });
+            
+            // Floating button scroll effect
+            $(window).scroll(function() {
+                if ($(window).scrollTop() > 100) {
+                    $('.floating-view-harga').css({
+                        'bottom': '20px',
+                        'right': '20px',
+                        'transition': 'all 0.3s ease'
+                    });
+                } else {
+                    $('.floating-view-harga').css({
+                        'bottom': '20px',
+                        'right': '20px',
+                        'transition': 'all 0.3s ease'
+                    });
+                }
+            });
+        });
     </script>
+
 </body>
 </html>
