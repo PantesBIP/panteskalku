@@ -46,7 +46,7 @@
 
         .card {
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            box-shadow:  0 4px 20px rgba(0,0,0,0.08);
             border: none;
             margin-bottom: 2rem;
             transition: transform 0.3s;
@@ -262,6 +262,18 @@
                 display: inline;
             }
         }
+        
+        /* Fixed price items selector */
+        .fixed-price-selector {
+            margin-bottom: 15px;
+        }
+        
+        .fixed-price-selector select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
     </style>
 </head>
 <body>
@@ -306,10 +318,19 @@
                     <div class="card-body">
                         <div id="formContainer">
                             <form id="formEmas" class="penjualan-form">
+                                <div class="fixed-price-selector">
+                                    <select class="form-select fixed-price-items">
+                                        <option value="">-- Pilih Item Harga Tetap --</option>
+                                        <option value="700000">8k Kuning - Rp700.000/gram</option>
+                                        <option value="750000">8k Putih - Rp750.000/gram</option>
+                                        <option value="800000">9k Kuning - Rp800.000/gram</option>
+                                        <option value="850000">9k Putih - Rp850.000/gram</option>
+                                    </select>
+                                </div>
                                 <div class="row mb-3">
                                     <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control kodeEmas" placeholder="Masukkan kode emas (contoh: 84.5, 85.5, 90.5)" required>
+                                        <input type="text" class="form-control kodeEmas" placeholder="Masukkan kode emas (contoh: 84.5, 85.5, 90.5)">
                                     </div>
                                 </div>
                                 <div class="row mb-3">
@@ -408,8 +429,21 @@
 let cokim = 1631000; // Default COKIM value
 let totalPenjualan = 0;
 
+// Fixed price items
+const fixedPriceItems = {
+    "700000": "8k Kuning - Rp700.000/gram",
+    "750000": "8k Putih - Rp750.000/gram",
+    "800000": "9k Kuning - Rp800.000/gram",
+    "850000": "9k Putih - Rp850.000/gram"
+};
+
 // Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
 function hitungHargaKhusus(kode) {
+    // Check if this is a fixed price item
+    if (fixedPriceItems[kode]) {
+        return parseInt(kode);
+    }
+    
     // Validasi kode harus berupa angka antara 0 dan 100
     const persentase = parseFloat(kode);
     if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
@@ -434,19 +468,31 @@ function hitungHargaKhusus(kode) {
 // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
 function updateHargaPerGram(form) {
     const kode = form.find('.kodeEmas').val();
-    if (!kode) return;
+    const fixedPrice = form.find('.fixed-price-items').val();
     
-    const harga = hitungHargaKhusus(kode);
-    if (harga !== null) {
-        form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+    // Prioritize fixed price selection
+    if (fixedPrice) {
+        form.find('.hargaEmas').val(parseInt(fixedPrice).toLocaleString('id-ID'));
+        form.find('.kodeEmas').val('').prop('disabled', true);
     } else {
-        form.find('.hargaEmas').val('');
+        form.find('.kodeEmas').prop('disabled', false);
+        if (!kode) {
+            form.find('.hargaEmas').val('');
+            return;
+        }
+        
+        const harga = hitungHargaKhusus(kode);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaEmas').val('');
+        }
     }
 }
 
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
-    const kode = form.find('.kodeEmas').val();
+    const kode = form.find('.fixed-price-items').val() || form.find('.kodeEmas').val();
     const berat = parseFloat(form.find('.beratEmas').val());
     const ongkosType = form.find('.ongkos').val();
     const discount = parseFloat(form.find('.discount').val()) || 0;
@@ -517,46 +563,75 @@ function updateTotalPenjualan(newTotal) {
 }
 
 function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-    const persentase = parseFloat(kode);
-    const persentaseDecimal = persentase / 100;
-    const hargaDasar = cokim * persentaseDecimal;
+    let detailHtml = '';
     
-    // Proses pembulatan
-    let remainder = hargaDasar % 1000;
-    let hargaDasarBulat = remainder >= 1 && remainder <= 499 ? 
-        hargaDasar - remainder + 500 : 
-        remainder >= 501 && remainder <= 999 ? 
-        hargaDasar - remainder + 1000 : 
-        hargaDasar;
-    
-    const detailHtml = `
-        <div class="detailPenjualan show">
-            <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
-            <div class="row">
-                <div class="col-md-6">
-                    <p><strong>Kode:</strong> ${kode}%</p>
-                    <p><strong>Berat:</strong> ${berat} gram</p>
-                    <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
-                    <p><strong>Detail Perhitungan:</strong></p>
-                    <ol>
-                        <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                        <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                    </ol>
-                </div>
-                <div class="col-md-6">
-                    <ul>
-                        <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
-                        <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                        <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                        ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
-                        <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                        ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
-                        <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                    </ul>
+    if (fixedPriceItems[kode]) {
+        // Fixed price item
+        detailHtml = `
+            <div class="detailPenjualan show">
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Item:</strong> ${fixedPriceItems[kode]}</p>
+                        <p><strong>Berat:</strong> ${berat} gram</p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Percentage-based item
+        const persentase = parseFloat(kode);
+        const persentaseDecimal = persentase / 100;
+        const hargaDasar = cokim * persentaseDecimal;
+        
+        // Proses pembulatan
+        let remainder = hargaDasar % 1000;
+        let hargaDasarBulat = remainder >= 1 && remainder <= 499 ? 
+            hargaDasar - remainder + 500 : 
+            remainder >= 501 && remainder <= 999 ? 
+            hargaDasar - remainder + 1000 : 
+            hargaDasar;
+        
+        detailHtml = `
+            <div class="detailPenjualan show">
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Kode:</strong> ${kode}%</p>
+                        <p><strong>Berat:</strong> ${berat} gram</p>
+                        <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                        <p><strong>Detail Perhitungan:</strong></p>
+                        <ol>
+                            <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                            <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
     
     form.next('.detailPenjualan').remove();
     form.after(detailHtml);
@@ -580,8 +655,15 @@ $(document).ready(function() {
     
     // Initialize form elements
     function initializeFormElements(form) {
+        // Fixed price item selection
+        form.find('.fixed-price-items').on('change', function() {
+            updateHargaPerGram(form);
+        });
+        
         // Auto-fill harga when kode is entered
         form.find('.kodeEmas').on('input', function() {
+            // Clear fixed price selection if typing in kode field
+            form.find('.fixed-price-items').val('');
             updateHargaPerGram(form);
         });
         
@@ -618,10 +700,10 @@ $(document).ready(function() {
                 cokim = parsedCokim;
                 alert(`Nilai COKIM berhasil diupdate menjadi Rp. ${cokim.toLocaleString('id-ID')}`);
                 
-                // Update all forms that have kode entered
+                // Update all forms that have kode entered (except fixed price items)
                 $('.penjualan-form').each(function() {
                     const form = $(this);
-                    if (form.find('.kodeEmas').val()) {
+                    if (form.find('.kodeEmas').val() && !form.find('.fixed-price-items').val()) {
                         updateHargaPerGram(form);
                         if (form.data('hargaFix') !== undefined) {
                             hitungHarga(form);
@@ -639,6 +721,8 @@ $(document).ready(function() {
         const formClone = $('#formEmas').clone();
         formClone.find('input, select').val('');
         formClone.find('.discount').val('0');
+        formClone.find('.fixed-price-items').val('');
+        formClone.find('.kodeEmas').prop('disabled', false);
         formClone.removeAttr('id');
         formClone.find('.delete-btn-container').css('display', 'block');
         formClone.find('.detailPenjualan').remove();
@@ -662,6 +746,8 @@ $(document).ready(function() {
         
         form.removeData('hargaFix');
         form.next('.detailPenjualan').remove();
+        form.find('.fixed-price-items').val('');
+        form.find('.kodeEmas').prop('disabled', false);
         
         // Reset toggle button
         form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
