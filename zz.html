@@ -403,227 +403,286 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         // Variabel global
-        let cokim = 1000000; // Default COKIM value
-        let totalPenjualan = 0;
+        // Variabel global
+let cokim = 1000000; // Default COKIM value
+let totalPenjualan = 0;
+let tambah5Persen = true; // Default true untuk backward compatibility
 
-        // Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
-        function hitungHargaKhusus(kode) {
-            // Validasi kode harus berupa angka antara 0 dan 100
-            const persentase = parseFloat(kode);
-            if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
-                alert("Kode emas harus berupa angka antara 0 dan 100");
-                return null;
-            }
-            
-            const persentaseDecimal = persentase / 100;
-            let hargaDasar = cokim * persentaseDecimal;
-            
-            // Bulatkan ke 500 atau 1000
-            let remainder = hargaDasar % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                hargaDasar = hargaDasar - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                hargaDasar = hargaDasar - remainder + 1000;
-            }
-            
-            // Tambahkan 5% (sesuai logika kode 84.5-90.5)
-            let hargaFinal = hargaDasar * 1.05;
-            
-            // Bulatkan lagi
-            remainder = hargaFinal % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                hargaFinal = hargaFinal - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                hargaFinal = hargaFinal - remainder + 1000;
-            }
-            
-            return Math.round(hargaFinal);
-        }
+// Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
+function hitungHargaKhusus(kode) {
+    // Validasi kode harus berupa angka antara 0 dan 100
+    const persentase = parseFloat(kode);
+    if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
+        alert("Kode emas harus berupa angka antara 0 dan 100");
+        return null;
+    }
+    
+    const persentaseDecimal = persentase / 100;
+    let hargaDasar = cokim * persentaseDecimal;
+    
+    // Bulatkan ke 500 atau 1000
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaDasar = hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaDasar = hargaDasar - remainder + 1000;
+    }
+    
+    // Tambahkan 5% jika opsi dipilih
+    let hargaFinal = tambah5Persen ? hargaDasar * 1.05 : hargaDasar;
+    
+    // Bulatkan lagi
+    remainder = hargaFinal % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaFinal = hargaFinal - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaFinal = hargaFinal - remainder + 1000;
+    }
+    
+    return Math.round(hargaFinal);
+}
 
-        // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
-        function updateHargaPerGram(form) {
-            const kode = form.find('.kodeEmas').val();
-            if (!kode) return;
-            
-            const harga = hitungHargaKhusus(kode);
-            if (harga !== null) {
-                form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-            } else {
-                form.find('.hargaEmas').val('');
-            }
-        }
+// Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
+function updateHargaPerGram(form) {
+    const kode = form.find('.kodeEmas').val();
+    if (!kode) return;
+    
+    const harga = hitungHargaKhusus(kode);
+    if (harga !== null) {
+        form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+    } else {
+        form.find('.hargaEmas').val('');
+    }
+}
 
-        // Fungsi untuk menghitung harga
-        function hitungHarga(form) {
-            const kode = form.find('.kodeEmas').val();
-            const berat = parseFloat(form.find('.beratEmas').val());
-            const ongkosType = form.find('.ongkos').val();
-            const discount = parseFloat(form.find('.discount').val()) || 0;
+// Fungsi untuk menghitung harga
+function hitungHarga(form) {
+    const kode = form.find('.kodeEmas').val();
+    const berat = parseFloat(form.find('.beratEmas').val());
+    const ongkosType = form.find('.ongkos').val();
+    const discount = parseFloat(form.find('.discount').val()) || 0;
+    const tambah5 = form.find('.tambah5Persen').is(':checked');
 
-            if (!kode || isNaN(berat) || berat <= 0) {
-                alert("Harap isi kode emas dan berat dengan benar.");
-                return;
-            }
+    if (!kode || isNaN(berat) || berat <= 0) {
+        alert("Harap isi kode emas dan berat dengan benar.");
+        return;
+    }
 
-            const harga = hitungHargaKhusus(kode);
-            if (harga === null) return;
-            
-            let hasilAwal = harga * berat;
-            let hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
+    // Simpan setting 5% untuk form ini
+    const formTambah5Persen = tambah5;
+    const harga = hitungHargaKhususCustom(kode, formTambah5Persen);
+    if (harga === null) return;
+    
+    let hasilAwal = harga * berat;
+    let hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
 
-            // Hitung ongkos
-            let ongkos = 0;
-            if (ongkosType === "15000") {
-                ongkos = berat < 1 ? 15000 : 15000 * berat;
-            } else if (ongkosType === "5") {
-                ongkos = hasilBulat * 0.05;
-            } else if (ongkosType === "10") {
-                ongkos = hasilBulat * 0.10;
-            }
+    // Hitung ongkos
+    let ongkos = 0;
+    if (ongkosType === "15000") {
+        ongkos = berat < 1 ? 15000 : 15000 * berat;
+    } else if (ongkosType === "5") {
+        ongkos = hasilBulat * 0.05;
+    } else if (ongkosType === "10") {
+        ongkos = hasilBulat * 0.10;
+    }
 
-            // Bulatkan ongkos
-            let remainder = ongkos % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                ongkos = ongkos - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                ongkos = ongkos - remainder + 1000;
-            }
+    // Bulatkan ongkos
+    let remainder = ongkos % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        ongkos = ongkos - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        ongkos = ongkos - remainder + 1000;
+    }
 
-            // Hitung harga sebelum discount
-            let hargaSebelumDiscount = hasilBulat + ongkos;
+    // Hitung harga sebelum discount
+    let hargaSebelumDiscount = hasilBulat + ongkos;
 
-            // Bulatkan harga sebelum discount
-            remainder = hargaSebelumDiscount % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                hargaSebelumDiscount = hargaSebelumDiscount - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                hargaSebelumDiscount = hargaSebelumDiscount - remainder + 1000;
-            }
+    // Bulatkan harga sebelum discount
+    remainder = hargaSebelumDiscount % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 1000;
+    }
 
-            // Hitung harga setelah discount
-            let hargaFix = hargaSebelumDiscount - discount;
-            
-            // Pastikan harga tidak negatif
-            if (hargaFix < 0) {
-                hargaFix = 0;
-            }
+    // Hitung harga setelah discount
+    let hargaFix = hargaSebelumDiscount - discount;
+    
+    // Pastikan harga tidak negatif
+    if (hargaFix < 0) {
+        hargaFix = 0;
+    }
 
-            // Update total penjualan
-            const previousHargaFix = form.data('hargaFix') || 0;
-            totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
-            updateTotalPenjualan(totalPenjualan);
+    // Update total penjualan
+    const previousHargaFix = form.data('hargaFix') || 0;
+    totalPenjualan = totalPenjualan - previousHargaFix + hargaFix;
+    updateTotalPenjualan(totalPenjualan);
 
-            // Simpan hargaFix ke form
-            form.data('hargaFix', hargaFix);
+    // Simpan hargaFix ke form
+    form.data('hargaFix', hargaFix);
 
-            // Tampilkan detail
-            updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
-        }
+    // Tampilkan detail
+    updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix, formTambah5Persen);
+}
 
-        function updateTotalPenjualan(newTotal) {
-            totalPenjualan = newTotal;
-            $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
-        }
+// Fungsi hitung harga khusus dengan parameter tambah5Persen
+function hitungHargaKhususCustom(kode, tambah5) {
+    // Validasi kode harus berupa angka antara 0 dan 100
+    const persentase = parseFloat(kode);
+    if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
+        alert("Kode emas harus berupa angka antara 0 dan 100");
+        return null;
+    }
+    
+    const persentaseDecimal = persentase / 100;
+    let hargaDasar = cokim * persentaseDecimal;
+    
+    // Bulatkan ke 500 atau 1000
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaDasar = hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaDasar = hargaDasar - remainder + 1000;
+    }
+    
+    // Tambahkan 5% jika parameter true
+    let hargaFinal = tambah5 ? hargaDasar * 1.05 : hargaDasar;
+    
+    // Bulatkan lagi
+    remainder = hargaFinal % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaFinal = hargaFinal - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaFinal = hargaFinal - remainder + 1000;
+    }
+    
+    return Math.round(hargaFinal);
+}
 
-        function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-            const persentase = parseFloat(kode);
-            const persentaseDecimal = persentase / 100;
-            const hargaDasar = cokim * persentaseDecimal;
-            
-            // Proses pembulatan pertama
-            let remainder1 = hargaDasar % 1000;
-            let hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
-                hargaDasar - remainder1 + 500 : 
-                remainder1 >= 501 && remainder1 <= 999 ? 
-                hargaDasar - remainder1 + 1000 : 
-                hargaDasar;
-            
-            // Proses penambahan 5% dan pembulatan kedua
-            const hargaPlus5 = hargaDasarBulat * 1.05;
-            let remainder2 = hargaPlus5 % 1000;
-            let hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
-                hargaPlus5 - remainder2 + 500 : 
-                remainder2 >= 501 && remainder2 <= 999 ? 
-                hargaPlus5 - remainder2 + 1000 : 
-                hargaPlus5;
-            
-            const detailHtml = `
-                <div class="detailPenjualan show">
-                    <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p><strong>Kode:</strong> ${kode}%</p>
-                            <p><strong>Berat:</strong> ${berat} gram</p>
-                            <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
-                            <p><strong>Detail Perhitungan:</strong></p>
-                            <ol>
-                                <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                                <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                                <li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaPlus5.toLocaleString('id-ID')}</li>
-                                <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
-                            </ol>
-                        </div>
-                        <div class="col-md-6">
-                            <ul>
-                                <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
-                                <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                                <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                                ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
-                                <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                                ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
-                                <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                            </ul>
-                        </div>
+function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix, formTambah5Persen) {
+    const persentase = parseFloat(kode);
+    const persentaseDecimal = persentase / 100;
+    const hargaDasar = cokim * persentaseDecimal;
+    
+    // Proses pembulatan pertama
+    let remainder1 = hargaDasar % 1000;
+    let hargaDasarBulat = remainder1 >= 1 && remainder1 <= 499 ? 
+        hargaDasar - remainder1 + 500 : 
+        remainder1 >= 501 && remainder1 <= 999 ? 
+        hargaDasar - remainder1 + 1000 : 
+        hargaDasar;
+    
+    // Proses penambahan 5% dan pembulatan kedua jika dipilih
+    const hargaSetelahPersen = formTambah5Persen ? hargaDasarBulat * 1.05 : hargaDasarBulat;
+    let remainder2 = hargaSetelahPersen % 1000;
+    let hargaFinalBulat = remainder2 >= 1 && remainder2 <= 499 ? 
+        hargaSetelahPersen - remainder2 + 500 : 
+        remainder2 >= 501 && remainder2 <= 999 ? 
+        hargaSetelahPersen - remainder2 + 1000 : 
+        hargaSetelahPersen;
+    
+    const detailHtml = `
+        <div class="detailPenjualan show">
+            <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Kode:</strong> ${kode}%</p>
+                    <p><strong>Berat:</strong> ${berat} gram</p>
+                    <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                    <p><strong>Tambahan 5%:</strong> ${formTambah5Persen ? 'Ya' : 'Tidak'}</p>
+                    <p><strong>Detail Perhitungan:</strong></p>
+                    <ol>
+                        <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                        <li>Pembulatan pertama: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                        ${formTambah5Persen ? `<li>Tambahkan 5%: Rp. ${hargaDasarBulat.toLocaleString('id-ID')} × 1.05 = Rp. ${hargaSetelahPersen.toLocaleString('id-ID')}</li>` : ''}
+                        <li>Pembulatan akhir: Rp. ${Math.round(hargaFinalBulat).toLocaleString('id-ID')}</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                        <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                        <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                        ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                        <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                        ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                        <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    form.next('.detailPenjualan').remove();
+    form.after(detailHtml);
+    
+    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+}
+
+// Pada bagian inisialisasi form, tambahkan checkbox untuk opsi 5%
+function initializeFormElements(form) {
+    // Tambahkan checkbox untuk opsi 5% jika belum ada
+    if (form.find('.tambah5Persen-container').length === 0) {
+        form.find('.row.mb-3').eq(0).after(`
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label">Opsi Perhitungan</label>
+                <div class="col-sm-9">
+                    <div class="form-check">
+                        <input class="form-check-input tambah5Persen" type="checkbox" id="tambah5Persen" checked>
+                        <label class="form-check-label" for="tambah5Persen">
+                            Tambahkan 5% setelah pembulatan pertama
+                        </label>
                     </div>
                 </div>
-            `;
-            
-            form.next('.detailPenjualan').remove();
-            form.after(detailHtml);
-            
-            form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-        }
+            </div>
+        `);
+    }
 
-        function clearTotalPenjualan() {
-            totalPenjualan = 0;
-            $('#totalPenjualan').html('');
-            $('.detailPenjualan').remove();
+    // Auto-fill harga when kode is entered
+    form.find('.kodeEmas').on('input', function() {
+        const tambah5 = form.find('.tambah5Persen').is(':checked');
+        const kode = $(this).val();
+        if (!kode) return;
+        
+        const harga = hitungHargaKhususCustom(kode, tambah5);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaEmas').val('');
         }
-
-        // Event listener untuk document ready
-        $(document).ready(function() {
-            // Show loading spinner temporarily
-            $('.spinner').show();
-            setTimeout(function() {
-                $('.spinner').hide();
-            }, 1000);
-            
-            // Initialize form elements
-            function initializeFormElements(form) {
-                // Auto-fill harga when kode is entered
-                form.find('.kodeEmas').on('input', function() {
-                    updateHargaPerGram(form);
-                });
-                
-                // Toggle detail button
-                form.find('.toggle-detail-btn').off('click').on('click', function() {
-                    const detailContainer = form.next('.detailPenjualan');
-                    const isVisible = detailContainer.hasClass('show');
-                    
-                    if (isVisible) {
-                        detailContainer.removeClass('show');
-                        $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
-                    } else {
-                        detailContainer.addClass('show');
-                        $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
-                    }
-                });
-                
-                // Hitung button
-                form.find('.hitungBtn').off('click').on('click', function() {
-                    hitungHarga(form);
-                });
+    });
+    
+    // Update harga ketika opsi 5% diubah
+    form.find('.tambah5Persen').on('change', function() {
+        const kode = form.find('.kodeEmas').val();
+        if (kode) {
+            const tambah5 = $(this).is(':checked');
+            const harga = hitungHargaKhususCustom(kode, tambah5);
+            if (harga !== null) {
+                form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
             }
+        }
+    });
+    
+    // Toggle detail button
+    form.find('.toggle-detail-btn').off('click').on('click', function() {
+        const detailContainer = form.next('.detailPenjualan');
+        const isVisible = detailContainer.hasClass('show');
+        
+        if (isVisible) {
+            detailContainer.removeClass('show');
+            $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+        } else {
+            detailContainer.addClass('show');
+            $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+        }
+    });
+    
+    // Hitung button
+    form.find('.hitungBtn').off('click').on('click', function() {
+        hitungHarga(form);
+    });
+}
             
             // Initialize first form
             initializeFormElements($('#formEmas'));
