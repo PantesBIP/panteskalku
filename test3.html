@@ -218,6 +218,99 @@
             z-index: 99;
         }
 
+        /* Floating buttons container */
+.floating-buttons-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    align-items: flex-end;
+}
+
+.floating-btn-wrapper {
+    transition: all 0.3s ease;
+}
+
+/* Base button styles for both buttons */
+.btn-harga, .btn-cokim {
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.btn-harga {
+    background-color: #28a745;
+}
+
+.btn-cokim {
+    background-color: var(--primary-color);
+}
+
+.btn-harga:hover, .btn-cokim:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
+}
+
+.btn-harga i, .btn-cokim i {
+    font-size: 20px;
+}
+
+.btn-harga .text, .btn-cokim .text {
+    display: none;
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+    .btn-harga, .btn-cokim {
+        width: auto;
+        height: auto;
+        padding: 10px 15px;
+        border-radius: 30px;
+    }
+    
+    .btn-harga i, .btn-cokim i {
+        margin-right: 8px;
+        font-size: 16px;
+        }
+        
+        .btn-harga .text, .btn-cokim .text {
+            display: inline;
+            font-size: 14px;
+        }
+        
+        .floating-buttons-container {
+            gap: 15px;
+        }
+    }
+
+    /* Animation when scrolling */
+    @media (max-width: 767px) {
+        .floating-buttons-container {
+            bottom: 15px;
+            right: 15px;
+        }
+        
+        .btn-harga, .btn-cokim {
+            width: 45px;
+            height: 45px;
+        }
+        
+        .btn-harga i, .btn-cokim i {
+            font-size: 18px;
+        }
+    }
+
         .btn-cokim {
             background-color: var(--primary-color);
             color: white;
@@ -483,43 +576,31 @@
     </div>
 
     <!-- Floating Harga -->
-    <div class="floating-harga" style="position: fixed; bottom: 160px; right: 20px; z-index: 99;">
+    <div class="floating-buttons-container">
+    <div class="floating-btn-wrapper">
         <button class="btn btn-harga" id="hargaBtn" title="Lihat Harga Emas">
             <i class="fas fa-table"></i>
             <span class="text">Harga</span>
         </button>
     </div>
+
     
     <!-- Add this modal at the bottom of your body, before the scripts -->
-    <div class="modal fade" id="hargaModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Daftar Harga Emas</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="spinner text-center">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading...</span>
-                        </div>
-                    </div>
-                    <div id="hargaContainer"></div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
+    <div class="floating-buttons-container">
+    <div class="floating-btn-wrapper">
+        <button class="btn btn-harga" id="hargaBtn" title="Lihat Harga Emas">
+            <i class="fas fa-table"></i>
+            <span class="text">Harga</span>
+        </button>
     </div>
-    
-    <!-- Floating button for COKIM input -->
-    <div class="floating-cokim">
+    <div class="floating-btn-wrapper">
         <button class="btn btn-cokim" id="cokimBtn" title="Set COKIM Value">
             <i class="fas fa-coins"></i>
             <span class="text">COKIM</span>
         </button>
-    </div>
+    </div>
+</div>
+
 
     <footer class="text-center">
         <div class="container">
@@ -875,22 +956,23 @@ $(document).ready(function() {
         form.remove();
     });
     
-    // Floating button scroll effect
+        // Floating buttons scroll effect
     $(window).scroll(function() {
         if ($(window).scrollTop() > 100) {
-            $('.floating-cokim').css({
-                'bottom': '20px',
-                'right': '20px',
+            $('.floating-buttons-container').css({
+                'bottom': '15px',
+                'right': '15px',
                 'transition': 'all 0.3s ease'
             });
         } else {
-            $('.floating-cokim').css({
-                'bottom': '20px',
-                'right': '20px',
+            $('.floating-buttons-container').css({
+                'bottom': '15px',
+                'right': '15px',
                 'transition': 'all 0.3s ease'
             });
         }
     });
+    
     // Harga button functionality
 $('#hargaBtn').on('click', function() {
     $('#hargaModal').modal('show');
