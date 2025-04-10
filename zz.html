@@ -431,20 +431,20 @@ let totalPenjualan = 0;
 
 // Fixed price items
 const fixedPriceItems = {
-    "700000": "8k Kuning",
-    "750000": "8k Putih",
-    "800000": "9k Kuning",
-    "850000": "9k Putih"
+    "770000": "8k Kuning",
+    "800000": "8k Putih",
+    "825000": "9k Kuning",
+    "845000": "9k Putih"
 };
 
 // Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
 function hitungHargaKhusus(kode) {
     // Check if this is a fixed price item
-    if (fixedPriceItems[kode]) {
+    if (fixedPriceItems.hasOwnProperty(kode)) {
         return parseInt(kode);
     }
     
-    // Validasi kode harus berupa angka antara 0 dan 100
+    // Validasi kode harus berupa angka antara 0 dan 100 (hanya untuk non-fixed price items)
     const persentase = parseFloat(kode);
     if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
         alert("Kode emas harus berupa angka antara 0 dan 100");
@@ -492,7 +492,8 @@ function updateHargaPerGram(form) {
 
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
-    const kode = form.find('.fixed-price-items').val() || form.find('.kodeEmas').val();
+    const fixedPrice = form.find('.fixed-price-items').val();
+    const kode = fixedPrice || form.find('.kodeEmas').val();
     const berat = parseFloat(form.find('.beratEmas').val());
     const ongkosType = form.find('.ongkos').val();
     const discount = parseFloat(form.find('.discount').val()) || 0;
@@ -565,7 +566,7 @@ function updateTotalPenjualan(newTotal) {
 function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
     let detailHtml = '';
     
-    if (fixedPriceItems[kode]) {
+    if (fixedPriceItems.hasOwnProperty(kode)) {
         // Fixed price item
         detailHtml = `
             <div class="detailPenjualan show">
