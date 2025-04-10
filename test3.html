@@ -574,33 +574,45 @@
             </div>
         </div>
     </div>
-
-    <!-- Floating Harga -->
-    <div class="floating-buttons-container">
-    <div class="floating-btn-wrapper">
+    
+       <!-- Floating Harga -->
+    <div class="floating-harga" style="position: fixed; bottom: 160px; right: 20px; z-index: 99;">
         <button class="btn btn-harga" id="hargaBtn" title="Lihat Harga Emas">
             <i class="fas fa-table"></i>
             <span class="text">Harga</span>
         </button>
     </div>
-
     
     <!-- Add this modal at the bottom of your body, before the scripts -->
-    <div class="floating-buttons-container">
-    <div class="floating-btn-wrapper">
-        <button class="btn btn-harga" id="hargaBtn" title="Lihat Harga Emas">
-            <i class="fas fa-table"></i>
-            <span class="text">Harga</span>
-        </button>
+    <div class="modal fade" id="hargaModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Daftar Harga Emas</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="spinner text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <div id="hargaContainer"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="floating-btn-wrapper">
+    
+    <!-- Floating button for COKIM input -->
+    <div class="floating-cokim">
         <button class="btn btn-cokim" id="cokimBtn" title="Set COKIM Value">
             <i class="fas fa-coins"></i>
             <span class="text">COKIM</span>
         </button>
-    </div>
-</div>
-
+    </div>
 
     <footer class="text-center">
         <div class="container">
