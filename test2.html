@@ -708,34 +708,47 @@ function hitungHargaKhusus(kode) {
 
 // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
 function updateHargaPerGram(form) {
-            const kode = form.find('.kodeEmas').val();
-            const fixedPrice = form.find('.fixed-price-items').val();
-            
-            // Prioritize fixed price selection
-            if (fixedPrice) {
-                const harga = hitungHargaKhusus(fixedPrice);
-                if (harga !== null) {
-                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-                } else {
-                    form.find('.hargaEmas').val('');
-                }
-                form.find('.kodeEmas').val('').prop('disabled', true);
-            } else {
-                form.find('.kodeEmas').prop('disabled', false);
-                if (!kode) {
-                    form.find('.hargaEmas').val('');
-                    return;
-                }
-                
-                const harga = hitungHargaKhusus(kode);
-                if (harga !== null) {
-                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-                } else {
-                    form.find('.hargaEmas').val('');
-                }
-            }
+    const kode = form.find('.kodeEmas').val();
+    const fixedPrice = form.find('.fixed-price-items').val();
+    
+    // Prioritize fixed price selection
+    if (fixedPrice) {
+        const harga = hitungHargaKhusus(fixedPrice);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaEmas').val('');
         }
+        form.find('.kodeEmas').val('').prop('disabled', true);
+    } else {
+        form.find('.kodeEmas').prop('disabled', false);
+        if (!kode) {
+            form.find('.hargaEmas').val('');
+            return;
+        }
+        
+        const harga = hitungHargaKhusus(kode);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaEmas').val('');
+        }
+    }
+}
 
+// Initialize form elements
+function initializeFormElements(form) {
+    // Fixed price item selection
+    form.find('.fixed-price-items').on('change', function() {
+        updateHargaPerGram(form);
+    });
+    
+    // Auto-fill harga when kode is entered
+    form.find('.kodeEmas').on('input', function() {
+        // Clear fixed price selection if typing in kode field
+        form.find('.fixed-price-items').val('');
+        updateHargaPerGram(form);
+    });
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
     const fixedPrice = form.find('.fixed-price-items').val();
