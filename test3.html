@@ -493,6 +493,14 @@
                                 <div class="fixed-price-selector">
                                     <select class="form-select fixed-price-items">
                                         <option value="">-- Pilih Item Harga Tetap --</option>
+                                        <option value="39">JUENE</option>
+                                        <option value="46">BG 8K</option>
+                                        <option value="54">ILY</option>
+                                        <option value="55">VOILA</option>
+                                        <option value="77">16KXB BG & Hala</option>
+                                        <option value="80">16K LPM</option>
+                                        <option value="85">17K Biasa & Amero</option>
+                                        <option value="88">18 K LPM</option>
                                         <option value="770000">8k Kuning</option>
                                         <option value="800000">8k Putih</option>
                                         <option value="825000">9k Kuning</option>
@@ -634,6 +642,14 @@ let totalPenjualan = 0;
 
 // Fixed price items
 const fixedPriceItems = {
+    "39": "JUENE",
+    "46": "BG 8K",
+    "54": "ILY",
+    "55": "VOILA",
+    "77": "16KXB BG & Hala",
+    "80": "16K LPM",
+    "85": "17K Biasa & Amero",
+    "88": "18 K LPM",
     "770000": "8k Kuning",
     "800000": "8k Putih",
     "825000": "9k Kuning",
@@ -644,28 +660,50 @@ const fixedPriceItems = {
 function hitungHargaKhusus(kode) {
     // Check if this is a fixed price item
     if (fixedPriceItems.hasOwnProperty(kode)) {
+        // For percentage-based fixed items (like JUENE=39), calculate based on COKIM
+        if (kode <= 100) {
+            const persentaseDecimal = parseFloat(kode) / 100;
+            let hargaDasar = cokim * persentaseDecimal;
+            
+            // Bulatkan ke 500 atau 1000
+            let remainder = hargaDasar % 1000;
+            if (remainder >= 1 && remainder <= 499) {
+                hargaDasar = hargaDasar - remainder + 500;
+            } else if (remainder >= 501 && remainder <= 999) {
+                hargaDasar = hargaDasar - remainder + 1000;
+            }
+            
+            return Math.round(hargaDasar);
+        }
+        // For absolute fixed price items (like 8k Kuning=770000), return as is
         return parseInt(kode);
     }
     
     // Validasi kode harus berupa angka antara 0 dan 100 (hanya untuk non-fixed price items)
     const persentase = parseFloat(kode);
-    if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
-        alert("Kode emas harus berupa angka antara 0 dan 100");
+    if (isNaN(persentase) {
+        alert("Kode emas harus berupa angka");
         return null;
     }
     
-    const persentaseDecimal = persentase / 100;
-    let hargaDasar = cokim * persentaseDecimal;
-    
-    // Bulatkan ke 500 atau 1000
-    let remainder = hargaDasar % 1000;
-    if (remainder >= 1 && remainder <= 499) {
-        hargaDasar = hargaDasar - remainder + 500;
-    } else if (remainder >= 501 && remainder <= 999) {
-        hargaDasar = hargaDasar - remainder + 1000;
+    // If it's a percentage (like 84.5)
+    if (persentase > 0 && persentase <= 100) {
+        const persentaseDecimal = persentase / 100;
+        let hargaDasar = cokim * persentaseDecimal;
+        
+        // Bulatkan ke 500 atau 1000
+        let remainder = hargaDasar % 1000;
+        if (remainder >= 1 && remainder <= 499) {
+            hargaDasar = hargaDasar - remainder + 500;
+        } else if (remainder >= 501 && remainder <= 999) {
+            hargaDasar = hargaDasar - remainder + 1000;
+        }
+        
+        return Math.round(hargaDasar);
     }
     
-    return Math.round(hargaDasar);
+    // If it's a direct price (like 770000)
+    return parseFloat(kode);
 }
 
 // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
@@ -675,7 +713,10 @@ function updateHargaPerGram(form) {
     
     // Prioritize fixed price selection
     if (fixedPrice) {
-        form.find('.hargaEmas').val(parseInt(fixedPrice).toLocaleString('id-ID'));
+        const harga = hitungHargaKhusus(fixedPrice);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        }
         form.find('.kodeEmas').val('').prop('disabled', true);
     } else {
         form.find('.kodeEmas').prop('disabled', false);
@@ -773,14 +814,16 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
         // Fixed price item
         detailHtml = `
             <div class="detailPenjualan show">
-                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (${fixedPriceItems[kode]})</h5>
                 <div class="row">
                     <div class="col-md-6">
                         <p><strong>Item:</strong> ${fixedPriceItems[kode]}</p>
                         <p><strong>Berat:</strong> ${berat} gram</p>
+                        ${kode <= 100 ? `<p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>` : ''}
                     </div>
                     <div class="col-md-6">
                         <ul>
+                            ${kode <= 100 ? `<li>Harga dasar (${kode}% × COKIM): Rp. ${(cokim * (parseFloat(kode)/100).toLocaleString('id-ID')}</li>` : ''}
                             <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
                             <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
                             <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
