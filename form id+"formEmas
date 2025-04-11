@@ -489,24 +489,24 @@
                     </div>
                     <div class="card-body">
                         <div id="formContainer">
-                            <form id="formEmas" class="penjualan-form">
-                                <div class="fixed-price-selector">
-                                    <select class="form-select fixed-price-items">
-                                        <option value="">-- Pilih Item Harga Tetap --</option>
-                                        <option value="39">JUENE</option>
-                                        <option value="46">BG 8K</option>
-                                        <option value="54">ILY</option>
-                                        <option value="55">VOILA</option>
-                                        <option value="77">16KXB BG & Hala</option>
-                                        <option value="80">16K LPM</option>
-                                        <option value="85">17K Biasa & Amero</option>
-                                        <option value="88">18 K LPM</option>
-                                        <option value="770000">8k Kuning</option>
-                                        <option value="800000">8k Putih</option>
-                                        <option value="825000">9k Kuning</option>
-                                        <option value="845000">9k Putih</option>
-                                    </select>
-                                </div>
+                          <form id="formEmas" class="penjualan-form">
+                            <div class="fixed-price-selector">
+                                <select class="form-select fixed-price-items">
+                                    <option value="">-- Pilih Item Harga Tetap --</option>
+                                    <option value="39">JUENE</option>
+                                    <option value="46">BG 8K</option>
+                                    <option value="54">ILY</option>
+                                    <option value="55">VOILA</option>
+                                    <option value="77">16KXB BG & Hala</option>
+                                    <option value="80">16K LPM</option>
+                                    <option value="85">17K Biasa & Amero</option>
+                                    <option value="88">18 K LPM</option>
+                                    <option value="770000">8k Kuning</option>
+                                    <option value="800000">8k Putih</option>
+                                    <option value="825000">9k Kuning</option>
+                                    <option value="845000">9k Putih</option>
+                                </select>
+                            </div>
                                 <div class="row mb-3">
                                     <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
                                     <div class="col-sm-9">
@@ -706,33 +706,35 @@ function hitungHargaKhusus(kode) {
     return parseFloat(kode);
 }
 
-// Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
-function updateHargaPerGram(form) {
-    const kode = form.find('.kodeEmas').val();
-    const fixedPrice = form.find('.fixed-price-items').val();
-    
-    // Prioritize fixed price selection
-    if (fixedPrice) {
-        const harga = hitungHargaKhusus(fixedPrice);
-        if (harga !== null) {
-            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
+        function updateHargaPerGram(form) {
+            const kode = form.find('.kodeEmas').val();
+            const fixedPrice = form.find('.fixed-price-items').val();
+            
+            // Prioritize fixed price selection
+            if (fixedPrice) {
+                const harga = hitungHargaKhusus(fixedPrice);
+                if (harga !== null) {
+                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+                } else {
+                    form.find('.hargaEmas').val('');
+                }
+                form.find('.kodeEmas').val('').prop('disabled', true);
+            } else {
+                form.find('.kodeEmas').prop('disabled', false);
+                if (!kode) {
+                    form.find('.hargaEmas').val('');
+                    return;
+                }
+                
+                const harga = hitungHargaKhusus(kode);
+                if (harga !== null) {
+                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+                } else {
+                    form.find('.hargaEmas').val('');
+                }
+            }
         }
-        form.find('.kodeEmas').val('').prop('disabled', true);
-    } else {
-        form.find('.kodeEmas').prop('disabled', false);
-        if (!kode) {
-            form.find('.hargaEmas').val('');
-            return;
-        }
-        
-        const harga = hitungHargaKhusus(kode);
-        if (harga !== null) {
-            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-        } else {
-            form.find('.hargaEmas').val('');
-        }
-    }
-}
 
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
