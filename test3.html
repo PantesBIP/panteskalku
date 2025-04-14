@@ -446,6 +446,46 @@
     border-bottom: 2px solid var(--primary-color);
     padding-bottom: 5px;
 }
+
+/* Kode items selector */
+.kode-selector {
+    margin-bottom: 15px;
+}
+
+.kode-selector select {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+}
+
+/* Tabs styling */
+.nav-tabs {
+    border-bottom: 2px solid #dee2e6;
+    margin-bottom: 15px;
+}
+
+.nav-tabs .nav-link {
+    color: #495057;
+    border: none;
+    padding: 10px 20px;
+    font-weight: 600;
+}
+
+.nav-tabs .nav-link.active {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-bottom: 3px solid var(--primary-color);
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: transparent;
+    color: var(--primary-color);
+}
+
+.tab-content {
+    padding: 15px 0;
+}
     </style>
 </head>
 <body>
@@ -488,95 +528,189 @@
                         </label>
                     </div>
                     <div class="card-body">
-                        <div id="formContainer">
-                          <form id="formEmas" class="penjualan-form">
-                            <div class="fixed-price-selector">
-                                <select class="form-select fixed-price-items">
-                                    <option value="">-- Pilih Item Harga Tetap --</option>
-                                    <option value="39">JUENE</option>
-                                    <option value="46">BG 8K</option>
-                                    <option value="54">ILY</option>
-                                    <option value="55">VOILA</option>
-                                    <option value="77">16KXB BG & Hala</option>
-                                    <option value="80">16K LPM</option>
-                                    <option value="85">17K Biasa & Amero</option>
-                                    <option value="88">18 K LPM</option>
-                                    <option value="770000">8k Kuning</option>
-                                    <option value="800000">8k Putih</option>
-                                    <option value="825000">9k Kuning</option>
-                                    <option value="845000">9k Putih</option>
-                                </select>
-                            </div>
-                                <div class="row mb-3">
-                                    <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control kodeEmas" placeholder="Masukkan kode emas (contoh: 84.5, 85.5, 90.5)">
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="hargaEmas" class="col-sm-3 col-form-label">Harga per gram</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="text" class="form-control hargaEmas" readonly>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="harga-tetap-tab" data-bs-toggle="tab" data-bs-target="#harga-tetap" type="button" role="tab" aria-controls="harga-tetap" aria-selected="true">Harga Tetap</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="hitung-kode-tab" data-bs-toggle="tab" data-bs-target="#hitung-kode" type="button" role="tab" aria-controls="hitung-kode" aria-selected="false">Hitung Kode</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="harga-tetap" role="tabpanel" aria-labelledby="harga-tetap-tab">
+                                <div id="formContainer">
+                                    <form id="formEmas" class="penjualan-form">
+                                        <div class="fixed-price-selector">
+                                            <select class="form-select fixed-price-items">
+                                                <option value="">-- Pilih Item Harga Tetap --</option>
+                                                <option value="770000">8k Kuning</option>
+                                                <option value="800000">8k Putih</option>
+                                                <option value="825000">9k Kuning</option>
+                                                <option value="845000">9k Putih</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="ongkos" class="col-sm-3 col-form-label">Ongkos</label>
-                                    <div class="col-sm-9">
-                                        <select class="form-select ongkos" required>
-                                            <option value="0">Tidak ada ongkos</option>
-                                            <option value="15000">15 ribu x graman</option>
-                                            <option value="5">5% x harga bulat</option>
-                                            <option value="10">10% x harga bulat</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="beratEmas" class="col-sm-3 col-form-label">Berat Emas</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <input type="number" class="form-control beratEmas" required step="0.01" min="0.01">
-                                            <span class="input-group-text">gram</span>
+                                        <div class="row mb-3">
+                                            <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
+                                            <div class="col-sm-9">
+                                                <input type="text" class="form-control kodeEmas" placeholder="Masukkan kode emas (contoh: 84.5, 85.5, 90.5)">
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="row mb-3">
-                                    <label for="discount" class="col-sm-3 col-form-label">Discount</label>
-                                    <div class="col-sm-9">
-                                        <div class="input-group">
-                                            <span class="input-group-text">Rp</span>
-                                            <input type="number" class="form-control discount" value="0" min="0">
+                                        <div class="row mb-3">
+                                            <label for="hargaEmas" class="col-sm-3 col-form-label">Harga per gram</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text" class="form-control hargaEmas" readonly>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="form-buttons">
-                                    <button type="button" class="btn btn-primary hitungBtn">
-                                        <i class="fas fa-calculator me-1"></i> Hitung
-                                    </button>
-                                    <button type="reset" class="btn btn-danger clearBtn">
-                                        <i class="fas fa-eraser me-1"></i> Reset
-                                    </button>
-                                    <div class="delete-btn-container">
-                                        <button type="button" class="btn btn-warning deleteBtn">
-                                            <i class="fas fa-trash me-1"></i> Hapus
+                                        <div class="row mb-3">
+                                            <label for="ongkos" class="col-sm-3 col-form-label">Ongkos</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-select ongkos" required>
+                                                    <option value="0">Tidak ada ongkos</option>
+                                                    <option value="15000">15 ribu x graman</option>
+                                                    <option value="5">5% x harga bulat</option>
+                                                    <option value="10">10% x harga bulat</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="beratEmas" class="col-sm-3 col-form-label">Berat Emas</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control beratEmas" required step="0.01" min="0.01">
+                                                    <span class="input-group-text">gram</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="discount" class="col-sm-3 col-form-label">Discount</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="number" class="form-control discount" value="0" min="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-buttons">
+                                            <button type="button" class="btn btn-primary hitungBtn">
+                                                <i class="fas fa-calculator me-1"></i> Hitung
+                                            </button>
+                                            <button type="reset" class="btn btn-danger clearBtn">
+                                                <i class="fas fa-eraser me-1"></i> Reset
+                                            </button>
+                                            <div class="delete-btn-container">
+                                                <button type="button" class="btn btn-warning deleteBtn">
+                                                    <i class="fas fa-trash me-1"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-info toggle-detail-btn">
+                                            <i class="fas fa-eye me-1"></i> Tampilkan Detail
                                         </button>
-                                    </div>
+                                    </form>
                                 </div>
-                                <button type="button" class="btn btn-info toggle-detail-btn">
-                                    <i class="fas fa-eye me-1"></i> Tampilkan Detail
+
+                                <button type="button" class="btn btn-success mt-3 tambahBarangBtn">
+                                    <i class="fas fa-plus-circle me-1"></i> Tambah Barang
                                 </button>
-                            </form>
+
+                                <div id="detailPenjualan" class="mt-4"></div>
+                                <div id="totalPenjualan" class="mt-4"></div>
+                                <div class="spinner"></div>
+                            </div>
+                            <div class="tab-pane fade" id="hitung-kode" role="tabpanel" aria-labelledby="hitung-kode-tab">
+                                <div id="formContainerKode">
+                                    <form id="formKode" class="penjualan-form">
+                                        <div class="kode-selector">
+                                            <select class="form-select kode-items">
+                                                <option value="">-- Pilih Kode Item --</option>
+                                                <option value="39">JUENE (39%)</option>
+                                                <option value="46">BG 8K (46%)</option>
+                                                <option value="54">ILY (54%)</option>
+                                                <option value="55">VOILA (55%)</option>
+                                                <option value="77">16K BG & Hala (77%)</option>
+                                                <option value="85">17K Biasa & Amero (85%)</option>
+                                                <option value="80">16K LPM (80%)</option>
+                                                <option value="88">18K LPM (88%)</option>
+                                            </select>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="kodePersen" class="col-sm-3 col-form-label">Kode Persen</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control kodePersen" placeholder="Masukkan kode persen (contoh: 39, 46, 54)">
+                                                    <span class="input-group-text">%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="hargaPerGram" class="col-sm-3 col-form-label">Harga per gram</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="text" class="form-control hargaPerGram" readonly>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="ongkosKode" class="col-sm-3 col-form-label">Ongkos</label>
+                                            <div class="col-sm-9">
+                                                <select class="form-select ongkosKode" required>
+                                                    <option value="0">Tidak ada ongkos</option>
+                                                    <option value="15000">15 ribu x graman</option>
+                                                    <option value="5">5% x harga bulat</option>
+                                                    <option value="10">10% x harga bulat</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="beratEmasKode" class="col-sm-3 col-form-label">Berat Emas</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <input type="number" class="form-control beratEmasKode" required step="0.01" min="0.01">
+                                                    <span class="input-group-text">gram</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <label for="discountKode" class="col-sm-3 col-form-label">Discount</label>
+                                            <div class="col-sm-9">
+                                                <div class="input-group">
+                                                    <span class="input-group-text">Rp</span>
+                                                    <input type="number" class="form-control discountKode" value="0" min="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-buttons">
+                                            <button type="button" class="btn btn-primary hitungBtnKode">
+                                                <i class="fas fa-calculator me-1"></i> Hitung
+                                            </button>
+                                            <button type="reset" class="btn btn-danger clearBtnKode">
+                                                <i class="fas fa-eraser me-1"></i> Reset
+                                            </button>
+                                            <div class="delete-btn-container">
+                                                <button type="button" class="btn btn-warning deleteBtnKode">
+                                                    <i class="fas fa-trash me-1"></i> Hapus
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-info toggle-detail-btn">
+                                            <i class="fas fa-eye me-1"></i> Tampilkan Detail
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <button type="button" class="btn btn-success mt-3 tambahBarangBtnKode">
+                                    <i class="fas fa-plus-circle me-1"></i> Tambah Barang
+                                </button>
+
+                                <div id="detailPenjualanKode" class="mt-4"></div>
+                                <div id="totalPenjualanKode" class="mt-4"></div>
+                                <div class="spinner"></div>
+                            </div>
                         </div>
-
-                        <button type="button" class="btn btn-success mt-3 tambahBarangBtn">
-                            <i class="fas fa-plus-circle me-1"></i> Tambah Barang
-                        </button>
-
-                        <div id="detailPenjualan" class="mt-4"></div>
-                        <div id="totalPenjualan" class="mt-4"></div>
-                        <div class="spinner"></div>
                     </div>
                 </div>
             </div>
@@ -637,104 +771,132 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
    // Variabel global
-let cokim = 1684000; // Default COKIM value
+let cokim = 1743000; // Default COKIM value
 let totalPenjualan = 0;
+let totalPenjualanKode = 0;
 
 // Fixed price items
 const fixedPriceItems = {
-    "39": "JUENE",
-    "46": "BG 8K",
-    "54": "ILY",
-    "55": "VOILA",
-    "77": "16KXB BG & Hala",
-    "80": "16K LPM",
-    "85": "17K Biasa & Amero",
-    "88": "18 K LPM",
     "770000": "8k Kuning",
     "800000": "8k Putih",
     "825000": "9k Kuning",
     "845000": "9k Putih"
 };
 
+// Kode items
+const kodeItems = {
+    "39": "JUENE (39%)",
+    "46": "BG 8K (46%)",
+    "54": "ILY (54%)",
+    "55": "VOILA (55%)",
+    "77": "16K BG & Hala (77%)",
+    "85": "17K Biasa & Amero (85%)",
+    "80": "16K LPM (80%)",
+    "88": "18K LPM (88%)"
+};
+
 // Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
 function hitungHargaKhusus(kode) {
     // Check if this is a fixed price item
     if (fixedPriceItems.hasOwnProperty(kode)) {
-        // For percentage-based fixed items (like JUENE=39), calculate based on COKIM
-        if (kode <= 100) {
-            const persentaseDecimal = parseFloat(kode) / 100;
-            let hargaDasar = cokim * persentaseDecimal;
-            
-            // Bulatkan ke 500 atau 1000
-            let remainder = hargaDasar % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                hargaDasar = hargaDasar - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                hargaDasar = hargaDasar - remainder + 1000;
-            }
-            
-            return Math.round(hargaDasar);
-        }
-        // For absolute fixed price items (like 8k Kuning=770000), return as is
         return parseInt(kode);
     }
     
     // Validasi kode harus berupa angka antara 0 dan 100 (hanya untuk non-fixed price items)
     const persentase = parseFloat(kode);
-    if (isNaN(persentase) {
-        alert("Kode emas harus berupa angka");
+    if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
+        alert("Kode emas harus berupa angka antara 0 dan 100");
         return null;
     }
     
-    // If it's a percentage (like 84.5)
-    if (persentase > 0 && persentase <= 100) {
-        const persentaseDecimal = persentase / 100;
-        let hargaDasar = cokim * persentaseDecimal;
-        
-        // Bulatkan ke 500 atau 1000
-        let remainder = hargaDasar % 1000;
-        if (remainder >= 1 && remainder <= 499) {
-            hargaDasar = hargaDasar - remainder + 500;
-        } else if (remainder >= 501 && remainder <= 999) {
-            hargaDasar = hargaDasar - remainder + 1000;
-        }
-        
-        return Math.round(hargaDasar);
+    const persentaseDecimal = persentase / 100;
+    let hargaDasar = cokim * persentaseDecimal;
+    
+    // Bulatkan ke 500 atau 1000
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaDasar = hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaDasar = hargaDasar - remainder + 1000;
     }
     
-    // If it's a direct price (like 770000)
-    return parseFloat(kode);
+    return Math.round(hargaDasar);
 }
 
-        // Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
-        function updateHargaPerGram(form) {
-            const kode = form.find('.kodeEmas').val();
-            const fixedPrice = form.find('.fixed-price-items').val();
-            
-            // Prioritize fixed price selection
-            if (fixedPrice) {
-                const harga = hitungHargaKhusus(fixedPrice);
-                if (harga !== null) {
-                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-                } else {
-                    form.find('.hargaEmas').val('');
-                }
-                form.find('.kodeEmas').val('').prop('disabled', true);
-            } else {
-                form.find('.kodeEmas').prop('disabled', false);
-                if (!kode) {
-                    form.find('.hargaEmas').val('');
-                    return;
-                }
-                
-                const harga = hitungHargaKhusus(kode);
-                if (harga !== null) {
-                    form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
-                } else {
-                    form.find('.hargaEmas').val('');
-                }
-            }
+// Fungsi untuk menghitung harga berdasarkan kode persen
+function hitungHargaKode(persen) {
+    if (isNaN(persen) || persen <= 0 || persen > 100) {
+        alert("Kode persen harus berupa angka antara 0 dan 100");
+        return null;
+    }
+    
+    const persentaseDecimal = persen / 100;
+    let hargaDasar = cokim * persentaseDecimal;
+    
+    // Bulatkan ke 500 atau 1000
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaDasar = hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaDasar = hargaDasar - remainder + 1000;
+    }
+    
+    return Math.round(hargaDasar);
+}
+
+// Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
+function updateHargaPerGram(form) {
+    const kode = form.find('.kodeEmas').val();
+    const fixedPrice = form.find('.fixed-price-items').val();
+    
+    // Prioritize fixed price selection
+    if (fixedPrice) {
+        form.find('.hargaEmas').val(parseInt(fixedPrice).toLocaleString('id-ID'));
+        form.find('.kodeEmas').val('').prop('disabled', true);
+    } else {
+        form.find('.kodeEmas').prop('disabled', false);
+        if (!kode) {
+            form.find('.hargaEmas').val('');
+            return;
         }
+        
+        const harga = hitungHargaKhusus(kode);
+        if (harga !== null) {
+            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaEmas').val('');
+        }
+    }
+}
+
+// Fungsi untuk mengupdate harga per gram berdasarkan kode persen
+function updateHargaPerGramKode(form) {
+    const kode = form.find('.kodePersen').val();
+    const selectedKode = form.find('.kode-items').val();
+    
+    // Prioritize selected kode
+    if (selectedKode) {
+        form.find('.kodePersen').val(selectedKode);
+        const harga = hitungHargaKode(selectedKode);
+        if (harga !== null) {
+            form.find('.hargaPerGram').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaPerGram').val('');
+        }
+    } else {
+        if (!kode) {
+            form.find('.hargaPerGram').val('');
+            return;
+        }
+        
+        const harga = hitungHargaKode(kode);
+        if (harga !== null) {
+            form.find('.hargaPerGram').val(harga.toLocaleString('id-ID'));
+        } else {
+            form.find('.hargaPerGram').val('');
+        }
+    }
+}
 
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
@@ -804,9 +966,82 @@ function hitungHarga(form) {
     updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
 }
 
+// Fungsi untuk menghitung harga kode
+function hitungHargaKodeForm(form) {
+    const selectedKode = form.find('.kode-items').val();
+    const kode = selectedKode || form.find('.kodePersen').val();
+    const berat = parseFloat(form.find('.beratEmasKode').val());
+    const ongkosType = form.find('.ongkosKode').val();
+    const discount = parseFloat(form.find('.discountKode').val()) || 0;
+
+    if (!kode || isNaN(berat) || berat <= 0) {
+        alert("Harap isi kode persen dan berat dengan benar.");
+        return;
+    }
+
+    const harga = hitungHargaKode(kode);
+    if (harga === null) return;
+    
+    let hasilAwal = harga * berat;
+    let hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKode()
+
+    // Hitung ongkos
+    let ongkos = 0;
+    if (ongkosType === "15000") {
+        ongkos = berat < 1 ? 15000 : 15000 * berat;
+    } else if (ongkosType === "5") {
+        ongkos = hasilBulat * 0.05;
+    } else if (ongkosType === "10") {
+        ongkos = hasilBulat * 0.10;
+    }
+
+    // Bulatkan ongkos
+    let remainder = ongkos % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        ongkos = ongkos - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        ongkos = ongkos - remainder + 1000;
+    }
+
+    // Hitung harga sebelum discount
+    let hargaSebelumDiscount = hasilBulat + ongkos;
+
+    // Bulatkan harga sebelum discount
+    remainder = hargaSebelumDiscount % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaSebelumDiscount = hargaSebelumDiscount - remainder + 1000;
+    }
+
+    // Hitung harga setelah discount
+    let hargaFix = hargaSebelumDiscount - discount;
+    
+    // Pastikan harga tidak negatif
+    if (hargaFix < 0) {
+        hargaFix = 0;
+    }
+
+    // Update total penjualan
+    const previousHargaFix = form.data('hargaFix') || 0;
+    totalPenjualanKode = totalPenjualanKode - previousHargaFix + hargaFix;
+    updateTotalPenjualanKode(totalPenjualanKode);
+
+    // Simpan hargaFix ke form
+    form.data('hargaFix', hargaFix);
+
+    // Tampilkan detail
+    updateDetailPenjualanKode(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
+}
+
 function updateTotalPenjualan(newTotal) {
     totalPenjualan = newTotal;
     $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
+}
+
+function updateTotalPenjualanKode(newTotal) {
+    totalPenjualanKode = newTotal;
+    $('#totalPenjualanKode').html(`<h3>Total Penjualan: Rp. ${totalPenjualanKode.toLocaleString('id-ID')}</h3>`);
 }
 
 function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
@@ -816,16 +1051,14 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
         // Fixed price item
         detailHtml = `
             <div class="detailPenjualan show">
-                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (${fixedPriceItems[kode]})</h5>
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
                 <div class="row">
                     <div class="col-md-6">
                         <p><strong>Item:</strong> ${fixedPriceItems[kode]}</p>
                         <p><strong>Berat:</strong> ${berat} gram</p>
-                        ${kode <= 100 ? `<p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>` : ''}
                     </div>
                     <div class="col-md-6">
                         <ul>
-                            ${kode <= 100 ? `<li>Harga dasar (${kode}% × COKIM): Rp. ${(cokim * (parseFloat(kode)/100).toLocaleString('id-ID')}</li>` : ''}
                             <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
                             <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
                             <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
@@ -888,9 +1121,65 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
     form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
 }
 
+function updateDetailPenjualanKode(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+    let detailHtml = '';
+    
+    const persentase = parseFloat(kode);
+    const persentaseDecimal = persentase / 100;
+    const hargaDasar = cokim * persentaseDecimal;
+    
+    // Proses pembulatan
+    let remainder = hargaDasar % 1000;
+    let hargaDasarBulat = remainder >= 1 && remainder <= 499 ? 
+        hargaDasar - remainder + 500 : 
+        remainder >= 501 && remainder <= 999 ? 
+        hargaDasar - remainder + 1000 : 
+        hargaDasar;
+    
+    detailHtml = `
+        <div class="detailPenjualan show">
+            <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan Kode</h5>
+            <div class="row">
+                <div class="col-md-6">
+                    <p><strong>Kode:</strong> ${kodeItems[kode] || kode + '%'}</p>
+                    <p><strong>Berat:</strong> ${berat} gram</p>
+                    <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                    <p><strong>Detail Perhitungan:</strong></p>
+                    <ol>
+                        <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                        <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                    </ol>
+                </div>
+                <div class="col-md-6">
+                    <ul>
+                        <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                        <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                        <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                        ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                        <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                        ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                        <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    form.next('.detailPenjualan').remove();
+    form.after(detailHtml);
+    
+    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+}
+
 function clearTotalPenjualan() {
     totalPenjualan = 0;
     $('#totalPenjualan').html('');
+    $('.detailPenjualan').remove();
+}
+
+function clearTotalPenjualanKode() {
+    totalPenjualanKode = 0;
+    $('#totalPenjualanKode').html('');
     $('.detailPenjualan').remove();
 }
 
@@ -936,8 +1225,43 @@ $(document).ready(function() {
         });
     }
     
+    // Initialize form elements for kode
+    function initializeFormElementsKode(form) {
+        // Kode item selection
+        form.find('.kode-items').on('change', function() {
+            updateHargaPerGramKode(form);
+        });
+        
+        // Auto-fill harga when kode is entered
+        form.find('.kodePersen').on('input', function() {
+            // Clear selected kode if typing in kode field
+            form.find('.kode-items').val('');
+            updateHargaPerGramKode(form);
+        });
+        
+        // Toggle detail button
+        form.find('.toggle-detail-btn').off('click').on('click', function() {
+            const detailContainer = form.next('.detailPenjualan');
+            const isVisible = detailContainer.hasClass('show');
+            
+            if (isVisible) {
+                detailContainer.removeClass('show');
+                $(this).html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+            } else {
+                detailContainer.addClass('show');
+                $(this).html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+            }
+        });
+        
+        // Hitung button
+        form.find('.hitungBtnKode').off('click').on('click', function() {
+            hitungHargaKodeForm(form);
+        });
+    }
+    
     // Initialize first form
     initializeFormElements($('#formEmas'));
+    initializeFormElementsKode($('#formKode'));
     
     // COKIM button
     $('#cokimBtn').on('click', function() {
@@ -956,6 +1280,12 @@ $(document).ready(function() {
                         updateHargaPerGram(form);
                         if (form.data('hargaFix') !== undefined) {
                             hitungHarga(form);
+                        }
+                    }
+                    if (form.find('.kodePersen').val()) {
+                        updateHargaPerGramKode(form);
+                        if (form.data('hargaFix') !== undefined) {
+                            hitungHargaKodeForm(form);
                         }
                     }
                 });
@@ -986,6 +1316,26 @@ $(document).ready(function() {
         }, 500);
     });
     
+    // Tambah barang button kode
+    $('.tambahBarangBtnKode').on('click', function() {
+        const formClone = $('#formKode').clone();
+        formClone.find('input, select').val('');
+        formClone.find('.discountKode').val('0');
+        formClone.find('.kode-items').val('');
+        formClone.removeAttr('id');
+        formClone.find('.delete-btn-container').css('display', 'block');
+        formClone.find('.detailPenjualan').remove();
+        $('#formContainerKode').append(formClone);
+        
+        // Initialize the new form
+        initializeFormElementsKode(formClone);
+        
+        // Scroll to the new form
+        $('html, body').animate({
+            scrollTop: formClone.offset().top - 100
+        }, 500);
+    });
+    
     // Clear button
     $(document).on('click', '.clearBtn', function() {
         const form = $(this).closest('.penjualan-form');
@@ -1002,12 +1352,38 @@ $(document).ready(function() {
         form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
     });
     
+    // Clear button kode
+    $(document).on('click', '.clearBtnKode', function() {
+        const form = $(this).closest('.penjualan-form');
+        const previousHargaFix = form.data('hargaFix') || 0;
+        totalPenjualanKode -= previousHargaFix;
+        updateTotalPenjualanKode(totalPenjualanKode);
+        
+        form.removeData('hargaFix');
+        form.next('.detailPenjualan').remove();
+        form.find('.kode-items').val('');
+        
+        // Reset toggle button
+        form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
+    });
+    
     // Delete button
     $(document).on('click', '.deleteBtn', function() {
         const form = $(this).closest('.penjualan-form');
         const previousHargaFix = form.data('hargaFix') || 0;
         totalPenjualan -= previousHargaFix;
         updateTotalPenjualan(totalPenjualan);
+        
+        form.next('.detailPenjualan').remove();
+        form.remove();
+    });
+    
+    // Delete button kode
+    $(document).on('click', '.deleteBtnKode', function() {
+        const form = $(this).closest('.penjualan-form');
+        const previousHargaFix = form.data('hargaFix') || 0;
+        totalPenjualanKode -= previousHargaFix;
+        updateTotalPenjualanKode(totalPenjualanKode);
         
         form.next('.detailPenjualan').remove();
         form.remove();
