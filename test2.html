@@ -821,17 +821,10 @@ function hitungHarga(form) {
     form.data('hargaFix', hargaFix);
 
     // Tampilkan detail
-    updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
-}
-
-function updateTotalPenjualan(newTotal) {
-    totalPenjualan = newTotal;
-    $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
-}
-
-function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+   function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
     let detailHtml = '';
     
+    // Cek apakah ini item dengan harga tetap
     if (fixedPriceItems.hasOwnProperty(harga.toString())) {
         // Fixed price item
         detailHtml = `
@@ -857,9 +850,12 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
             </div>
         `;
     } else {
-        // Percentage-based item
-        const persentase = itemName.includes('%') ? itemName.split(':')[1].trim().replace('%', '') : '';
-        const persentaseDecimal = persentase ? persentase / 100 : 0;
+        // Item dengan kode (percentage-based)
+        const persentase = itemName.includes('Kode:') ? 
+            itemName.split(':')[1].trim().replace('%', '') : 
+            itemName.match(/\d+/)[0];
+        
+        const persentaseDecimal = parseFloat(persentase) / 100;
         const hargaDasar = cokim * persentaseDecimal;
         
         // Proses pembulatan
@@ -878,13 +874,11 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
                         <p><strong>Item:</strong> ${itemName}</p>
                         <p><strong>Berat:</strong> ${berat} gram</p>
                         <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
-                        ${persentase ? `
                         <p><strong>Detail Perhitungan:</strong></p>
                         <ol>
                             <li>COKIM × ${persentase}% = ${cokim.toLocaleString('id-ID')} × ${persentase}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
                             <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
                         </ol>
-                        ` : ''}
                     </div>
                     <div class="col-md-6">
                         <ul>
