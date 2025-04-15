@@ -462,6 +462,17 @@
                     <div class="card-body">
                         <div id="formContainer">
                             <form id="formEmas" class="penjualan-form">
+                                <div class="row mb-3">
+                                    <label for="itemType" class="col-sm-3 col-form-label">Jenis Item</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select item-type" required>
+                                            <option value="">-- Pilih Jenis Item --</option>
+                                            <option value="fixed">Harga Tetap</option>
+                                            <option value="kode">Kode Persentase</option>
+                                            <option value="custom">Kode Custom</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <!-- Di bagian form HTML -->
                                 <div class="item-selector fixed-price-items" style="display: none;">
                                     <select class="form-select fixed-price-select">
@@ -793,6 +804,24 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
     form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
 }
 
+function hitungHargaKhusus(kode) {
+    // Parse the kode (could be a percentage like "39" or a decimal like "84.5")
+    const persentase = parseFloat(kode);
+    if (isNaN(persentase)) return null;
+    
+    // Calculate base price
+    const hargaDasar = cokim * (persentase / 100);
+    
+    // Round to nearest 500
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        return hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        return hargaDasar - remainder + 1000;
+    }
+    return hargaDasar;
+}
+        
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
     const itemType = form.find('.item-type').val();
@@ -909,34 +938,38 @@ $(document).ready(function() {
     }, 1000);
     
     // Initialize form elements
-    function initializeFormElements(form) {
-        // Item type selection
-        form.find('.item-type').on('change', function() {
-            const itemType = $(this).val();
-            
-            // Hide all selectors first
-            form.find('.fixed-price-items').hide();
-            form.find('.kode-items').hide();
-            form.find('.custom-code-input').hide();
-            
-            // Show the appropriate selector
-            if (itemType === 'fixed') {
-                form.find('.fixed-price-items').show();
-            } 
-            else if (itemType === 'kode') {
-                form.find('.kode-items').show();
-            }
-            else if (itemType === 'custom') {
-                form.find('.custom-code-input').show();
-            }
-            
-            // Clear any previous selections
-            form.find('.fixed-price-select').val('');
-            form.find('.kode-select').val('');
-            form.find('.kodeEmas').val('');
-            form.find('.hargaEmas').val('');
-        });
+  function initializeFormElements(form) {
+    // Hide all selectors initially
+    form.find('.fixed-price-items').hide();
+    form.find('.kode-items').hide();
+    form.find('.custom-code-input').hide();
+    
+    // Item type selection
+    form.find('.item-type').on('change', function() {
+        const itemType = $(this).val();
         
+        // Hide all selectors first
+        form.find('.fixed-price-items').hide();
+        form.find('.kode-items').hide();
+        form.find('.custom-code-input').hide();
+        
+        // Show the appropriate selector
+        if (itemType === 'fixed') {
+            form.find('.fixed-price-items').show();
+        } 
+        else if (itemType === 'kode') {
+            form.find('.kode-items').show();
+        }
+        else if (itemType === 'custom') {
+            form.find('.custom-code-input').show();
+        }
+        
+        // Clear any previous selections
+        form.find('.fixed-price-select').val('');
+        form.find('.kode-select').val('');
+        form.find('.kodeEmas').val('');
+        form.find('.hargaEmas').val('');
+    });
         // Auto-fill harga when fixed price is selected
         form.find('.fixed-price-select').on('change', function() {
             updateHargaPerGram(form);
@@ -1137,6 +1170,7 @@ $(document).ready(function() {
         loadHargaData();
     });
 });
+    
 </script>
 </body>
 </html>
