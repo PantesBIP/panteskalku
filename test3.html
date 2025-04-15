@@ -740,6 +740,7 @@ function hitungHarga(form) {
 
     let harga = null;
     let itemName = "";
+    let persentase = "";
     
     if (itemType === 'fixed') {
         if (!fixedPrice) {
@@ -756,6 +757,7 @@ function hitungHarga(form) {
         }
         harga = hitungHargaKhusus(kode);
         itemName = kodeItems[kode];
+        persentase = kode;
     }
     else if (itemType === 'custom') {
         if (!customKode) {
@@ -764,6 +766,7 @@ function hitungHarga(form) {
         }
         harga = hitungHargaKhusus(customKode);
         itemName = "Kode: " + customKode + "%";
+        persentase = customKode;
     }
     else {
         alert("Harap pilih jenis item terlebih dahulu.");
@@ -773,7 +776,7 @@ function hitungHarga(form) {
     if (harga === null) return;
     
     let hasilAwal = harga * berat;
-    let hasilBulat = hasilAwal; // Tidak perlu pembulatan lagi karena sudah dibulatkan di hitungHargaKhusus()
+    let hasilBulat = hasilAwal;
 
     // Hitung ongkos
     let ongkos = 0;
@@ -821,15 +824,10 @@ function hitungHarga(form) {
     form.data('hargaFix', hargaFix);
 
     // Tampilkan detail
-    updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
+    updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix, persentase);
 }
 
-function updateTotalPenjualan(newTotal) {
-    totalPenjualan = newTotal;
-    $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
-}
-
-function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix, persentase) {
     let detailHtml = '';
     
     if (fixedPriceItems.hasOwnProperty(harga.toString())) {
@@ -847,9 +845,9 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
                             <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
                             <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
                             <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            ${ongkos > 0 ? <li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li> : ''}
                             <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            ${discount > 0 ? <li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li> : ''}
                             <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
                         </ul>
                     </div>
@@ -858,7 +856,6 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
         `;
     } else {
         // Percentage-based item
-        const persentase = itemName.includes('%') ? itemName.split(':')[1].trim().replace('%', '') : '';
         const persentaseDecimal = persentase ? persentase / 100 : 0;
         const hargaDasar = cokim * persentaseDecimal;
         
@@ -891,9 +888,9 @@ function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBul
                             <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
                             <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
                             <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            ${ongkos > 0 ? <li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li> : ''}
                             <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            ${discount > 0 ? <li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li> : ''}
                             <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
                         </ul>
                     </div>
