@@ -1,1 +1,19 @@
 
+{
+  "fixedPriceItems": [
+    {"value": "815000", "label": "8k Kuning"},
+    {"value": "850000", "label": "8k Putih"},
+    {"value": "865000", "label": "9k Kuning"},
+    {"value": "885000", "label": "9k Putih"}
+  ],
+  "kodeItems": [
+    {"value": "39", "label": "JUENE (39%)"},
+    {"value": "46", "label": "BG 8K (46%)"},
+    {"value": "54", "label": "ILY (54%)"},
+    {"value": "55", "label": "VOILA (55%)"},
+    {"value": "77", "label": "16K BG & Hala (77%)"},
+    {"value": "85", "label": "17K Biasa & Amero (85%)"},
+    {"value": "80", "label": "16K LPM (80%)"},
+    {"value": "88", "label": "18K LPM (88%)"}
+  ]
+}
