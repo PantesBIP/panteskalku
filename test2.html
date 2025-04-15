@@ -475,10 +475,10 @@
                                 <div class="item-selector fixed-price-items" style="display: none;">
                                     <select class="form-select fixed-price-select">
                                         <option value="">-- Pilih Item Harga Tetap --</option>
-                                        <option value="770000">8k Kuning</option>
-                                        <option value="800000">8k Putih</option>
-                                        <option value="825000">9k Kuning</option>
-                                        <option value="845000">9k Putih</option>
+                                        <option value="815000">8k Kuning</option>
+                                        <option value="850000">8k Putih</option>
+                                        <option value="865000">9k Kuning</option>
+                                        <option value="885000">9k Putih</option>
                                     </select>
                                 </div>
                                 
@@ -628,16 +628,16 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-   // Variabel global
-let cokim = 1743000; // Default COKIM value
+// Variabel global
+let cokim = 1740000; // Default COKIM value
 let totalPenjualan = 0;
 
 // Fixed price items
 const fixedPriceItems = {
-    "770000": "8k Kuning",
-    "800000": "8k Putih",
-    "825000": "9k Kuning",
-    "845000": "9k Putih"
+    "815000": "8k Kuning",
+    "850000": "8k Putih",
+    "865000": "9k Kuning",
+    "885000": "9k Putih"
 };
 
 // Kode items
@@ -721,6 +721,92 @@ function updateHargaPerGram(form) {
     else {
         form.find('.hargaEmas').val('');
     }
+}
+
+function updateTotalPenjualan(newTotal) {
+    totalPenjualan = newTotal;
+    $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
+}
+
+function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+    let detailHtml = '';
+    
+    // Cek apakah ini item dengan harga tetap
+    if (fixedPriceItems.hasOwnProperty(harga.toString())) {
+        // Fixed price item
+        detailHtml = `
+            <div class="detailPenjualan show">
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Item:</strong> ${itemName}</p>
+                        <p><strong>Berat:</strong> ${berat} gram</p>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        // Item dengan kode (percentage-based)
+        const persentase = itemName.includes('Kode:') ? 
+            itemName.split(':')[1].trim().replace('%', '') : 
+            itemName.match(/\d+/)[0];
+        
+        const persentaseDecimal = parseFloat(persentase) / 100;
+        const hargaDasar = cokim * persentaseDecimal;
+        
+        // Proses pembulatan
+        let remainder = hargaDasar % 1000;
+        let hargaDasarBulat = remainder >= 1 && remainder <= 499 ? 
+            hargaDasar - remainder + 500 : 
+            remainder >= 501 && remainder <= 999 ? 
+            hargaDasar - remainder + 1000 : 
+            hargaDasar;
+        
+        detailHtml = `
+            <div class="detailPenjualan show">
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Item:</strong> ${itemName}</p>
+                        <p><strong>Berat:</strong> ${berat} gram</p>
+                        <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                        <p><strong>Detail Perhitungan:</strong></p>
+                        <ol>
+                            <li>COKIM × ${persentase}% = ${cokim.toLocaleString('id-ID')} × ${persentase}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                            <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+                        <ul>
+                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
+                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
+                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
+                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
+                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
+                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
+                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    form.next('.detailPenjualan').remove();
+    form.after(detailHtml);
+    
+    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
 }
 
 // Fungsi untuk menghitung harga
@@ -821,85 +907,7 @@ function hitungHarga(form) {
     form.data('hargaFix', hargaFix);
 
     // Tampilkan detail
-   function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
-    let detailHtml = '';
-    
-    // Cek apakah ini item dengan harga tetap
-    if (fixedPriceItems.hasOwnProperty(harga.toString())) {
-        // Fixed price item
-        detailHtml = `
-            <div class="detailPenjualan show">
-                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Item:</strong> ${itemName}</p>
-                        <p><strong>Berat:</strong> ${berat} gram</p>
-                    </div>
-                    <div class="col-md-6">
-                        <ul>
-                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
-                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
-                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
-                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-    } else {
-        // Item dengan kode (percentage-based)
-        const persentase = itemName.includes('Kode:') ? 
-            itemName.split(':')[1].trim().replace('%', '') : 
-            itemName.match(/\d+/)[0];
-        
-        const persentaseDecimal = parseFloat(persentase) / 100;
-        const hargaDasar = cokim * persentaseDecimal;
-        
-        // Proses pembulatan
-        let remainder = hargaDasar % 1000;
-        let hargaDasarBulat = remainder >= 1 && remainder <= 499 ? 
-            hargaDasar - remainder + 500 : 
-            remainder >= 501 && remainder <= 999 ? 
-            hargaDasar - remainder + 1000 : 
-            hargaDasar;
-        
-        detailHtml = `
-            <div class="detailPenjualan show">
-                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
-                <div class="row">
-                    <div class="col-md-6">
-                        <p><strong>Item:</strong> ${itemName}</p>
-                        <p><strong>Berat:</strong> ${berat} gram</p>
-                        <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
-                        <p><strong>Detail Perhitungan:</strong></p>
-                        <ol>
-                            <li>COKIM × ${persentase}% = ${cokim.toLocaleString('id-ID')} × ${persentase}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
-                            <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
-                        </ol>
-                    </div>
-                    <div class="col-md-6">
-                        <ul>
-                            <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
-                            <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
-                            <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
-                            ${ongkos > 0 ? `<li>Ongkos: Rp. ${ongkos.toLocaleString('id-ID')}</li>` : ''}
-                            <li>Harga Sebelum Discount: Rp. ${hargaSebelumDiscount.toLocaleString('id-ID')}</li>
-                            ${discount > 0 ? `<li>Discount: Rp. ${discount.toLocaleString('id-ID')}</li>` : ''}
-                            <li class="fw-bold">Harga Final: Rp. ${hargaFix.toLocaleString('id-ID')}</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-    
-    form.next('.detailPenjualan').remove();
-    form.after(detailHtml);
-    
-    form.find('.toggle-detail-btn').html('<i class="fas fa-eye-slash me-1"></i> Sembunyikan Detail');
+    updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
 }
 
 function clearTotalPenjualan() {
@@ -931,7 +939,7 @@ $(document).ready(function() {
             if (itemType === 'fixed') {
                 form.find('.fixed-price-items').show();
             } 
-                        else if (itemType === 'kode') {
+            else if (itemType === 'kode') {
                 form.find('.kode-items').show();
             }
             else if (itemType === 'custom') {
