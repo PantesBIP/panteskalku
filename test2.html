@@ -356,96 +356,68 @@
             }
         }
         
-        /* Fixed price items selector */
-        .fixed-price-selector {
+        /* Item type selector */
+        .item-type-selector {
             margin-bottom: 15px;
         }
         
-        .fixed-price-selector select {
+        .item-type-selector select {
             width: 100%;
             padding: 8px;
             border-radius: 4px;
             border: 1px solid #ced4da;
         }
-        /* Add to your existing styles */
-.btn-harga {
-    background-color: #28a745;
-    color: white;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    transition: all 0.3s ease;
-}
 
-.btn-harga:hover {
-    transform: scale(1.1);
-    box-shadow: 0 6px 15px rgba(0,0,0,0.4);
-}
+        /* Item selector */
+        .item-selector {
+            margin-bottom: 15px;
+        }
+        
+        .item-selector select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ced4da;
+        }
 
-.btn-harga i {
-    font-size: 24px;
-}
+        /* Custom code input */
+        .custom-code-input {
+            display: none;
+        }
 
-.btn-harga .text {
-    display: none;
-}
+        /* Table styles */
+        .harga-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
 
-@media (min-width: 768px) {
-    .btn-harga {
-        width: auto;
-        height: auto;
-        padding: 12px 20px;
-        border-radius: 30px;
-    }
-    
-    .btn-harga i {
-        margin-right: 8px;
-    }
-    
-    .btn-harga .text {
-        display: inline;
-    }
-}
+        .harga-table th, .harga-table td {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
 
-/* Table styles */
-.harga-table {
-    width: 100%;
-    border-collapse: collapse;
-}
+        .harga-table th {
+            background-color: var(--primary-color);
+            color: white;
+        }
 
-.harga-table th, .harga-table td {
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    text-align: left;
-}
+        .harga-table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-.harga-table th {
-    background-color: var(--primary-color);
-    color: white;
-}
+        .harga-table tr:hover {
+            background-color: #e9e9e9;
+        }
 
-.harga-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.harga-table tr:hover {
-    background-color: #e9e9e9;
-}
-
-.harga-category {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    color: var(--primary-color);
-    font-weight: bold;
-    border-bottom: 2px solid var(--primary-color);
-    padding-bottom: 5px;
-}
+        .harga-category {
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+            font-weight: bold;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -489,30 +461,50 @@
                     </div>
                     <div class="card-body">
                         <div id="formContainer">
-                           <form id="formEmas" class="penjualan-form">
-                                <div class="fixed-price-selector">
-                                    <select class="form-select fixed-price-items">
+                            <form id="formEmas" class="penjualan-form">
+                                <div class="item-type-selector">
+                                    <select class="form-select item-type">
+                                        <option value="">-- Pilih Jenis Item --</option>
+                                        <option value="fixed">Harga Tetap</option>
+                                        <option value="kode">Hitung Kode</option>
+                                        <option value="custom">Kode Manual</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Fixed price items selector -->
+                                <div class="item-selector fixed-price-items" style="display: none;">
+                                    <select class="form-select fixed-price-select">
                                         <option value="">-- Pilih Item Harga Tetap --</option>
-                                        <option value="39">JUENE</option>
-                                        <option value="46">BG 8K</option>
-                                        <option value="54">ILY</option>
-                                        <option value="55">VOILA</option>
-                                        <option value="77">16KXB BG & Hala</option>
-                                        <option value="80">16K LPM</option>
-                                        <option value="85">17K Biasa & Amero</option>
-                                        <option value="88">18 K LPM</option>
                                         <option value="770000">8k Kuning</option>
                                         <option value="800000">8k Putih</option>
                                         <option value="825000">9k Kuning</option>
                                         <option value="845000">9k Putih</option>
                                     </select>
                                 </div>
-                                <div class="row mb-3">
+                                
+                                <!-- Kode items selector -->
+                                <div class="item-selector kode-items" style="display: none;">
+                                    <select class="form-select kode-select">
+                                        <option value="">-- Pilih Kode Item --</option>
+                                        <option value="39">JUENE (39%)</option>
+                                        <option value="46">BG 8K (46%)</option>
+                                        <option value="54">ILY (54%)</option>
+                                        <option value="55">VOILA (55%)</option>
+                                        <option value="77">16K BG & Hala (77%)</option>
+                                        <option value="85">17K Biasa & Amero (85%)</option>
+                                        <option value="80">16K LPM (80%)</option>
+                                        <option value="88">18K LPM (88%)</option>
+                                    </select>
+                                </div>
+                                
+                                <!-- Custom code input -->
+                                <div class="row mb-3 custom-code-input">
                                     <label for="kodeEmas" class="col-sm-3 col-form-label">Kode Emas</label>
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control kodeEmas" placeholder="Masukkan kode emas (contoh: 84.5, 85.5, 90.5)">
                                     </div>
                                 </div>
+                                
                                 <div class="row mb-3">
                                     <label for="hargaEmas" class="col-sm-3 col-form-label">Harga per gram</label>
                                     <div class="col-sm-9">
@@ -637,132 +629,147 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
    // Variabel global
-let cokim = 1684000; // Default COKIM value
+let cokim = 1743000; // Default COKIM value
 let totalPenjualan = 0;
 
 // Fixed price items
 const fixedPriceItems = {
-    "39": "JUENE",
-    "46": "BG 8K",
-    "54": "ILY",
-    "55": "VOILA",
-    "77": "16KXB BG & Hala",
-    "80": "16K LPM",
-    "85": "17K Biasa & Amero",
-    "88": "18 K LPM",
     "770000": "8k Kuning",
     "800000": "8k Putih",
     "825000": "9k Kuning",
     "845000": "9k Putih"
 };
 
+// Kode items
+const kodeItems = {
+    "39": "JUENE (39%)",
+    "46": "BG 8K (46%)",
+    "54": "ILY (54%)",
+    "55": "VOILA (55%)",
+    "77": "16K BG & Hala (77%)",
+    "85": "17K Biasa & Amero (85%)",
+    "80": "16K LPM (80%)",
+    "88": "18K LPM (88%)"
+};
+
 // Fungsi untuk menghitung harga berdasarkan kode manual dengan pembulatan sesuai aturan
 function hitungHargaKhusus(kode) {
     // Check if this is a fixed price item
     if (fixedPriceItems.hasOwnProperty(kode)) {
-        // For percentage-based fixed items (like JUENE=39), calculate based on COKIM
-        if (kode <= 100) {
-            const persentaseDecimal = parseFloat(kode) / 100;
-            let hargaDasar = cokim * persentaseDecimal;
-            
-            // Bulatkan ke 500 atau 1000
-            let remainder = hargaDasar % 1000;
-            if (remainder >= 1 && remainder <= 499) {
-                hargaDasar = hargaDasar - remainder + 500;
-            } else if (remainder >= 501 && remainder <= 999) {
-                hargaDasar = hargaDasar - remainder + 1000;
-            }
-            
-            return Math.round(hargaDasar);
-        }
-        // For absolute fixed price items (like 8k Kuning=770000), return as is
         return parseInt(kode);
     }
     
     // Validasi kode harus berupa angka antara 0 dan 100 (hanya untuk non-fixed price items)
     const persentase = parseFloat(kode);
-    if (isNaN(persentase) {
-        alert("Kode emas harus berupa angka");
+    if (isNaN(persentase) || persentase <= 0 || persentase > 100) {
+        alert("Kode emas harus berupa angka antara 0 dan 100");
         return null;
     }
     
-    // If it's a percentage (like 84.5)
-    if (persentase > 0 && persentase <= 100) {
-        const persentaseDecimal = persentase / 100;
-        let hargaDasar = cokim * persentaseDecimal;
-        
-        // Bulatkan ke 500 atau 1000
-        let remainder = hargaDasar % 1000;
-        if (remainder >= 1 && remainder <= 499) {
-            hargaDasar = hargaDasar - remainder + 500;
-        } else if (remainder >= 501 && remainder <= 999) {
-            hargaDasar = hargaDasar - remainder + 1000;
-        }
-        
-        return Math.round(hargaDasar);
+    const persentaseDecimal = persentase / 100;
+    let hargaDasar = cokim * persentaseDecimal;
+    
+    // Bulatkan ke 500 atau 1000
+    let remainder = hargaDasar % 1000;
+    if (remainder >= 1 && remainder <= 499) {
+        hargaDasar = hargaDasar - remainder + 500;
+    } else if (remainder >= 501 && remainder <= 999) {
+        hargaDasar = hargaDasar - remainder + 1000;
     }
     
-    // If it's a direct price (like 770000)
-    return parseFloat(kode);
+    return Math.round(hargaDasar);
 }
 
-// Fungsi untuk mengupdate harga per gram berdasarkan kode yang dimasukkan
+// Fungsi untuk mengupdate harga per gram berdasarkan item yang dipilih
 function updateHargaPerGram(form) {
-    const kode = form.find('.kodeEmas').val();
-    const fixedPrice = form.find('.fixed-price-items').val();
+    const itemType = form.find('.item-type').val();
+    const fixedPrice = form.find('.fixed-price-select').val();
+    const kode = form.find('.kode-select').val();
+    const customKode = form.find('.kodeEmas').val();
     
-    // Prioritize fixed price selection
-    if (fixedPrice) {
-        const harga = hitungHargaKhusus(fixedPrice);
-        if (harga !== null) {
-            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+    if (itemType === 'fixed') {
+        if (fixedPrice) {
+            form.find('.hargaEmas').val(parseInt(fixedPrice).toLocaleString('id-ID'));
         } else {
             form.find('.hargaEmas').val('');
         }
-        form.find('.kodeEmas').val('').prop('disabled', true);
-    } else {
-        form.find('.kodeEmas').prop('disabled', false);
-        if (!kode) {
-            form.find('.hargaEmas').val('');
-            return;
-        }
-        
-        const harga = hitungHargaKhusus(kode);
-        if (harga !== null) {
-            form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+    } 
+    else if (itemType === 'kode') {
+        if (kode) {
+            const harga = hitungHargaKhusus(kode);
+            if (harga !== null) {
+                form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+            } else {
+                form.find('.hargaEmas').val('');
+            }
         } else {
             form.find('.hargaEmas').val('');
         }
     }
+    else if (itemType === 'custom') {
+        if (customKode) {
+            const harga = hitungHargaKhusus(customKode);
+            if (harga !== null) {
+                form.find('.hargaEmas').val(harga.toLocaleString('id-ID'));
+            } else {
+                form.find('.hargaEmas').val('');
+            }
+        } else {
+            form.find('.hargaEmas').val('');
+        }
+    }
+    else {
+        form.find('.hargaEmas').val('');
+    }
 }
 
-// Initialize form elements
-function initializeFormElements(form) {
-    // Fixed price item selection
-    form.find('.fixed-price-items').on('change', function() {
-        updateHargaPerGram(form);
-    });
-    
-    // Auto-fill harga when kode is entered
-    form.find('.kodeEmas').on('input', function() {
-        // Clear fixed price selection if typing in kode field
-        form.find('.fixed-price-items').val('');
-        updateHargaPerGram(form);
-    });
 // Fungsi untuk menghitung harga
 function hitungHarga(form) {
-    const fixedPrice = form.find('.fixed-price-items').val();
-    const kode = fixedPrice || form.find('.kodeEmas').val();
+    const itemType = form.find('.item-type').val();
+    const fixedPrice = form.find('.fixed-price-select').val();
+    const kode = form.find('.kode-select').val();
+    const customKode = form.find('.kodeEmas').val();
     const berat = parseFloat(form.find('.beratEmas').val());
     const ongkosType = form.find('.ongkos').val();
     const discount = parseFloat(form.find('.discount').val()) || 0;
 
-    if (!kode || isNaN(berat) || berat <= 0) {
-        alert("Harap isi kode emas dan berat dengan benar.");
+    if (isNaN(berat) || berat <= 0) {
+        alert("Harap isi berat dengan benar.");
         return;
     }
 
-    const harga = hitungHargaKhusus(kode);
+    let harga = null;
+    let itemName = "";
+    
+    if (itemType === 'fixed') {
+        if (!fixedPrice) {
+            alert("Harap pilih item harga tetap.");
+            return;
+        }
+        harga = parseInt(fixedPrice);
+        itemName = fixedPriceItems[fixedPrice];
+    } 
+    else if (itemType === 'kode') {
+        if (!kode) {
+            alert("Harap pilih kode item.");
+            return;
+        }
+        harga = hitungHargaKhusus(kode);
+        itemName = kodeItems[kode];
+    }
+    else if (itemType === 'custom') {
+        if (!customKode) {
+            alert("Harap masukkan kode emas.");
+            return;
+        }
+        harga = hitungHargaKhusus(customKode);
+        itemName = "Kode: " + customKode + "%";
+    }
+    else {
+        alert("Harap pilih jenis item terlebih dahulu.");
+        return;
+    }
+    
     if (harga === null) return;
     
     let hasilAwal = harga * berat;
@@ -814,7 +821,7 @@ function hitungHarga(form) {
     form.data('hargaFix', hargaFix);
 
     // Tampilkan detail
-    updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
+    updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix);
 }
 
 function updateTotalPenjualan(newTotal) {
@@ -822,23 +829,21 @@ function updateTotalPenjualan(newTotal) {
     $('#totalPenjualan').html(`<h3>Total Penjualan: Rp. ${totalPenjualan.toLocaleString('id-ID')}</h3>`);
 }
 
-function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
+function updateDetailPenjualan(form, itemName, berat, harga, hasilAwal, hasilBulat, ongkos, hargaSebelumDiscount, discount, hargaFix) {
     let detailHtml = '';
     
-    if (fixedPriceItems.hasOwnProperty(kode)) {
+    if (fixedPriceItems.hasOwnProperty(harga.toString())) {
         // Fixed price item
         detailHtml = `
             <div class="detailPenjualan show">
-                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (${fixedPriceItems[kode]})</h5>
+                <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan (Harga Tetap)</h5>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Item:</strong> ${fixedPriceItems[kode]}</p>
+                        <p><strong>Item:</strong> ${itemName}</p>
                         <p><strong>Berat:</strong> ${berat} gram</p>
-                        ${kode <= 100 ? `<p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>` : ''}
                     </div>
                     <div class="col-md-6">
                         <ul>
-                            ${kode <= 100 ? `<li>Harga dasar (${kode}% × COKIM): Rp. ${(cokim * (parseFloat(kode)/100).toLocaleString('id-ID')}</li>` : ''}
                             <li>Harga per gram: Rp. ${harga.toLocaleString('id-ID')}</li>
                             <li>Harga Awal (Harga x Berat): Rp. ${(harga * berat).toLocaleString('id-ID')}</li>
                             <li>Harga Bulat: Rp. ${hasilBulat.toLocaleString('id-ID')}</li>
@@ -853,8 +858,8 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
         `;
     } else {
         // Percentage-based item
-        const persentase = parseFloat(kode);
-        const persentaseDecimal = persentase / 100;
+        const persentase = itemName.includes('%') ? itemName.split(':')[1].trim().replace('%', '') : '';
+        const persentaseDecimal = persentase ? persentase / 100 : 0;
         const hargaDasar = cokim * persentaseDecimal;
         
         // Proses pembulatan
@@ -870,14 +875,16 @@ function updateDetailPenjualan(form, kode, berat, harga, hasilAwal, hasilBulat, 
                 <h5><i class="fas fa-info-circle me-2"></i>Detail Perhitungan</h5>
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Kode:</strong> ${kode}%</p>
+                        <p><strong>Item:</strong> ${itemName}</p>
                         <p><strong>Berat:</strong> ${berat} gram</p>
                         <p><strong>COKIM:</strong> Rp. ${cokim.toLocaleString('id-ID')}</p>
+                        ${persentase ? `
                         <p><strong>Detail Perhitungan:</strong></p>
                         <ol>
-                            <li>COKIM × ${kode}% = ${cokim.toLocaleString('id-ID')} × ${kode}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
+                            <li>COKIM × ${persentase}% = ${cokim.toLocaleString('id-ID')} × ${persentase}% = Rp. ${hargaDasar.toLocaleString('id-ID')}</li>
                             <li>Pembulatan: Rp. ${hargaDasarBulat.toLocaleString('id-ID')}</li>
                         </ol>
+                        ` : ''}
                     </div>
                     <div class="col-md-6">
                         <ul>
@@ -917,15 +924,45 @@ $(document).ready(function() {
     
     // Initialize form elements
     function initializeFormElements(form) {
-        // Fixed price item selection
-        form.find('.fixed-price-items').on('change', function() {
+        // Item type selection
+        form.find('.item-type').on('change', function() {
+            const itemType = $(this).val();
+            
+            // Hide all selectors first
+            form.find('.fixed-price-items').hide();
+            form.find('.kode-items').hide();
+            form.find('.custom-code-input').hide();
+            
+            // Show the appropriate selector
+            if (itemType === 'fixed') {
+                form.find('.fixed-price-items').show();
+            } 
+                        else if (itemType === 'kode') {
+                form.find('.kode-items').show();
+            }
+            else if (itemType === 'custom') {
+                form.find('.custom-code-input').show();
+            }
+            
+            // Clear any previous selections
+            form.find('.fixed-price-select').val('');
+            form.find('.kode-select').val('');
+            form.find('.kodeEmas').val('');
+            form.find('.hargaEmas').val('');
+        });
+        
+        // Auto-fill harga when fixed price is selected
+        form.find('.fixed-price-select').on('change', function() {
             updateHargaPerGram(form);
         });
         
-        // Auto-fill harga when kode is entered
+        // Auto-fill harga when kode is selected
+        form.find('.kode-select').on('change', function() {
+            updateHargaPerGram(form);
+        });
+        
+        // Auto-fill harga when custom kode is entered
         form.find('.kodeEmas').on('input', function() {
-            // Clear fixed price selection if typing in kode field
-            form.find('.fixed-price-items').val('');
             updateHargaPerGram(form);
         });
         
@@ -962,10 +999,12 @@ $(document).ready(function() {
                 cokim = parsedCokim;
                 alert(`Nilai COKIM berhasil diupdate menjadi Rp. ${cokim.toLocaleString('id-ID')}`);
                 
-                // Update all forms that have kode entered (except fixed price items)
+                // Update all forms that have kode entered
                 $('.penjualan-form').each(function() {
                     const form = $(this);
-                    if (form.find('.kodeEmas').val() && !form.find('.fixed-price-items').val()) {
+                    const itemType = form.find('.item-type').val();
+                    
+                    if (itemType === 'kode' || itemType === 'custom') {
                         updateHargaPerGram(form);
                         if (form.data('hargaFix') !== undefined) {
                             hitungHarga(form);
@@ -983,8 +1022,14 @@ $(document).ready(function() {
         const formClone = $('#formEmas').clone();
         formClone.find('input, select').val('');
         formClone.find('.discount').val('0');
-        formClone.find('.fixed-price-items').val('');
-        formClone.find('.kodeEmas').prop('disabled', false);
+        formClone.find('.item-type').val('');
+        formClone.find('.fixed-price-select').val('');
+        formClone.find('.kode-select').val('');
+        formClone.find('.kodeEmas').val('');
+        formClone.find('.hargaEmas').val('');
+        formClone.find('.fixed-price-items').hide();
+        formClone.find('.kode-items').hide();
+        formClone.find('.custom-code-input').hide();
         formClone.removeAttr('id');
         formClone.find('.delete-btn-container').css('display', 'block');
         formClone.find('.detailPenjualan').remove();
@@ -1008,8 +1053,6 @@ $(document).ready(function() {
         
         form.removeData('hargaFix');
         form.next('.detailPenjualan').remove();
-        form.find('.fixed-price-items').val('');
-        form.find('.kodeEmas').prop('disabled', false);
         
         // Reset toggle button
         form.find('.toggle-detail-btn').html('<i class="fas fa-eye me-1"></i> Tampilkan Detail');
@@ -1026,7 +1069,7 @@ $(document).ready(function() {
         form.remove();
     });
     
-        // Floating buttons scroll effect
+    // Floating buttons scroll effect
     $(window).scroll(function() {
         if ($(window).scrollTop() > 100) {
             $('.floating-buttons-container').css({
@@ -1044,70 +1087,70 @@ $(document).ready(function() {
     });
     
     // Harga button functionality
-$('#hargaBtn').on('click', function() {
-    $('#hargaModal').modal('show');
-    loadHargaData();
-});
+    $('#hargaBtn').on('click', function() {
+        $('#hargaModal').modal('show');
+        loadHargaData();
+    });
 
-function loadHargaData() {
-    $('#hargaContainer').html('');
-    $('.modal-body .spinner').show();
-    
-    $.ajax({
-        url: 'harga.json', // Make sure this path is correct
-        dataType: 'json',
-        success: function(data) {
-            $('.modal-body .spinner').hide();
-            displayHargaData(data);
-        },
-        error: function() {
-            $('.modal-body .spinner').hide();
-            $('#hargaContainer').html('<div class="alert alert-danger">Gagal memuat data harga. Silakan coba lagi.</div>');
-        }
-    });
-}
+    function loadHargaData() {
+        $('#hargaContainer').html('');
+        $('.modal-body .spinner').show();
+        
+        $.ajax({
+            url: 'harga.json', // Make sure this path is correct
+            dataType: 'json',
+            success: function(data) {
+                $('.modal-body .spinner').hide();
+                displayHargaData(data);
+            },
+            error: function() {
+                $('.modal-body .spinner').hide();
+                $('#hargaContainer').html('<div class="alert alert-danger">Gagal memuat data harga. Silakan coba lagi.</div>');
+            }
+        });
+    }
 
-function displayHargaData(data) {
-    let html = '';
-    
-    // Process emas data
-    html += '<div class="harga-category">Emas</div>';
-    html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
-    data.emas.forEach(item => {
-        if (item.sellPrice > 0) {
-            html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
-        }
-    });
-    html += '</tbody></table>';
-    
-    // Process antam data
-    html += '<div class="harga-category">Antam</div>';
-    html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
-    data.antam.forEach(item => {
-        if (item.sellPrice > 0) {
-            html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
-        }
-    });
-    html += '</tbody></table>';
-    
-    // Process archi data
-    html += '<div class="harga-category">Archi</div>';
-    html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
-    data.archi.forEach(item => {
-        if (item.sellPrice > 0) {
-            html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
-        }
-    });
-    html += '</tbody></table>';
-    
-    $('#hargaContainer').html(html);
-}
+    function displayHargaData(data) {
+        let html = '';
+        
+        // Process emas data
+        html += '<div class="harga-category">Emas</div>';
+        html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
+        data.emas.forEach(item => {
+            if (item.sellPrice > 0) {
+                html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
+            }
+        });
+        html += '</tbody></table>';
+        
+        // Process antam data
+        html += '<div class="harga-category">Antam</div>';
+        html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
+        data.antam.forEach(item => {
+            if (item.sellPrice > 0) {
+                html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
+            }
+        });
+        html += '</tbody></table>';
+        
+        // Process archi data
+        html += '<div class="harga-category">Archi</div>';
+        html += '<table class="harga-table"><thead><tr><th>Item</th><th>Harga Jual</th></tr></thead><tbody>';
+        data.archi.forEach(item => {
+            if (item.sellPrice > 0) {
+                html += `<tr><td>${item.code}</td><td>Rp. ${item.sellPrice.toLocaleString('id-ID')}</td></tr>`;
+            }
+        });
+        html += '</tbody></table>';
+        
+        $('#hargaContainer').html(html);
+    }
 
-// Refresh harga when modal is shown
-$('#hargaModal').on('shown.bs.modal', function() {
-    loadHargaData();
+    // Refresh harga when modal is shown
+    $('#hargaModal').on('shown.bs.modal', function() {
+        loadHargaData();
+    });
 });
-});
-    </script>
+</script>
 </body>
 </html>
