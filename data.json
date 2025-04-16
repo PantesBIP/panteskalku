@@ -1,16 +1,16 @@
 {
   "fixedPriceItems": [
-    {"value": "840000", "label": "8k Kuning"},
-    {"value": "875000", "label": "8k Putih"},
-    {"value": "880000", "label": "9k Kuning"},
-    {"value": "900000", "label": "9k Putih"}
+    {"value": "840000", "label": "8K Kuning"},
+    {"value": "875000", "label": "8K Putih"},
+    {"value": "880000", "label": "9K Kuning"},
+    {"value": "900000", "label": "9K Putih"}
   ],
   "kodeItems": [
     {"value": "39", "label": "JUENE (39%)"},
     {"value": "46", "label": "BG 8K (46%)"},
     {"value": "54", "label": "ILY (54%)"},
     {"value": "55", "label": "VOILA (55%)"},
-    {"value": "77", "label": "16K BG & Hala (77%)"},
+    {"value": "77", "label": "16K Biasa, BG & Hala (77%)"},
     {"value": "80", "label": "16K LPM (80%)"},
     {"value": "85", "label": "17K Biasa & Amero (85%)"},
     {"value": "88", "label": "18K LPM (88%)"}
