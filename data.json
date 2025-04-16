@@ -1,4 +1,3 @@
-
 {
   "fixedPriceItems": [
     {"value": "815000", "label": "8k Kuning"},
@@ -15,5 +14,6 @@
     {"value": "80", "label": "16K LPM (80%)"},
     {"value": "85", "label": "17K Biasa & Amero (85%)"},
     {"value": "88", "label": "18K LPM (88%)"}
-  ]
+  ],
+  "cokim": 1762000
 }
