@@ -616,62 +616,61 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
-  // Variabel global
-        let cokim = 1762000; // Nilai default jika JSON gagal dimuat
-        let totalPenjualan = 0;
-        let fixedPriceItems = {};
-        let kodeItems = {};
+// Variabel global
+let cokim = 1762000;
+let totalPenjualan = 0;
+let fixedPriceItems = {};
+let kodeItems = {};
 
-        // Fungsi untuk update tampilan COKIM
-        function updateCokimDisplay() {
-            $('#currentCokim').html(`COKIM: Rp. ${cokim.toLocaleString('id-ID')}`);
-        }
-
-        // Fungsi untuk memuat data dari JSON
-        function loadData() {
-            return $.ajax({
-                url: 'data.json',
-                dataType: 'json',
-                success: function(data) {
-                    fixedPriceItems = {};
-                    kodeItems = {};
-                    
-                    // Update nilai cokim dari JSON
-                    if (data.cokim) {
-                        cokim = data.cokim;
-                        updateCokimDisplay();
-                    }
-                    
-                    // Konversi array ke object untuk fixedPriceItems
-                    data.fixedPriceItems.forEach(item => {
-                        fixedPriceItems[item.value] = item.label;
-                    });
-                    
-                    // Konversi array ke object untuk kodeItems
-                    data.kodeItems.forEach(item => {
-                        kodeItems[item.value] = item.label;
-                    });
-                    
-                    // Isi dropdown fixed price
-                    const fixedPriceSelect = $('.fixed-price-select');
-                    fixedPriceSelect.empty().append('<option value="">-- Pilih Item Harga Tetap --</option>');
-                    data.fixedPriceItems.forEach(item => {
-                        fixedPriceSelect.append(`<option value="${item.value}">${item.label}</option>`);
-                    });
-                    
-                    // Isi dropdown kode items
-                    const kodeSelect = $('.kode-select');
-                    kodeSelect.empty().append('<option value="">-- Pilih Kode Item --</option>');
-                    data.kodeItems.forEach(item => {
-                        kodeSelect.append(`<option value="${item.value}">${item.label}</option>`);
-                    });
-                },
-                error: function() {
-                    console.error('Gagal memuat data harga dan kode');
-                    updateCokimDisplay(); // Tetap tampilkan nilai default
-                }
+// Fungsi untuk memuat data dari JSON
+function loadData() {
+    return $.ajax({
+        url: 'data.json',
+        dataType: 'json',
+        success: function(data) {
+            fixedPriceItems = {};
+            kodeItems = {};
+            
+            // Konversi array ke object untuk fixedPriceItems
+            data.fixedPriceItems.forEach(item => {
+                fixedPriceItems[item.value] = item.label;
             });
+            
+            // Konversi array ke object untuk kodeItems
+            data.kodeItems.forEach(item => {
+                kodeItems[item.value] = item.label;
+            });
+            
+            // Isi dropdown fixed price
+            const fixedPriceSelect = $('.fixed-price-select');
+            fixedPriceSelect.empty().append('<option value="">-- Pilih Item Harga Tetap --</option>');
+            data.fixedPriceItems.forEach(item => {
+                fixedPriceSelect.append(`<option value="${item.value}">${item.label}</option>`);
+            });
+            
+            // Isi dropdown kode items
+            const kodeSelect = $('.kode-select');
+            kodeSelect.empty().append('<option value="">-- Pilih Kode Item --</option>');
+            data.kodeItems.forEach(item => {
+                kodeSelect.append(`<option value="${item.value}">${item.label}</option>`);
+            });
+        },
+        error: function() {
+            console.error('Gagal memuat data harga dan kode');
         }
+    });
+}
+
+// Pada document ready
+$(document).ready(function() {
+    // Load data pertama kali
+    loadData().then(function() {
+        // Inisialisasi form setelah data dimuat
+        initializeFormElements($('#formEmas'));
+    });
+    
+    // ... kode lainnya tetap sama ...
+});
 
 // Fungsi untuk mengupdate harga per gram
 function updateHargaPerGram(form) {
