@@ -1,69 +1,354 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Image to Table Converter</title>
-  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
-  <style>
-    body { font-family: Arial; padding: 20px; }
-    #preview { max-width: 300px; margin-top: 10px; }
-    table { border-collapse: collapse; margin-top: 20px; }
-    th, td { border: 1px solid #ccc; padding: 5px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ekstrak Data dari Gambar ke Tabel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+        
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 2px dashed #3498db;
+            border-radius: 5px;
+            background-color: #f8fafc;
+        }
+        
+        #fileInput {
+            display: none;
+        }
+        
+        .upload-btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .upload-btn:hover {
+            background-color: #2980b9;
+        }
+        
+        .preview-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .preview-box {
+            width: 100%;
+        }
+        
+        .preview-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-size: 1.2em;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 500px;
+            border: 1px solid #ddd;
+            display: none;
+        }
+        
+        #tableContainer {
+            width: 100%;
+            overflow: auto;
+            max-height: 500px;
+            border: 1px solid #ddd;
+        }
+        
+        #dataTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        #dataTable th, #dataTable td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        #dataTable th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        
+        #dataTable tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .controls {
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #27ae60;
+        }
+        
+        #processBtn {
+            background-color: #3498db;
+        }
+        
+        #processBtn:hover {
+            background-color: #2980b9;
+        }
+        
+        #downloadBtn {
+            background-color: #e74c3c;
+            display: none;
+        }
+        
+        #downloadBtn:hover {
+            background-color: #c0392b;
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+            font-style: italic;
+            color: #7f8c8d;
+        }
+        
+        .instructions {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .instructions h3 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+    </style>
 </head>
 <body>
-  <h2>Convert Gambar ke Tabel</h2>
-  <input type="file" accept="image/*" id="imageInput"><br>
-  <img id="preview" src="#" alt="Preview" style="display: none;"><br>
-  <button onclick="convertImage()">Convert</button>
+    <div class="container">
+        <h1>Ekstrak Data dari Gambar ke Tabel</h1>
+        
+        <div class="upload-section">
+            <input type="file" id="fileInput" accept="image/*">
+            <label for="fileInput" class="upload-btn">Pilih Gambar Berisi Data</label>
+            <p id="fileName" style="margin-top: 10px;"></p>
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-box">
+                <div class="preview-title">Pratinjau Gambar:</div>
+                <img id="imagePreview" alt="Pratinjau gambar akan muncul di sini">
+            </div>
+            
+            <div class="preview-box">
+                <div class="preview-title">Hasil Ekstraksi Data:</div>
+                <div id="tableContainer">
+                    <table id="dataTable"></table>
+                </div>
+                <div id="loading" class="loading">Memproses gambar, harap tunggu...</div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button id="processBtn">Proses Gambar</button>
+            <button id="downloadBtn">Unduh Data (CSV)</button>
+        </div>
+        
+        <div class="instructions">
+            <h3>Petunjuk Penggunaan:</h3>
+            <ol>
+                <li>Klik tombol "Pilih Gambar Berisi Data" untuk memilih gambar tabel/dokumen</li>
+                <li>Pastikan gambar jelas dan teks terbaca (hasil scan/foto yang baik)</li>
+                <li>Klik tombol "Proses Gambar" untuk mengekstrak data</li>
+                <li>Gunakan tombol "Unduh Data (CSV)" untuk menyimpan hasil ekstraksi</li>
+            </ol>
+            <p><strong>Catatan:</strong> Hasil ekstraksi tergantung pada kualitas gambar. Untuk hasil terbaik, gunakan gambar dengan resolusi tinggi dan kontras baik antara teks dan latar belakang.</p>
+        </div>
+    </div>
 
-  <h3>Hasil OCR:</h3>
-  <div id="outputText"></div>
-
-  <h3>Hasil Tabel:</h3>
-  <div id="outputTable"></div>
-
-  <script>
-    const imageInput = document.getElementById('imageInput');
-    const preview = document.getElementById('preview');
-
-    imageInput.onchange = function() {
-      const file = imageInput.files[0];
-      if (file) {
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-      }
-    }
-
-    function convertImage() {
-      const file = imageInput.files[0];
-      if (!file) return alert("Pilih gambar terlebih dahulu.");
-
-      Tesseract.recognize(file, 'eng', {
-        logger: m => console.log(m)
-      }).then(({ data: { text } }) => {
-        document.getElementById('outputText').innerText = text;
-
-        // Coba convert ke tabel berdasarkan baris dan tab/spasi
-        const rows = text.trim().split('\n');
-        let tableHTML = '<table>';
-
-        rows.forEach(row => {
-          tableHTML += '<tr>';
-          const cols = row.trim().split(/\s{2,}|\t+/); // pisah dengan tab/spasi panjang
-          cols.forEach(cell => {
-            tableHTML += `<td>${cell}</td>`;
-          });
-          tableHTML += '</tr>';
+    <!-- Include Tesseract.js for OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.getElementById('fileInput');
+            const imagePreview = document.getElementById('imagePreview');
+            const dataTable = document.getElementById('dataTable');
+            const processBtn = document.getElementById('processBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const fileName = document.getElementById('fileName');
+            const loading = document.getElementById('loading');
+            
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    fileName.textContent = `File terpilih: ${file.name}`;
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        imagePreview.src = event.target.result;
+                        imagePreview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            processBtn.addEventListener('click', function() {
+                if (!imagePreview.src) {
+                    alert('Silakan pilih gambar terlebih dahulu!');
+                    return;
+                }
+                
+                loading.style.display = 'block';
+                dataTable.innerHTML = '';
+                
+                // Use Tesseract.js for OCR
+                Tesseract.recognize(
+                    imagePreview.src,
+                    'eng+ind', // English + Indonesian
+                    {
+                        logger: m => console.log(m)
+                    }
+                ).then(({ data: { text, lines } }) => {
+                    loading.style.display = 'none';
+                    processOCRResult(lines);
+                }).catch(err => {
+                    loading.style.display = 'none';
+                    console.error(err);
+                    alert('Terjadi kesalahan saat memproses gambar: ' + err.message);
+                });
+            });
+            
+            function processOCRResult(lines) {
+                // Simple processing - this can be enhanced based on your specific needs
+                // Here we assume the first line is header and others are data rows
+                
+                // Clear previous data
+                dataTable.innerHTML = '';
+                
+                if (!lines || lines.length === 0) {
+                    dataTable.innerHTML = '<tr><td colspan="10">Tidak dapat mengekstrak data dari gambar. Pastikan gambar jelas dan mengandung teks.</td></tr>';
+                    return;
+                }
+                
+                // Create header row
+                const headerRow = document.createElement('tr');
+                
+                // For the first line, split by spaces to get columns (this is very basic)
+                const firstLine = lines[0];
+                const headers = firstLine.text.split(/\s{2,}/); // Split by 2+ spaces
+                
+                headers.forEach(headerText => {
+                    if (headerText.trim() === '') return;
+                    
+                    const th = document.createElement('th');
+                    th.textContent = headerText.trim();
+                    headerRow.appendChild(th);
+                });
+                
+                dataTable.appendChild(headerRow);
+                
+                // Process data rows (skip first line if it was header)
+                for (let i = 1; i < lines.length; i++) {
+                    const line = lines[i];
+                    const row = document.createElement('tr');
+                    
+                    // Split by multiple spaces
+                    const columns = line.text.split(/\s{2,}/);
+                    
+                    columns.forEach(colText => {
+                        if (colText.trim() === '') return;
+                        
+                        const td = document.createElement('td');
+                        td.textContent = colText.trim();
+                        row.appendChild(td);
+                    });
+                    
+                    dataTable.appendChild(row);
+                }
+                
+                downloadBtn.style.display = 'inline-block';
+            }
+            
+            downloadBtn.addEventListener('click', function() {
+                if (!dataTable.rows || dataTable.rows.length === 0) {
+                    alert('Tidak ada data untuk diunduh!');
+                    return;
+                }
+                
+                let csvContent = '';
+                
+                // Iterate through rows
+                for (let i = 0; i < dataTable.rows.length; i++) {
+                    const row = dataTable.rows[i];
+                    const rowData = [];
+                    
+                    // Iterate through cells
+                    for (let j = 0; j < row.cells.length; j++) {
+                        rowData.push(row.cells[j].textContent);
+                    }
+                    
+                    csvContent += rowData.join(',') + '\n';
+                }
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'data_ekstraksi.csv';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
         });
-
-        tableHTML += '</table>';
-        document.getElementById('outputTable').innerHTML = tableHTML;
-      }).catch(err => {
-        console.error(err);
-        alert("Gagal mengenali teks.");
-      });
-    }
-  </script>
+    </script>
 </body>
 </html>
