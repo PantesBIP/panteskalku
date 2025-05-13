@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image to Table Converter</title>
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@2.1.5/dist/tesseract.min.js"></script>
+  <style>
+    body { font-family: Arial; padding: 20px; }
+    #preview { max-width: 300px; margin-top: 10px; }
+    table { border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 5px; }
+  </style>
+</head>
+<body>
+  <h2>Convert Gambar ke Tabel</h2>
+  <input type="file" accept="image/*" id="imageInput"><br>
+  <img id="preview" src="#" alt="Preview" style="display: none;"><br>
+  <button onclick="convertImage()">Convert</button>
+
+  <h3>Hasil OCR:</h3>
+  <div id="outputText"></div>
+
+  <h3>Hasil Tabel:</h3>
+  <div id="outputTable"></div>
+
+  <script>
+    const imageInput = document.getElementById('imageInput');
+    const preview = document.getElementById('preview');
+
+    imageInput.onchange = function() {
+      const file = imageInput.files[0];
+      if (file) {
+        preview.src = URL.createObjectURL(file);
+        preview.style.display = 'block';
+      }
+    }
+
+    function convertImage() {
+      const file = imageInput.files[0];
+      if (!file) return alert("Pilih gambar terlebih dahulu.");
+
+      Tesseract.recognize(file, 'eng', {
+        logger: m => console.log(m)
+      }).then(({ data: { text } }) => {
+        document.getElementById('outputText').innerText = text;
+
+        // Coba convert ke tabel berdasarkan baris dan tab/spasi
+        const rows = text.trim().split('\n');
+        let tableHTML = '<table>';
+
+        rows.forEach(row => {
+          tableHTML += '<tr>';
+          const cols = row.trim().split(/\s{2,}|\t+/); // pisah dengan tab/spasi panjang
+          cols.forEach(cell => {
+            tableHTML += `<td>${cell}</td>`;
+          });
+          tableHTML += '</tr>';
+        });
+
+        tableHTML += '</table>';
+        document.getElementById('outputTable').innerHTML = tableHTML;
+      }).catch(err => {
+        console.error(err);
+        alert("Gagal mengenali teks.");
+      });
+    }
+  </script>
+</body>
+</html>
