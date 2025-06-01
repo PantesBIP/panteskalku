@@ -16,7 +16,7 @@
       --dark-color: #212529;
       --success-color: #4cc9f0;
       --april-color: #7209b7;
-      --maret-color: #f72585;
+      --juni-color: #f72585;
     }
     
     * {
@@ -84,13 +84,13 @@
       color: white;
     }
     
-    .month-btn.maret {
-      border-color: var(--maret-color);
-      color: var(--maret-color);
+    .month-btn.juni {
+      border-color: var(--juni-color);
+      color: var(--juni-color);
     }
     
-    .month-btn.maret.active {
-      background-color: var(--maret-color);
+    .month-btn.juni.active {
+      background-color: var(--juni-color);
       color: white;
     }
     
@@ -139,9 +139,9 @@
       border-bottom-color: var(--april-color);
     }
     
-    .table-title.maret {
-      color: var(--maret-color);
-      border-bottom-color: var(--maret-color);
+    .table-title.juni {
+      color: var(--juni-color);
+      border-bottom-color: var(--juni-color);
     }
     
     table {
@@ -161,8 +161,8 @@
       background-color: var(--april-color);
     }
     
-    .maret th {
-      background-color: var(--maret-color);
+    .juni th {
+      background-color: var(--juni-color);
     }
     
     td {
@@ -257,7 +257,7 @@
     <div class="month-selector">
       <button class="month-btn active" data-month="mei">Mei 2023</button>
       <button class="month-btn april" data-month="april">April 2023</button>
-      <button class="month-btn maret" data-month="maret">Maret 2023</button>
+      <button class="month-btn juni" data-month="juni">juni 2023</button>
       <button class="month-btn" data-month="comparison">Perbandingan</button>
     </div>
     
@@ -331,14 +331,14 @@
       </div>
     </div>
     
-    <!-- Tab Content for Maret -->
-    <div id="maret-tab" class="tab-content">
-      <div class="loading">Memuat data Maret...</div>
-      <div id="maret-error" class="error-message" style="display:none;"></div>
+    <!-- Tab Content for juni -->
+    <div id="juni-tab" class="tab-content">
+      <div class="loading">Memuat data juni...</div>
+      <div id="juni-error" class="error-message" style="display:none;"></div>
       <div class="tables-container" style="display:none;">
         <div class="table-wrapper">
-          <h2 class="table-title maret">🏆 Ranking Penjualan Maret (PCS)</h2>
-          <table id="maret-pcs-table">
+          <h2 class="table-title juni">🏆 Ranking Penjualan juni (PCS)</h2>
+          <table id="juni-pcs-table">
             <thead>
               <tr>
                 <th>Rank</th>
@@ -351,8 +351,8 @@
         </div>
         
         <div class="table-wrapper">
-          <h2 class="table-title maret">⚖ Ranking Penjualan Maret (Gram)</h2>
-          <table id="maret-gram-table">
+          <h2 class="table-title juni">⚖ Ranking Penjualan juni (Gram)</h2>
+          <table id="juni-gram-table">
             <thead>
               <tr>
                 <th>Rank</th>
@@ -380,7 +380,7 @@
                 <th>Sales</th>
                 <th>Mei</th>
                 <th>April</th>
-                <th>Maret</th>
+                <th>juni</th>
                 <th>Trend</th>
               </tr>
             </thead>
@@ -397,7 +397,7 @@
                 <th>Sales</th>
                 <th>Mei</th>
                 <th>April</th>
-                <th>Maret</th>
+                <th>juni</th>
                 <th>Trend</th>
               </tr>
             </thead>
@@ -416,14 +416,14 @@
     const SHEET_CONFIG = {
       mei: { gid: '0', name: 'Mei' },
       april: { gid: '1713944709', name: 'April' }, // Ganti dengan GID sheet April
-      maret: { gid: '142136785', name: 'Maret' }  // Ganti dengan GID sheet Maret
+      juni: { gid: '142136785', name: 'juni' }  // Ganti dengan GID sheet juni
     };
 
     // Data untuk semua bulan
     const salesData = {
       mei: [],
       april: [],
-      maret: []
+      juni: []
     };
 
     // Fungsi untuk mendapatkan URL sheet
@@ -526,7 +526,7 @@
             nama_sales: sales.nama_sales,
             mei: sales[field],
             april: 0,
-            maret: 0
+            juni: 0
           };
         } else {
           allSales[sales.kode_sales].mei = sales[field];
@@ -541,25 +541,25 @@
             nama_sales: sales.nama_sales,
             mei: 0,
             april: sales[field],
-            maret: 0
+            juni: 0
           };
         } else {
           allSales[sales.kode_sales].april = sales[field];
         }
       });
       
-      // Proses data Maret
-      salesData.maret.forEach(sales => {
+      // Proses data juni
+      salesData.juni.forEach(sales => {
         if (!allSales[sales.kode_sales]) {
           allSales[sales.kode_sales] = {
             kode_sales: sales.kode_sales,
             nama_sales: sales.nama_sales,
             mei: 0,
             april: 0,
-            maret: sales[field]
+            juni: sales[field]
           };
         } else {
-          allSales[sales.kode_sales].maret = sales[field];
+          allSales[sales.kode_sales].juni = sales[field];
         }
       });
       
@@ -573,8 +573,8 @@
         if(index < 3) tr.classList.add(`rank-${index+1}`);
         
         const trendApril = sales.mei - sales.april;
-        const trendMaret = sales.april - sales.maret;
-        const totalTrend = sales.mei - sales.maret;
+        const trendjuni = sales.april - sales.juni;
+        const totalTrend = sales.mei - sales.juni;
         
         let trendIcon = '';
         let trendClass = 'trend-neutral';
@@ -607,14 +607,14 @@
           <td>
             ${formatValue(sales.april)}
             <div class="comparison-row">
-              ${trendMaret > 0 ? '+' : ''}${formatValue(trendMaret)} vs Maret
+              ${trendjuni > 0 ? '+' : ''}${formatValue(trendjuni)} vs juni
             </div>
           </td>
-          <td>${formatValue(sales.maret)}</td>
+          <td>${formatValue(sales.juni)}</td>
           <td class="${trendClass}">
             ${trendIcon} ${Math.abs(totalTrend).toLocaleString()}
             <div class="comparison-row">
-              vs Maret
+              vs juni
             </div>
           </td>
         `;
@@ -671,10 +671,10 @@
 
       try {
         // Mengambil data untuk semua bulan
-        const [meiData, aprilData, maretData] = await Promise.all([
+        const [meiData, aprilData, juniData] = await Promise.all([
           fetchData('mei'),
           fetchData('april'),
-          fetchData('maret')
+          fetchData('juni')
         ]);
 
         // Urutkan data untuk setiap bulan
@@ -682,8 +682,8 @@
         const meiGram = [...meiData].sort((a, b) => b.berat - a.berat);
         const aprilPcs = [...aprilData].sort((a, b) => b.pcs - a.pcs);
         const aprilGram = [...aprilData].sort((a, b) => b.berat - a.berat);
-        const maretPcs = [...maretData].sort((a, b) => b.pcs - a.pcs);
-        const maretGram = [...maretData].sort((a, b) => b.berat - a.berat);
+        const juniPcs = [...juniData].sort((a, b) => b.pcs - a.pcs);
+        const juniGram = [...juniData].sort((a, b) => b.berat - a.berat);
         
         // Isi tabel Mei
         fillTable('mei-pcs-table', meiPcs, 'pcs');
@@ -695,10 +695,10 @@
         fillTable('april-gram-table', aprilGram, 'berat', 'april');
         showContent('april');
         
-        // Isi tabel Maret
-        fillTable('maret-pcs-table', maretPcs, 'pcs', 'maret');
-        fillTable('maret-gram-table', maretGram, 'berat', 'maret');
-        showContent('maret');
+        // Isi tabel juni
+        fillTable('juni-pcs-table', juniPcs, 'pcs', 'juni');
+        fillTable('juni-gram-table', juniGram, 'berat', 'juni');
+        showContent('juni');
         
         // Isi tabel perbandingan
         fillComparisonTable('comparison-pcs-table', 'pcs');
