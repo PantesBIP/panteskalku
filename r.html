@@ -260,6 +260,42 @@
       <button class="month-btn juni" data-month="juni">juni 2023</button>
       <button class="month-btn" data-month="comparison">Perbandingan</button>
     </div>
+
+    <!-- Tab Content for juni -->
+    <div id="juni-tab" class="tab-content">
+      <div class="loading">Memuat data juni...</div>
+      <div id="juni-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper">
+          <h2 class="table-title juni">🏆 Ranking Penjualan juni (PCS)</h2>
+          <table id="juni-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>PCS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper">
+          <h2 class="table-title juni">⚖ Ranking Penjualan juni (Gram)</h2>
+          <table id="juni-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Gram</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
     
     <!-- Tab Content for Mei -->
     <div id="mei-tab" class="tab-content active">
@@ -331,40 +367,7 @@
       </div>
     </div>
     
-    <!-- Tab Content for juni -->
-    <div id="juni-tab" class="tab-content">
-      <div class="loading">Memuat data juni...</div>
-      <div id="juni-error" class="error-message" style="display:none;"></div>
-      <div class="tables-container" style="display:none;">
-        <div class="table-wrapper">
-          <h2 class="table-title juni">🏆 Ranking Penjualan juni (PCS)</h2>
-          <table id="juni-pcs-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Sales</th>
-                <th>PCS</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        
-        <div class="table-wrapper">
-          <h2 class="table-title juni">⚖ Ranking Penjualan juni (Gram)</h2>
-          <table id="juni-gram-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Sales</th>
-                <th>Gram</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
+  
     
     <!-- Tab Content for Comparison -->
     <div id="comparison-tab" class="tab-content">
@@ -378,9 +381,9 @@
               <tr>
                 <th>Rank</th>
                 <th>Sales</th>
+                <th>juni</th>
                 <th>Mei</th>
                 <th>April</th>
-                <th>juni</th>
                 <th>Trend</th>
               </tr>
             </thead>
@@ -414,16 +417,18 @@
     
     // Ganti dengan GID masing-masing sheet (dapatkan dari URL sheet)
     const SHEET_CONFIG = {
+      juni: { gid: '142136785', name: 'juni' },  // Ganti dengan GID sheet juni
       mei: { gid: '0', name: 'Mei' },
-      april: { gid: '1713944709', name: 'April' }, // Ganti dengan GID sheet April
-      juni: { gid: '142136785', name: 'juni' }  // Ganti dengan GID sheet juni
+      april: { gid: '1713944709', name: 'April' } // Ganti dengan GID sheet April
+      
     };
 
     // Data untuk semua bulan
     const salesData = {
+      juni: [],
       mei: [],
-      april: [],
-      juni: []
+      april: []
+      
     };
 
     // Fungsi untuk mendapatkan URL sheet
