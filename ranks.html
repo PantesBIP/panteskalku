@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perbandingan Penjualan 3 Bulan Terakhir</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* [CSS tetap sama seperti sebelumnya] */
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4895ef;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4cc9f0;
+      --april-color: #7209b7;
+      --maret-color: #f72585;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f7fa;
+      color: var(--dark-color);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    
+    h1 {
+      color: var(--primary-color);
+      font-size: 2.2rem;
+      margin-bottom: 10px;
+    }
+    
+    .month-selector {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .month-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      background-color: white;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .month-btn.active {
+      background-color: var(--primary-color);
+      color: white;
+    }
+    
+    .month-btn.april {
+      border-color: var(--april-color);
+      color: var(--april-color);
+    }
+    
+    .month-btn.april.active {
+      background-color: var(--april-color);
+      color: white;
+    }
+    
+    .month-btn.maret {
+      border-color: var(--maret-color);
+      color: var(--maret-color);
+    }
+    
+    .month-btn.maret.active {
+      background-color: var(--maret-color);
+      color: white;
+    }
+    
+    .month-btn:hover:not(.active) {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    
+    .tables-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-between;
+    }
+    
+    .table-wrapper {
+      flex: 1;
+      min-width: 300px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      transition: transform 0.3s ease;
+    }
+    
+    .table-wrapper.comparison {
+      min-width: 100%;
+    }
+    
+    .table-wrapper:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .table-title {
+      color: var(--secondary-color);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+      text-align: center;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--accent-color);
+    }
+    
+    .table-title.april {
+      color: var(--april-color);
+      border-bottom-color: var(--april-color);
+    }
+    
+    .table-title.maret {
+      color: var(--maret-color);
+      border-bottom-color: var(--maret-color);
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    
+    th {
+      background-color: var(--primary-color);
+      color: white;
+      padding: 10px;
+      text-align: left;
+    }
+    
+    .april th {
+      background-color: var(--april-color);
+    }
+    
+    .maret th {
+      background-color: var(--maret-color);
+    }
+    
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+    
+    tr:hover {
+      background-color: #e9ecef;
+    }
+    
+    .rank-1 {
+      background-color: #fff3cd !important;
+      font-weight: 500;
+    }
+    
+    .rank-2 {
+      background-color: #e2e3e5 !important;
+    }
+    
+    .rank-3 {
+      background-color: #d1e7dd !important;
+    }
+    
+    .trend-up {
+      color: #2e7d32;
+    }
+    
+    .trend-down {
+      color: #c62828;
+    }
+    
+    .trend-neutral {
+      color: #9e9e9e;
+    }
+    
+    .comparison-row {
+      font-size: 0.8em;
+      color: #666;
+    }
+    
+    .tab-content {
+      display: none;
+    }
+    
+    .tab-content.active {
+      display: block;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 20px;
+      font-style: italic;
+      color: #666;
+    }
+    
+    .error-message {
+      color: #d32f2f;
+      background-color: #ffebee;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 10px 0;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .tables-container {
+        flex-direction: column;
+      }
+      
+      .table-wrapper {
+        width: 100%;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><i class="fas fa-chart-line"></i> Perbandingan Penjualan</h1>
+      <p>3 Bulan Terakhir - Update Terakhir: <span id="last-update"></span></p>
+    </header>
+    
+    <div class="month-selector">
+      <button class="month-btn active" data-month="mei">Mei 2023</button>
+      <button class="month-btn april" data-month="april">April 2023</button>
+      <button class="month-btn maret" data-month="maret">Maret 2023</button>
+      <button class="month-btn" data-month="comparison">Perbandingan</button>
+    </div>
+    
+    <!-- Tab Content for Mei -->
+    <div id="mei-tab" class="tab-content active">
+      <div class="loading">Memuat data Mei...</div>
+      <div id="mei-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper">
+          <h2 class="table-title">🏆 Ranking Penjualan Mei (PCS)</h2>
+          <table id="mei-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>PCS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper">
+          <h2 class="table-title">⚖ Ranking Penjualan Mei (Gram)</h2>
+          <table id="mei-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Gram</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Content for April -->
+    <div id="april-tab" class="tab-content">
+      <div class="loading">Memuat data April...</div>
+      <div id="april-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper">
+          <h2 class="table-title april">🏆 Ranking Penjualan April (PCS)</h2>
+          <table id="april-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>PCS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper">
+          <h2 class="table-title april">⚖ Ranking Penjualan April (Gram)</h2>
+          <table id="april-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Gram</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Content for Maret -->
+    <div id="maret-tab" class="tab-content">
+      <div class="loading">Memuat data Maret...</div>
+      <div id="maret-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper">
+          <h2 class="table-title maret">🏆 Ranking Penjualan Maret (PCS)</h2>
+          <table id="maret-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>PCS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper">
+          <h2 class="table-title maret">⚖ Ranking Penjualan Maret (Gram)</h2>
+          <table id="maret-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Gram</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Content for Comparison -->
+    <div id="comparison-tab" class="tab-content">
+      <div class="loading">Menyiapkan data perbandingan...</div>
+      <div id="comparison-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper comparison">
+          <h2 class="table-title">📈 Perbandingan Top Sales (PCS)</h2>
+          <table id="comparison-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Mei</th>
+                <th>April</th>
+                <th>Maret</th>
+                <th>Trend</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper comparison">
+          <h2 class="table-title">📊 Perbandingan Top Sales (Gram)</h2>
+          <table id="comparison-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Mei</th>
+                <th>April</th>
+                <th>Maret</th>
+                <th>Trend</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+    // Konfigurasi Spreadsheet
+    const SPREADSHEET_BASE = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQFH0squhL_c2KoNryfBrysWZEKTTUpthg_1XVE-fT3r7-ew1_lkbFqENefrlBLHClis53FyDdNiUkh/pub?output=csv';
+    
+    // Ganti dengan GID masing-masing sheet (dapatkan dari URL sheet)
+    const SHEET_CONFIG = {
+      mei: { gid: '0', name: 'Mei' },
+      april: { gid: '1713944709', name: 'April' }, // Ganti dengan GID sheet April
+      maret: { gid: '142136785', name: 'Maret' }  // Ganti dengan GID sheet Maret
+    };
+
+    // Data untuk semua bulan
+    const salesData = {
+      mei: [],
+      april: [],
+      maret: []
+    };
+
+    // Fungsi untuk mendapatkan URL sheet
+    function getSheetUrl(month) {
+      return `${SPREADSHEET_BASE}&gid=${SHEET_CONFIG[month].gid}&single=true`;
+    }
+
+    // Fungsi untuk memparse data CSV
+    function parseCSV(csvText) {
+      const lines = csvText.split('\n').filter(line => line.trim() !== '');
+      if (lines.length <= 1) return [];
+      
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const data = [];
+      
+      for (let i = 1; i < lines.length; i++) {
+        const values = lines[i].split(',');
+        const entry = {};
+        
+        for (let j = 0; j < headers.length; j++) {
+          if (j < values.length) {
+            const header = headers[j];
+            let value = values[j].trim();
+            
+            if (header === 'pcs') {
+              value = parseInt(value) || 0;
+            } else if (header === 'berat') {
+              value = parseFloat(value) || 0;
+            }
+            
+            entry[header] = value;
+          }
+        }
+        
+        if (entry.kode_sales) {
+          data.push(entry);
+        }
+      }
+      
+      return data;
+    }
+
+    // Fungsi untuk mengambil data dari spreadsheet
+    async function fetchData(month) {
+      const url = getSheetUrl(month);
+      
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error(`Gagal memuat data ${month}: ${response.status}`);
+        }
+        
+        const csvText = await response.text();
+        const data = parseCSV(csvText);
+        salesData[month] = data;
+        return data;
+      } catch (error) {
+        console.error(`Error fetching ${month} data:`, error);
+        showError(month, error.message);
+        return null;
+      }
+    }
+
+    // Fungsi untuk mengisi tabel
+    function fillTable(tableId, data, field, month = 'mei') {
+      const tableBody = document.querySelector(`#${tableId} tbody`);
+      tableBody.innerHTML = '';
+      
+      data.forEach((sales, index) => {
+        const tr = document.createElement('tr');
+        if(index < 3) tr.classList.add(`rank-${index+1}`);
+        
+        const value = field === 'pcs' 
+          ? sales[field].toLocaleString() 
+          : sales[field].toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+        
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
+          <td>${value}</td>
+        `;
+        
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Fungsi untuk mengisi tabel perbandingan
+    function fillComparisonTable(tableId, field) {
+      const tableBody = document.querySelector(`#${tableId} tbody`);
+      tableBody.innerHTML = '';
+      
+      // Gabungkan semua sales dari 3 bulan
+      const allSales = {};
+      
+      // Proses data Mei
+      salesData.mei.forEach(sales => {
+        if (!allSales[sales.kode_sales]) {
+          allSales[sales.kode_sales] = {
+            kode_sales: sales.kode_sales,
+            nama_sales: sales.nama_sales,
+            mei: sales[field],
+            april: 0,
+            maret: 0
+          };
+        } else {
+          allSales[sales.kode_sales].mei = sales[field];
+        }
+      });
+      
+      // Proses data April
+      salesData.april.forEach(sales => {
+        if (!allSales[sales.kode_sales]) {
+          allSales[sales.kode_sales] = {
+            kode_sales: sales.kode_sales,
+            nama_sales: sales.nama_sales,
+            mei: 0,
+            april: sales[field],
+            maret: 0
+          };
+        } else {
+          allSales[sales.kode_sales].april = sales[field];
+        }
+      });
+      
+      // Proses data Maret
+      salesData.maret.forEach(sales => {
+        if (!allSales[sales.kode_sales]) {
+          allSales[sales.kode_sales] = {
+            kode_sales: sales.kode_sales,
+            nama_sales: sales.nama_sales,
+            mei: 0,
+            april: 0,
+            maret: sales[field]
+          };
+        } else {
+          allSales[sales.kode_sales].maret = sales[field];
+        }
+      });
+      
+      // Konversi object ke array dan urutkan
+      const comparisonData = Object.values(allSales).sort((a, b) => b.mei - a.mei);
+      const top10 = comparisonData.slice(0, 10);
+      
+      // Isi tabel
+      top10.forEach((sales, index) => {
+        const tr = document.createElement('tr');
+        if(index < 3) tr.classList.add(`rank-${index+1}`);
+        
+        const trendApril = sales.mei - sales.april;
+        const trendMaret = sales.april - sales.maret;
+        const totalTrend = sales.mei - sales.maret;
+        
+        let trendIcon = '';
+        let trendClass = 'trend-neutral';
+        
+        if (totalTrend > 0) {
+          trendIcon = '<i class="fas fa-arrow-up"></i>';
+          trendClass = 'trend-up';
+        } else if (totalTrend < 0) {
+          trendIcon = '<i class="fas fa-arrow-down"></i>';
+          trendClass = 'trend-down';
+        } else {
+          trendIcon = '<i class="fas fa-equals"></i>';
+        }
+        
+        const formatValue = (val) => {
+          return field === 'pcs' 
+            ? val.toLocaleString() 
+            : val.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 });
+        };
+        
+        tr.innerHTML = `
+          <td>${index + 1}</td>
+          <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
+          <td>
+            ${formatValue(sales.mei)}
+            <div class="comparison-row">
+              ${trendApril > 0 ? '+' : ''}${formatValue(trendApril)} vs April
+            </div>
+          </td>
+          <td>
+            ${formatValue(sales.april)}
+            <div class="comparison-row">
+              ${trendMaret > 0 ? '+' : ''}${formatValue(trendMaret)} vs Maret
+            </div>
+          </td>
+          <td>${formatValue(sales.maret)}</td>
+          <td class="${trendClass}">
+            ${trendIcon} ${Math.abs(totalTrend).toLocaleString()}
+            <div class="comparison-row">
+              vs Maret
+            </div>
+          </td>
+        `;
+        
+        tableBody.appendChild(tr);
+      });
+    }
+
+    // Fungsi untuk menangani tab switching
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.month-btn');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          tab.classList.add('active');
+          document.getElementById(`${tab.dataset.month}-tab`).classList.add('active');
+        });
+      });
+    }
+
+    // Fungsi untuk menampilkan konten setelah data dimuat
+    function showContent(month) {
+      const container = document.querySelector(`#${month}-tab .tables-container`);
+      const loading = document.querySelector(`#${month}-tab .loading`);
+      
+      if (container && loading) {
+        loading.style.display = 'none';
+        container.style.display = 'flex';
+      }
+    }
+
+    // Fungsi untuk menampilkan error
+    function showError(month, message) {
+      const errorElement = document.getElementById(`${month}-error`);
+      if (errorElement) {
+        errorElement.textContent = `Error: ${message}`;
+        errorElement.style.display = 'block';
+      }
+    }
+
+    // Fungsi utama untuk memuat dan menampilkan data
+    async function loadAndDisplayData() {
+      // Set tanggal update
+      document.getElementById('last-update').textContent = new Date().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+
+      try {
+        // Mengambil data untuk semua bulan
+        const [meiData, aprilData, maretData] = await Promise.all([
+          fetchData('mei'),
+          fetchData('april'),
+          fetchData('maret')
+        ]);
+
+        // Urutkan data untuk setiap bulan
+        const meiPcs = [...meiData].sort((a, b) => b.pcs - a.pcs);
+        const meiGram = [...meiData].sort((a, b) => b.berat - a.berat);
+        const aprilPcs = [...aprilData].sort((a, b) => b.pcs - a.pcs);
+        const aprilGram = [...aprilData].sort((a, b) => b.berat - a.berat);
+        const maretPcs = [...maretData].sort((a, b) => b.pcs - a.pcs);
+        const maretGram = [...maretData].sort((a, b) => b.berat - a.berat);
+        
+        // Isi tabel Mei
+        fillTable('mei-pcs-table', meiPcs, 'pcs');
+        fillTable('mei-gram-table', meiGram, 'berat');
+        showContent('mei');
+        
+        // Isi tabel April
+        fillTable('april-pcs-table', aprilPcs, 'pcs', 'april');
+        fillTable('april-gram-table', aprilGram, 'berat', 'april');
+        showContent('april');
+        
+        // Isi tabel Maret
+        fillTable('maret-pcs-table', maretPcs, 'pcs', 'maret');
+        fillTable('maret-gram-table', maretGram, 'berat', 'maret');
+        showContent('maret');
+        
+        // Isi tabel perbandingan
+        fillComparisonTable('comparison-pcs-table', 'pcs');
+        fillComparisonTable('comparison-gram-table', 'berat');
+        showContent('comparison');
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+        showError('comparison', 'Gagal memuat data perbandingan');
+      }
+    }
+
+    // Inisialisasi saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', () => {
+      setupTabs();
+      loadAndDisplayData();
+    });
+  </script>
+</body>
+</html>
