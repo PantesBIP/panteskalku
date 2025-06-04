@@ -15,8 +15,8 @@
       --light-color: #f8f9fa;
       --dark-color: #212529;
       --success-color: #4cc9f0;
-      --april-color: #7209b7;
-      --maret-color: #f72585;
+      --mei-color: #7209b7;
+      --april-color: #f72585;
     }
     
     * {
@@ -74,6 +74,16 @@
       color: white;
     }
     
+    .month-btn.mei {
+      border-color: var(--mei-color);
+      color: var(--mei-color);
+    }
+    
+    .month-btn.mei.active {
+      background-color: var(--mei-color);
+      color: white;
+    }
+    
     .month-btn.april {
       border-color: var(--april-color);
       color: var(--april-color);
@@ -81,16 +91,6 @@
     
     .month-btn.april.active {
       background-color: var(--april-color);
-      color: white;
-    }
-    
-    .month-btn.maret {
-      border-color: var(--maret-color);
-      color: var(--maret-color);
-    }
-    
-    .month-btn.maret.active {
-      background-color: var(--maret-color);
       color: white;
     }
     
@@ -134,14 +134,14 @@
       border-bottom: 2px solid var(--accent-color);
     }
     
+    .table-title.mei {
+      color: var(--mei-color);
+      border-bottom-color: var(--mei-color);
+    }
+    
     .table-title.april {
       color: var(--april-color);
       border-bottom-color: var(--april-color);
-    }
-    
-    .table-title.maret {
-      color: var(--maret-color);
-      border-bottom-color: var(--maret-color);
     }
     
     table {
@@ -157,12 +157,12 @@
       text-align: left;
     }
     
-    .april th {
-      background-color: var(--april-color);
+    .mei th {
+      background-color: var(--mei-color);
     }
     
-    .maret th {
-      background-color: var(--maret-color);
+    .april th {
+      background-color: var(--april-color);
     }
     
     td {
@@ -255,19 +255,54 @@
     </header>
     
     <div class="month-selector">
-      <button class="month-btn active" data-month="mei">Mei 2023</button>
-      <button class="month-btn april" data-month="april">April 2023</button>
-      <button class="month-btn maret" data-month="maret">Maret 2023</button>
+      <button class="month-btn active" data-month="juni">juni 2023</button>
+      <button class="month-btn mei" data-month="mei">mei 2023</button>
+      <button class="month-btn april" data-month="april">april 2023</button>
       <button class="month-btn" data-month="comparison">Perbandingan</button>
     </div>
     
-    <!-- Tab Content for Mei -->
-    <div id="mei-tab" class="tab-content active">
-      <div class="loading">Memuat data Mei...</div>
+    <!-- Tab Content for juni -->
+    <div id="juni-tab" class="tab-content active">
+      <div class="loading">Memuat data juni...</div>
+      <div id="juni-error" class="error-message" style="display:none;"></div>
+      <div class="tables-container" style="display:none;">
+        <div class="table-wrapper">
+          <h2 class="table-title">🏆 Ranking Penjualan juni (PCS)</h2>
+          <table id="juni-pcs-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>PCS</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        
+        <div class="table-wrapper">
+          <h2 class="table-title">⚖ Ranking Penjualan juni (Gram)</h2>
+          <table id="juni-gram-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Sales</th>
+                <th>Gram</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Tab Content for mei -->
+    <div id="mei-tab" class="tab-content">
+      <div class="loading">Memuat data mei...</div>
       <div id="mei-error" class="error-message" style="display:none;"></div>
       <div class="tables-container" style="display:none;">
         <div class="table-wrapper">
-          <h2 class="table-title">🏆 Ranking Penjualan Mei (PCS)</h2>
+          <h2 class="table-title mei">🏆 Ranking Penjualan mei (PCS)</h2>
           <table id="mei-pcs-table">
             <thead>
               <tr>
@@ -281,7 +316,7 @@
         </div>
         
         <div class="table-wrapper">
-          <h2 class="table-title">⚖ Ranking Penjualan Mei (Gram)</h2>
+          <h2 class="table-title mei">⚖ Ranking Penjualan mei (Gram)</h2>
           <table id="mei-gram-table">
             <thead>
               <tr>
@@ -296,13 +331,13 @@
       </div>
     </div>
     
-    <!-- Tab Content for April -->
+    <!-- Tab Content for april -->
     <div id="april-tab" class="tab-content">
-      <div class="loading">Memuat data April...</div>
+      <div class="loading">Memuat data april...</div>
       <div id="april-error" class="error-message" style="display:none;"></div>
       <div class="tables-container" style="display:none;">
         <div class="table-wrapper">
-          <h2 class="table-title april">🏆 Ranking Penjualan April (PCS)</h2>
+          <h2 class="table-title april">🏆 Ranking Penjualan april (PCS)</h2>
           <table id="april-pcs-table">
             <thead>
               <tr>
@@ -316,43 +351,8 @@
         </div>
         
         <div class="table-wrapper">
-          <h2 class="table-title april">⚖ Ranking Penjualan April (Gram)</h2>
+          <h2 class="table-title april">⚖ Ranking Penjualan april (Gram)</h2>
           <table id="april-gram-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Sales</th>
-                <th>Gram</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Tab Content for Maret -->
-    <div id="maret-tab" class="tab-content">
-      <div class="loading">Memuat data Maret...</div>
-      <div id="maret-error" class="error-message" style="display:none;"></div>
-      <div class="tables-container" style="display:none;">
-        <div class="table-wrapper">
-          <h2 class="table-title maret">🏆 Ranking Penjualan Maret (PCS)</h2>
-          <table id="maret-pcs-table">
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Sales</th>
-                <th>PCS</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-        
-        <div class="table-wrapper">
-          <h2 class="table-title maret">⚖ Ranking Penjualan Maret (Gram)</h2>
-          <table id="maret-gram-table">
             <thead>
               <tr>
                 <th>Rank</th>
@@ -378,9 +378,9 @@
               <tr>
                 <th>Rank</th>
                 <th>Sales</th>
-                <th>Mei</th>
-                <th>April</th>
-                <th>Maret</th>
+                <th>juni</th>
+                <th>mei</th>
+                <th>april</th>
                 <th>Trend</th>
               </tr>
             </thead>
@@ -395,9 +395,9 @@
               <tr>
                 <th>Rank</th>
                 <th>Sales</th>
-                <th>Mei</th>
-                <th>April</th>
-                <th>Maret</th>
+                <th>juni</th>
+                <th>mei</th>
+                <th>april</th>
                 <th>Trend</th>
               </tr>
             </thead>
@@ -414,16 +414,16 @@
     
     // Ganti dengan GID masing-masing sheet (dapatkan dari URL sheet)
     const SHEET_CONFIG = {
-      mei: { gid: '0', name: 'Mei' },
-      april: { gid: '1713944709', name: 'April' }, // Ganti dengan GID sheet April
-      maret: { gid: '142136785', name: 'Maret' }  // Ganti dengan GID sheet Maret
+      juni: { gid: '0', name: 'juni' },
+      mei: { gid: '1713944709', name: 'mei' }, // Ganti dengan GID sheet mei
+      april: { gid: '142136785', name: 'april' }  // Ganti dengan GID sheet april
     };
 
     // Data untuk semua bulan
     const salesData = {
+      juni: [],
       mei: [],
-      april: [],
-      maret: []
+      april: []
     };
 
     // Fungsi untuk mendapatkan URL sheet
@@ -488,7 +488,7 @@
     }
 
     // Fungsi untuk mengisi tabel
-    function fillTable(tableId, data, field, month = 'mei') {
+    function fillTable(tableId, data, field, month = 'juni') {
       const tableBody = document.querySelector(`#${tableId} tbody`);
       tableBody.innerHTML = '';
       
@@ -518,53 +518,53 @@
       // Gabungkan semua sales dari 3 bulan
       const allSales = {};
       
-      // Proses data Mei
+      // Proses data juni
+      salesData.juni.forEach(sales => {
+        if (!allSales[sales.kode_sales]) {
+          allSales[sales.kode_sales] = {
+            kode_sales: sales.kode_sales,
+            nama_sales: sales.nama_sales,
+            juni: sales[field],
+            mei: 0,
+            april: 0
+          };
+        } else {
+          allSales[sales.kode_sales].juni = sales[field];
+        }
+      });
+      
+      // Proses data mei
       salesData.mei.forEach(sales => {
         if (!allSales[sales.kode_sales]) {
           allSales[sales.kode_sales] = {
             kode_sales: sales.kode_sales,
             nama_sales: sales.nama_sales,
+            juni: 0,
             mei: sales[field],
-            april: 0,
-            maret: 0
+            april: 0
           };
         } else {
           allSales[sales.kode_sales].mei = sales[field];
         }
       });
       
-      // Proses data April
+      // Proses data april
       salesData.april.forEach(sales => {
         if (!allSales[sales.kode_sales]) {
           allSales[sales.kode_sales] = {
             kode_sales: sales.kode_sales,
             nama_sales: sales.nama_sales,
+            juni: 0,
             mei: 0,
-            april: sales[field],
-            maret: 0
+            april: sales[field]
           };
         } else {
           allSales[sales.kode_sales].april = sales[field];
         }
       });
       
-      // Proses data Maret
-      salesData.maret.forEach(sales => {
-        if (!allSales[sales.kode_sales]) {
-          allSales[sales.kode_sales] = {
-            kode_sales: sales.kode_sales,
-            nama_sales: sales.nama_sales,
-            mei: 0,
-            april: 0,
-            maret: sales[field]
-          };
-        } else {
-          allSales[sales.kode_sales].maret = sales[field];
-        }
-      });
-      
       // Konversi object ke array dan urutkan
-      const comparisonData = Object.values(allSales).sort((a, b) => b.mei - a.mei);
+      const comparisonData = Object.values(allSales).sort((a, b) => b.juni - a.juni);
       const top10 = comparisonData.slice(0, 10);
       
       // Isi tabel
@@ -572,9 +572,9 @@
         const tr = document.createElement('tr');
         if(index < 3) tr.classList.add(`rank-${index+1}`);
         
-        const trendApril = sales.mei - sales.april;
-        const trendMaret = sales.april - sales.maret;
-        const totalTrend = sales.mei - sales.maret;
+        const trendmei = sales.juni - sales.mei;
+        const trendapril = sales.mei - sales.april;
+        const totalTrend = sales.juni - sales.april;
         
         let trendIcon = '';
         let trendClass = 'trend-neutral';
@@ -599,22 +599,22 @@
           <td>${index + 1}</td>
           <td><strong>${sales.kode_sales}</strong><br>${sales.nama_sales}</td>
           <td>
-            ${formatValue(sales.mei)}
+            ${formatValue(sales.juni)}
             <div class="comparison-row">
-              ${trendApril > 0 ? '+' : ''}${formatValue(trendApril)} vs April
+              ${trendmei > 0 ? '+' : ''}${formatValue(trendmei)} vs mei
             </div>
           </td>
           <td>
-            ${formatValue(sales.april)}
+            ${formatValue(sales.mei)}
             <div class="comparison-row">
-              ${trendMaret > 0 ? '+' : ''}${formatValue(trendMaret)} vs Maret
+              ${trendapril > 0 ? '+' : ''}${formatValue(trendapril)} vs april
             </div>
           </td>
-          <td>${formatValue(sales.maret)}</td>
+          <td>${formatValue(sales.april)}</td>
           <td class="${trendClass}">
             ${trendIcon} ${Math.abs(totalTrend).toLocaleString()}
             <div class="comparison-row">
-              vs Maret
+              vs april
             </div>
           </td>
         `;
@@ -671,34 +671,34 @@
 
       try {
         // Mengambil data untuk semua bulan
-        const [meiData, aprilData, maretData] = await Promise.all([
+        const [juniData, meiData, aprilData] = await Promise.all([
+          fetchData('juni'),
           fetchData('mei'),
-          fetchData('april'),
-          fetchData('maret')
+          fetchData('april')
         ]);
 
         // Urutkan data untuk setiap bulan
+        const juniPcs = [...juniData].sort((a, b) => b.pcs - a.pcs);
+        const juniGram = [...juniData].sort((a, b) => b.berat - a.berat);
         const meiPcs = [...meiData].sort((a, b) => b.pcs - a.pcs);
         const meiGram = [...meiData].sort((a, b) => b.berat - a.berat);
         const aprilPcs = [...aprilData].sort((a, b) => b.pcs - a.pcs);
         const aprilGram = [...aprilData].sort((a, b) => b.berat - a.berat);
-        const maretPcs = [...maretData].sort((a, b) => b.pcs - a.pcs);
-        const maretGram = [...maretData].sort((a, b) => b.berat - a.berat);
         
-        // Isi tabel Mei
-        fillTable('mei-pcs-table', meiPcs, 'pcs');
-        fillTable('mei-gram-table', meiGram, 'berat');
+        // Isi tabel juni
+        fillTable('juni-pcs-table', juniPcs, 'pcs');
+        fillTable('juni-gram-table', juniGram, 'berat');
+        showContent('juni');
+        
+        // Isi tabel mei
+        fillTable('mei-pcs-table', meiPcs, 'pcs', 'mei');
+        fillTable('mei-gram-table', meiGram, 'berat', 'mei');
         showContent('mei');
         
-        // Isi tabel April
+        // Isi tabel april
         fillTable('april-pcs-table', aprilPcs, 'pcs', 'april');
         fillTable('april-gram-table', aprilGram, 'berat', 'april');
         showContent('april');
-        
-        // Isi tabel Maret
-        fillTable('maret-pcs-table', maretPcs, 'pcs', 'maret');
-        fillTable('maret-gram-table', maretGram, 'berat', 'maret');
-        showContent('maret');
         
         // Isi tabel perbandingan
         fillComparisonTable('comparison-pcs-table', 'pcs');
